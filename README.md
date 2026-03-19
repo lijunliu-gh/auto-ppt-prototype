@@ -147,15 +147,31 @@ auto-ppt-prototype/
 |-- revise-deck.js            # compatibility wrapper
 |-- agent-skill.js            # compatibility wrapper
 |-- skill-server.js           # compatibility wrapper
+|-- assets/
+|   |-- end-to-end-flow.svg   # README architecture flow image
+|   `-- social-preview.png    # GitHub social preview asset
 |-- deck-schema.json          # deck JSON contract
 |-- skill-manifest.json       # skill integration contract
-|-- sample-*.json             # sample requests and payloads
+|-- sample-source-brief.md    # shortest source-grounded demo input
+|-- sample-deck-brief.md      # natural-language deck brief example
+|-- sample-deck-brief.json    # structured deck brief example
+|-- sample-agent-request.json # JSON skill create example
+|-- sample-agent-revise-request.json
+|-- sample-http-request.json  # HTTP request example
+|-- EXAMPLES.en.md            # quick-start examples in English
+|-- EXAMPLES.zh-CN.md         # quick-start examples in Chinese
+|-- EXAMPLES.ja.md            # quick-start examples in Japanese
 |-- README.md
 |-- PRODUCT.*.md
 |-- USER_GUIDE.*.md
 |-- INTEGRATION_GUIDE.*.md
 |-- CHANGELOG.md
 |-- RELEASE_DRAFT_v0.3.0.md
+|-- output/                   # generated deck JSON and PPTX artifacts
+|   |-- py-generated-deck.json
+|   |-- py-generated-deck.pptx
+|   |-- py-revised-deck.json
+|   `-- py-revised-deck.pptx
 |-- .github/
 |   `-- workflows/
 |       `-- smoke.yml
@@ -169,6 +185,8 @@ The practical split is:
 - root-level `py-*.py` files are the primary public entrypoints
 - `generate-ppt.js` is the stable PPTX renderer
 - root-level Node CLIs remain compatibility wrappers for older integrations
+- `EXAMPLES.*.md` and `sample-*` files are the fastest way for a new user to understand how to run the repo
+- `output/` is where generated deck JSON and PPTX files appear after successful runs
 
 ## End-To-End Flow
 
