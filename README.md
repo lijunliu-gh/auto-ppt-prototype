@@ -14,7 +14,9 @@ Quick links:
 
 - [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.3.0)
 - [Changelog](CHANGELOG.md)
-- [Examples](EXAMPLES.en.md)
+- [Examples (EN)](EXAMPLES.en.md)
+- [Examples (ZH)](EXAMPLES.zh-CN.md)
+- [Examples (JA)](EXAMPLES.ja.md)
 - [Product overview](PRODUCT.en.md)
 - [User guide](USER_GUIDE.en.md)
 - [Integration guide](INTEGRATION_GUIDE.en.md)
@@ -49,6 +51,20 @@ The recommended mental model is:
 `requirements + trusted material -> Python planning -> deck JSON -> JavaScript rendering -> PPTX`
 
 This is an agent backend, not a standalone research agent and not just a local slide script.
+
+## Who This Is For
+
+- teams building AI agents that need PPT output
+- developers who want a local PPT generation backend
+- workflows that start from trusted files, URLs, or structured briefs
+- users who want first-draft generation plus revision loops
+
+## Who This Is Not For
+
+- users looking for a hosted end-user SaaS product
+- users expecting a fully autonomous research agent
+- teams that need production-grade brand template control today
+- users who only want a lightweight markdown-to-slides converter
 
 ## What It Does
 
@@ -111,7 +127,7 @@ Useful starter files:
 - `sample-agent-request.json`: JSON skill request example
 - `sample-http-request.json`: HTTP request example
 
-If you want copy-paste usage flows, start with `EXAMPLES.en.md`.
+If you want copy-paste usage flows, start with `EXAMPLES.en.md`, `EXAMPLES.zh-CN.md`, or `EXAMPLES.ja.md`.
 
 ## Repository Map
 
@@ -254,7 +270,7 @@ Those responsibilities should remain with the upstream agent or surrounding work
 ## Documentation
 
 - `README.md`: repository entry and quick navigation
-- `EXAMPLES.en.md`: copy-paste usage flows for first-time users
+- `EXAMPLES.*.md`: copy-paste usage flows for first-time users
 - `PRODUCT.*.md`: product framing and open-source positioning
 - `USER_GUIDE.*.md`: end-user usage guidance
 - `INTEGRATION_GUIDE.*.md`: agent and system integration guidance
@@ -265,6 +281,8 @@ Those responsibilities should remain with the upstream agent or surrounding work
 
 - `PRODUCT.en.md` for product framing
 - `EXAMPLES.en.md` for first-run examples
+- `EXAMPLES.zh-CN.md` for Chinese examples
+- `EXAMPLES.ja.md` for Japanese examples
 - `USER_GUIDE.en.md` for user-oriented instructions
 - `INTEGRATION_GUIDE.en.md` for integration details
 - `GITHUB_SETUP.md` for repository metadata and release copy
