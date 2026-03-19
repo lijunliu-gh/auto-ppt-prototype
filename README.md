@@ -8,21 +8,33 @@ Open-source PowerPoint backend for AI agents working from trusted sources, uploa
 
 Status: experimental prototype for early open-source integration.
 
-Latest release: `v0.3.0`
+Latest release: [v0.3.0](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.3.0)
 
 Quick links:
 
-- Release notes: https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.3.0
-- Changelog: `CHANGELOG.md`
-- Product overview: `PRODUCT.en.md`
-- User guide: `USER_GUIDE.en.md`
-- Integration guide: `INTEGRATION_GUIDE.en.md`
+- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.3.0)
+- [Changelog](CHANGELOG.md)
+- [Product overview](PRODUCT.en.md)
+- [User guide](USER_GUIDE.en.md)
+- [Integration guide](INTEGRATION_GUIDE.en.md)
 
 Architecture summary:
 
 - Python plans and revises decks
 - JavaScript renders final `.pptx` files
 - deck JSON is the stable contract between both layers
+
+## Contents
+
+- [Core Positioning](#core-positioning)
+- [What It Does](#what-it-does)
+- [Quick Start](#quick-start)
+- [Repository Map](#repository-map)
+- [Main Interfaces](#main-interfaces)
+- [Source Handling](#source-handling)
+- [Recommended Usage Model](#recommended-usage-model)
+- [Project Boundaries](#project-boundaries)
+- [Documentation](#documentation)
 
 ## Core Positioning
 
@@ -83,6 +95,54 @@ npm run revise:mock
 npm run skill:create
 npm run skill:server
 ```
+
+## Repository Map
+
+```mermaid
+flowchart TD
+	A[repo root] --> B[python_backend/]
+	A --> C[CLI entrypoints]
+	A --> D[Node renderer and wrappers]
+	A --> E[contracts and samples]
+	A --> F[docs and governance]
+	A --> G[CI and automation]
+
+	B --> B1[smart_layer.py<br/>planning and revision]
+	B --> B2[source_loader.py<br/>trusted material ingestion]
+	B --> B3[skill_api.py<br/>skill request handling]
+	B --> B4[js_renderer.py<br/>bridge into Node renderer]
+
+	C --> C1[py-generate-from-prompt.py]
+	C --> C2[py-revise-deck.py]
+	C --> C3[py-agent-skill.py]
+	C --> C4[py-skill-server.py]
+
+	D --> D1[generate-ppt.js]
+	D --> D2[generate-from-prompt.js]
+	D --> D3[revise-deck.js]
+	D --> D4[agent-skill.js]
+	D --> D5[skill-server.js]
+
+	E --> E1[deck-schema.json]
+	E --> E2[skill-manifest.json]
+	E --> E3[sample-*.json]
+
+	F --> F1[README.md]
+	F --> F2[PRODUCT.*.md]
+	F --> F3[USER_GUIDE.*.md]
+	F --> F4[INTEGRATION_GUIDE.*.md]
+	F --> F5[CHANGELOG.md and release drafts]
+
+	G --> G1[.github/workflows/smoke.yml]
+	G --> G2[scripts/run-smoke.js]
+```
+
+The practical split is:
+
+- `python_backend/` owns planning, revision, source understanding, and agent-facing orchestration
+- root-level `py-*.py` files are the primary public entrypoints
+- `generate-ppt.js` is the stable PPTX renderer
+- root-level Node CLIs remain compatibility wrappers for older integrations
 
 ## Main Interfaces
 
@@ -148,26 +208,6 @@ Current default behavior:
 
 The default output mode is `sourceDisplayMode = notes`.
 
-## Repository Structure
-
-- `python_backend/smart_layer.py`: primary planning, revision, validation, and model logic
-- `python_backend/source_loader.py`: primary source ingestion and extraction
-- `python_backend/skill_api.py`: Python skill orchestration
-- `python_backend/js_renderer.py`: Python-to-Node renderer bridge
-- `py-generate-from-prompt.py`: primary create CLI entrypoint
-- `py-revise-deck.py`: primary revise CLI entrypoint
-- `py-agent-skill.py`: primary JSON skill entrypoint
-- `py-skill-server.py`: primary HTTP service entrypoint
-- `generate-ppt.js`: Node renderer
-- `generate-from-prompt.js`: compatibility wrapper to Python
-- `revise-deck.js`: compatibility wrapper to Python
-- `agent-skill.js`: compatibility wrapper to Python
-- `skill-server.js`: compatibility wrapper to Python
-- `deck-agent-core.js`: legacy Node smart-layer implementation retained for reference during transition
-- `source-loader.js`: legacy Node source-ingestion implementation retained for reference during transition
-- `deck-schema.json`: deck JSON contract
-- `skill-manifest.json`: integration contract
-
 ## Recommended Usage Model
 
 The intended flow is:
@@ -195,6 +235,8 @@ Those responsibilities should remain with the upstream agent or surrounding work
 - `PRODUCT.*.md`: product framing and open-source positioning
 - `USER_GUIDE.*.md`: end-user usage guidance
 - `INTEGRATION_GUIDE.*.md`: agent and system integration guidance
+- `CHANGELOG.md`: version history and release tracking
+- `RELEASE_DRAFT_v0.3.0.md`: editable source for the current public release notes
 
 ## Read Next
 

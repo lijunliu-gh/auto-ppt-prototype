@@ -82,7 +82,7 @@ Avoid screenshots that imply fully autonomous or fact-guaranteed research.
 
 Use these in the repo body or release notes:
 
-- Python-first smart layer for planning and revision
+- Python planning layer for deck creation and revision
 - JavaScript PPTX renderer retained as a stable output engine
 - source-aware planning from files and URLs
 - presenter-note source export with clean slides
@@ -92,13 +92,13 @@ Use these in the repo body or release notes:
 
 Use this short release summary when creating the first GitHub release:
 
-> This release promotes Auto PPT Prototype to a Python-first, AI-agent-ready PPT backend with a dedicated Python smart layer, compatibility Node wrappers, source-aware planning, multilingual docs, and smoke validation.
+> This release promotes Auto PPT Prototype to a Python-planned, JavaScript-rendered PPT backend for AI agents, with compatibility Node wrappers, source-aware planning, multilingual docs, and smoke validation.
 
 ## Suggested Repository Announcement Copy
 
 Use this for a short social or team announcement:
 
-> Published Auto PPT Prototype v0.3.0: an experimental open-source backend for AI-agent-powered PowerPoint workflows. It now uses a Python smart layer for planning and revision with a JavaScript renderer for final PPTX output.
+> Published Auto PPT Prototype v0.3.0: an experimental open-source backend for AI-agent-powered PowerPoint workflows. It now uses a Python planning layer for deck generation and revision with a JavaScript renderer for final PPTX output.
 
 ## Suggested Repository Positioning
 
