@@ -1,5 +1,6 @@
 {
   "action": "revise",
+  "apiVersion": "1.0",
   "prompt": "Compress this deck, make it more conclusion-driven, and emphasize the execution plan",
   "mock": true,
   "research": false,

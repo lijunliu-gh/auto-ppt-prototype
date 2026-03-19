@@ -5,10 +5,16 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
+import logging
+
 from .js_renderer import render_deck_via_node
 from .smart_layer import ROOT_DIR, ensure_parent_dir, execute_planning_flow, read_text_file, resolve_path
 from .source_loader import load_source_contexts
+
+logger = logging.getLogger("auto-ppt.skill-api")
 from .template_engine import parse_template
+
+API_VERSION = "1.0"
 
 DEFAULT_REQUEST_PATH = ROOT_DIR / "sample-agent-request.json"
 DEFAULT_RESPONSE_PATH = ROOT_DIR / "output" / "py-agent-response.json"
@@ -30,6 +36,8 @@ def load_request(file_path: str | Path) -> Dict[str, Any]:
     if not isinstance(payload.get("prompt"), str) or not payload["prompt"].strip():
         raise RuntimeError("Request payload prompt is required.")
     payload["_baseDir"] = str(Path(file_path).resolve().parent)
+    # Accept optional apiVersion from client (informational; server always responds with its own)
+    payload.setdefault("apiVersion", API_VERSION)
     return payload
 
 
@@ -91,6 +99,7 @@ def handle_skill_request(request: Dict[str, Any], response_path: str | Path | No
 
     response = {
         "ok": True,
+        "apiVersion": API_VERSION,
         "engine": "python-smart-layer",
         "renderer": renderer_used,
         "action": request["action"],

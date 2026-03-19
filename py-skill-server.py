@@ -5,7 +5,7 @@ import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
-from python_backend.skill_api import handle_skill_request
+from python_backend.skill_api import API_VERSION, handle_skill_request
 
 PORT = int(os.getenv("PORT", "3010"))
 
@@ -21,7 +21,7 @@ class SkillRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         if self.path == "/health":
-            self._send_json(200, {"ok": True, "service": "auto-ppt-python-skill-server"})
+            self._send_json(200, {"ok": True, "apiVersion": API_VERSION, "service": "auto-ppt-python-skill-server"})
             return
         self._send_json(
             404,
@@ -48,7 +48,7 @@ class SkillRequestHandler(BaseHTTPRequestHandler):
             result = handle_skill_request(payload, None)
             self._send_json(200, result)
         except Exception as error:  # noqa: BLE001
-            self._send_json(500, {"ok": False, "error": str(error)})
+            self._send_json(500, {"ok": False, "apiVersion": API_VERSION, "error": str(error)})
 
 
 def main() -> None:

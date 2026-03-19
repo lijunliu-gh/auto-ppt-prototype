@@ -426,6 +426,7 @@ class TestLoadSourceContexts:
 # ══════════════════════════════════════════════════════════════════════
 
 from python_backend.skill_api import (
+    API_VERSION,
     load_request,
     resolve_from_base,
     handle_skill_request,
@@ -440,6 +441,13 @@ class TestSkillAPILoadRequest:
         assert result["action"] == "create"
         assert result["prompt"] == "make a deck"
         assert "_baseDir" in result
+        assert result["apiVersion"] == API_VERSION
+
+    def test_valid_create_request_with_client_version(self, tmp_path):
+        req = tmp_path / "req.json"
+        req.write_text(json.dumps({"action": "create", "prompt": "make a deck", "apiVersion": "0.9"}))
+        result = load_request(req)
+        assert result["apiVersion"] == "0.9"  # client-provided version preserved
 
     def test_valid_revise_request(self, tmp_path):
         req = tmp_path / "req.json"
@@ -488,6 +496,7 @@ class TestHandleSkillRequest:
             response = handle_skill_request(request)
         assert response["ok"] is True
         assert response["action"] == "create"
+        assert response["apiVersion"] == API_VERSION
         assert response["renderer"] == "pptxgenjs"
         assert response["slideCount"] > 0
         mock_render.assert_called_once()

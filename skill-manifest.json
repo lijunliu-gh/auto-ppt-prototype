@@ -1,6 +1,7 @@
 {
   "name": "auto-ppt-prototype",
-  "version": "0.5.1",
+  "version": "0.6.0",
+  "apiVersion": "1.0",
   "description": "Python-first smart layer for planning, revising, validating, and rendering PowerPoint decks through a Node PPTX renderer.",
   "entrypoint": "python py-agent-skill.py --request <request-json>",
   "service": {
@@ -13,13 +14,13 @@
       "name": "create",
       "description": "Create a new deck from a natural-language prompt",
       "requiredFields": ["action", "prompt"],
-      "optionalFields": ["mock", "research", "contextFiles", "sources", "outputJson", "outputPptx"]
+      "optionalFields": ["apiVersion", "mock", "research", "contextFiles", "sources", "outputJson", "outputPptx"]
     },
     {
       "name": "revise",
       "description": "Revise an existing deck JSON based on a natural-language instruction",
       "requiredFields": ["action", "prompt", "deckPath"],
-      "optionalFields": ["mock", "research", "contextFiles", "sources", "outputJson", "outputPptx"]
+      "optionalFields": ["apiVersion", "mock", "research", "contextFiles", "sources", "outputJson", "outputPptx"]
     }
   ],
   "sources": {
@@ -42,6 +43,7 @@
   "outputs": {
     "responseJson": {
       "ok": true,
+      "apiVersion": "1.0",
       "action": "create|revise",
       "prompt": "string",
       "deckJsonPath": "absolute path",
