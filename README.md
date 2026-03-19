@@ -41,11 +41,14 @@ Architecture summary:
 - [Quick Start](#quick-start)
 - [MCP Server](#mcp-server)
 - [Repository Map](#repository-map)
+- [Testing](#testing)
+- [End-To-End Flow](#end-to-end-flow)
 - [Main Interfaces](#main-interfaces)
 - [Source Handling](#source-handling)
 - [Recommended Usage Model](#recommended-usage-model)
 - [Project Boundaries](#project-boundaries)
 - [Documentation](#documentation)
+- [License](#license)
 
 ## Core Positioning
 
@@ -224,6 +227,7 @@ Both tools accept `sources` (file paths or URLs), `mock` mode for offline testin
 ```text
 auto-ppt-prototype/
 |-- python_backend/
+|   |-- __init__.py            # package init + version metadata
 |   |-- smart_layer.py        # planning, revision, validation
 |   |-- source_loader.py      # trusted material ingestion
 |   |-- skill_api.py          # skill request orchestration + dual render dispatch
@@ -250,7 +254,7 @@ auto-ppt-prototype/
 |-- sample-deck-brief.md      # natural-language deck brief example
 |-- sample-deck-brief.json    # structured deck brief example
 |-- sample-agent-request.json # JSON skill create example
-|-- sample-agent-revise-request.json
+|-- sample-agent-revise-request.json  # JSON skill revise example
 |-- sample-http-request.json  # HTTP request example
 |-- EXAMPLES.en.md            # quick-start examples in English
 |-- EXAMPLES.zh-CN.md         # quick-start examples in Chinese
@@ -269,13 +273,16 @@ auto-ppt-prototype/
 |   |-- test_image_handler.py     # image handler tests
 |   `-- test_coverage_boost.py    # cross-module coverage tests
 |-- output/                   # generated deck JSON and PPTX artifacts
-|   |-- py-generated-deck.json
-|   |-- py-generated-deck.pptx
-|   |-- py-revised-deck.json
-|   `-- py-revised-deck.pptx
+|   |-- py-agent-generated-deck.json
+|   |-- py-agent-generated-deck.pptx
+|   |-- py-agent-revised-deck.json
+|   `-- py-agent-revised-deck.pptx
 |-- .github/
+|   |-- CODEOWNERS
+|   |-- ISSUE_TEMPLATE/
+|   |-- pull_request_template.md
 |   `-- workflows/
-|       `-- smoke.yml
+|       `-- smoke.yml          # CI: pytest matrix + Node.js smoke matrix
 `-- scripts/
     |-- python-bridge.js      # Node-to-Python bridge helper
     `-- run-smoke.js
@@ -322,11 +329,15 @@ flowchart TD
         C --> D
         D --> E[Smart layer]
         E --> F[Validated deck JSON]
-        F --> G[JS bridge]
-        G --> H[PPTX renderer]
+        F --> G{Template?}
+        G -->|No| H[JS bridge → pptxgenjs]
+        G -->|Yes| P[python-pptx renderer]
         H --> I[PPTX output]
+        P --> I
         E -. revise loop .-> C
         F --> J[Notes with source metadata]
+        IMG[Image handler] -.->|resolve images| P
+        IMG -.->|resolve images| H
 
         subgraph Inputs
             A
@@ -339,6 +350,7 @@ flowchart TD
             C
             D
             E
+            IMG
         end
 
         subgraph Contract
@@ -348,6 +360,7 @@ flowchart TD
         subgraph Render
             G
             H
+            P
             I
             J
         end
@@ -359,7 +372,8 @@ The operational flow is:
 - MCP-compatible clients (Claude Desktop, Cursor, Windsurf) connect through the MCP Server, which routes to the same Python entrypoint
 - trusted source material is loaded and normalized before planning
 - the Python layer produces or revises validated deck JSON
-- the JavaScript renderer turns that deck JSON into the final PPTX
+- if a brand template is provided, the python-pptx renderer produces the PPTX; otherwise the JS bridge invokes pptxgenjs
+- the image handler resolves and validates visual assets before rendering
 - revision requests loop back into the same Python planning surface
 
 ## Main Interfaces
