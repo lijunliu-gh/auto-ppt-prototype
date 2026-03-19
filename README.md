@@ -173,7 +173,6 @@ auto-ppt-prototype/
 |-- agent-skill.js            # compatibility wrapper
 |-- skill-server.js           # compatibility wrapper
 |-- assets/
-|   |-- end-to-end-flow.svg   # README architecture flow image
 |   `-- social-preview.png    # GitHub social preview asset
 |-- deck-schema.json          # deck JSON contract
 |-- skill-manifest.json       # skill integration contract
@@ -215,7 +214,41 @@ The practical split is:
 
 ## End-To-End Flow
 
-![End-to-end flow](assets/end-to-end-flow.svg)
+```mermaid
+flowchart TD
+        A[Deck brief or prompt] --> C[Python entrypoint]
+        B[Trusted sources] --> D[Source loader]
+        C --> D
+        D --> E[Smart layer]
+        E --> F[Validated deck JSON]
+        F --> G[JS bridge]
+        G --> H[PPTX renderer]
+        H --> I[PPTX output]
+        E -. revise loop .-> C
+        F --> J[Notes with source metadata]
+
+        subgraph Inputs
+            A
+            B
+        end
+
+        subgraph Python
+            C
+            D
+            E
+        end
+
+        subgraph Contract
+            F
+        end
+
+        subgraph Render
+            G
+            H
+            I
+            J
+        end
+```
 
 The operational flow is:
 
