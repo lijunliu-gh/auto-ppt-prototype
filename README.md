@@ -1,18 +1,18 @@
 # Auto PPT Prototype
 
-[![Release](https://img.shields.io/github/v/release/lijunliu-gh/auto-ppt-prototype?label=release)](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.5.1)
+[![Release](https://img.shields.io/github/v/release/lijunliu-gh/auto-ppt-prototype?label=release)](https://github.com/lijunliu-gh/auto-ppt-prototype/releases)
 [![License](https://img.shields.io/github/license/lijunliu-gh/auto-ppt-prototype)](LICENSE)
-[![Smoke](https://img.shields.io/github/actions/workflow/status/lijunliu-gh/auto-ppt-prototype/smoke.yml?branch=main&label=smoke)](https://github.com/lijunliu-gh/auto-ppt-prototype/actions/workflows/smoke.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/lijunliu-gh/auto-ppt-prototype/smoke.yml?branch=main&label=CI)](https://github.com/lijunliu-gh/auto-ppt-prototype/actions/workflows/smoke.yml)
 
 Open-source PowerPoint backend for AI agents working from trusted sources, uploaded material, and explicit presentation requirements.
 
 Status: experimental prototype for early open-source integration.
 
-Latest release: [v0.5.1](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.5.1)
+Latest release: [v0.6.0](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.0)
 
 Quick links:
 
-- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.5.1)
+- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.0)
 - [Changelog](CHANGELOG.md)
 - [Roadmap](ROADMAP.md)
 - [Examples (EN)](EXAMPLES.en.md)
@@ -89,6 +89,7 @@ The current implementation supports:
 9. Structured logging across the Python backend
 10. Schema versioning for forward-compatible deck migration
 11. MCP Server for native integration with Claude Desktop, Cursor, Windsurf, and other MCP-compatible environments
+12. API versioning (`apiVersion: "1.0"`) in all requests and responses
 
 ## Why The Split Exists
 
@@ -261,11 +262,12 @@ auto-ppt-prototype/
 |-- CHANGELOG.md
 |-- ROADMAP.md                # phased evolution plan
 |-- tests/
-|   |-- test_smart_layer.py   # pytest unit tests (57 tests)
-|   |-- test_mcp_server.py    # MCP server tests (9 tests)
-|   |-- test_mcp_integration.py  # MCP stdio integration tests (4 tests)
-|   |-- test_template_engine.py  # template + renderer tests (25 tests)
-|   `-- test_image_handler.py # image handler tests (48 tests)
+|   |-- test_smart_layer.py      # planning, revision, validation tests
+|   |-- test_mcp_server.py        # MCP server tests
+|   |-- test_mcp_integration.py   # MCP stdio integration tests
+|   |-- test_template_engine.py   # template + renderer tests
+|   |-- test_image_handler.py     # image handler tests
+|   `-- test_coverage_boost.py    # cross-module coverage tests
 |-- output/                   # generated deck JSON and PPTX artifacts
 |   |-- py-generated-deck.json
 |   |-- py-generated-deck.pptx
@@ -295,7 +297,7 @@ The practical split is:
 
 ## Testing
 
-Run the unit test suite:
+Run the unit test suite (255 tests, 84% coverage):
 
 ```bash
 python -m pytest tests/ -v
@@ -306,6 +308,8 @@ Run smoke tests:
 ```bash
 npm run smoke
 ```
+
+CI runs pytest across Python 3.10, 3.11, and 3.12, plus Node.js 18, 20, and 22 smoke tests.
 
 ## End-To-End Flow
 

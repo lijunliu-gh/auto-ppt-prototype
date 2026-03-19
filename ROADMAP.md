@@ -1,8 +1,10 @@
 # Roadmap
 
-Current version: **v0.5.1**
+Current version: **v0.6.0**
 
 This roadmap reflects the project's current capabilities, known gaps, and planned evolution from experimental prototype to a production-grade AI-agent PowerPoint backend.
+
+All four planned phases are complete. All 14 GitHub issues are closed.
 
 ---
 
@@ -18,7 +20,7 @@ This roadmap reflects the project's current capabilities, known gaps, and planne
 | Pluggable LLM provider abstraction | ✅ Added in v0.3.1 |
 | Structured logging | ✅ Added in v0.3.1 |
 | Schema versioning | ✅ Added in v0.3.1 |
-| Unit tests (39 pytest cases) | ✅ Added in v0.3.1 |
+| Unit tests (39 pytest cases) | ✅ Added in v0.3.1 (now 255 tests, 84% coverage as of v0.6.0) |
 | CLI / JSON Skill / HTTP Server | ✅ |
 
 ---
@@ -102,9 +104,9 @@ This roadmap reflects the project's current capabilities, known gaps, and planne
 | Task | Description |
 |------|-------------|
 | Remove legacy JS code | ~~After Phase 1, delete `deck-agent-core.js` and `source-loader.js` entirely~~ ✅ Done in v0.4.1 |
-| Expand test coverage | Each phase adds integration tests; target 80%+ coverage |
-| API versioning | Add `apiVersion` field to requests / responses for backward compatibility during Phase 3 schema changes |
-| CI hardening | Add pytest + multi-Node-version matrix to GitHub Actions |
+| Expand test coverage | ✅ Achieved 84% coverage with 255 tests in v0.6.0 (Issue #12) |
+| API versioning | ✅ `apiVersion: "1.0"` in all requests and responses (v0.6.0, Issue #13) |
+| CI hardening | ✅ pytest on Python 3.10/3.11/3.12 + Node.js 18/20/22 smoke matrix (v0.6.0, Issue #14) |
 | Documentation sync | Update EN / ZH / JA docs with each release |
 
 ---
@@ -112,10 +114,11 @@ This roadmap reflects the project's current capabilities, known gaps, and planne
 ## Timeline Summary
 
 ```text
-v0.4.0   MCP Server               ← Highest leverage, do first
-v0.4.1   Chart reliability         ← Prove core quality
-v0.5.0   Brand template engine     ← Usability breakthrough
-v0.5.1   Image pipeline            ← Ecosystem expansion    ✅ All phases complete
+v0.4.0   MCP Server               ← Highest leverage, do first     ✅
+v0.4.1   Chart reliability         ← Prove core quality             ✅
+v0.5.0   Brand template engine     ← Usability breakthrough         ✅
+v0.5.1   Image pipeline            ← Ecosystem expansion            ✅
+v0.6.0   API versioning + CI + coverage ← All issues resolved       ✅
 ```
 
 ---

@@ -158,6 +158,7 @@ Your agent only needs to:
 ```json
 {
   "action": "revise",
+  "apiVersion": "1.0",
   "prompt": "Compress this deck, make it more conclusion-driven, and emphasize the execution plan",
   "mock": true,
   "research": false,
@@ -189,6 +190,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "ok": true,
+  "apiVersion": "1.0",
   "action": "create",
   "prompt": "string",
   "deckJsonPath": "absolute path",
@@ -226,6 +228,7 @@ curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --d
 ```json
 {
   "action": "create",
+  "apiVersion": "1.0",
   "prompt": "Create an 8-slide AI agent product strategy deck for executives in a professional tone",
   "mock": true,
   "research": false,
@@ -514,6 +517,17 @@ As of v0.4.1, the system automatically validates chart slides:
 ## Compatibility Note
 
 The JavaScript entrypoints still exist for older integrations, but they now forward to the Python smart layer. New integrations should treat Python as the primary entrypoint surface.
+
+## API Versioning
+
+As of v0.6.0, all API requests and responses include an `apiVersion` field:
+
+- Current API version: `"1.0"`
+- Include `"apiVersion": "1.0"` in all request JSON payloads (optional; server defaults to current version)
+- All response JSON payloads include `"apiVersion": "1.0"`
+- The server always responds with its own API version regardless of the client-provided value
+
+This field enables forward-compatible API evolution without breaking existing integrations.
 
 ## One-Line Integration Advice
 

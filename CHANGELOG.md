@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project follows Semantic Versioning while it remains a prototype.
 
+## [0.6.0] - 2026-03-19
+
+### Added
+
+- **API Versioning**: `apiVersion: "1.0"` field in all requests and responses for forward-compatible API evolution
+- **CI Hardening**: pytest matrix (Python 3.10/3.11/3.12) + Node.js 18/20/22 smoke matrix in GitHub Actions
+- **Test Coverage Expansion**: 255 automated tests achieving 84% line coverage (up from 143 tests / 72%)
+  - `tests/test_coverage_boost.py`: 111 new cross-module tests covering llm_provider, skill_api, source_loader, smart_layer
+- All 14 GitHub issues closed
+
+### Changed
+
+- `skill-manifest.json` bumped to version 0.6.0 with `apiVersion` field
+- `py-skill-server.py` includes `apiVersion` in all HTTP responses (health, success, error)
+- CI workflow renamed from `smoke` to `CI` with matrix strategy
+- `.gitignore` updated to exclude `.coverage` files
+
 ## [0.5.1] - 2026-03-19
 
 ### Added

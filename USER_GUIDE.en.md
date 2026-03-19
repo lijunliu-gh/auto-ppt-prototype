@@ -259,6 +259,10 @@ Current weak points include:
 - slide-level source binding is still coarse
 - quality still depends on the upstream model and agent
 
+## API Versioning
+
+As of v0.6.0, all API requests and responses include an `apiVersion` field set to `"1.0"`. This field ensures compatibility as the API evolves. When making custom integration requests, include `"apiVersion": "1.0"` in your JSON payload.
+
 ## One-Line Summary
 
 Today this project can already complete:

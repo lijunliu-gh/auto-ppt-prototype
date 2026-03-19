@@ -116,6 +116,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "action": "create",
+  "apiVersion": "1.0",
   "prompt": "Create an 8-slide AI agent product strategy deck for executives in a professional tone",
   "mock": true,
   "research": false,
@@ -140,6 +141,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "action": "revise",
+  "apiVersion": "1.0",
   "prompt": "Compress this deck, make it more conclusion-driven, and emphasize the execution plan",
   "mock": true,
   "research": false,
@@ -171,6 +173,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "ok": true,
+  "apiVersion": "1.0",
   "engine": "python-smart-layer",
   "action": "create",
   "prompt": "string",
@@ -420,3 +423,13 @@ v0.4.1 起，系统会自动验证图表 slide：
 如果你现在就要接，最稳的路径是：
 
 **如果用 Claude Desktop、Cursor 或 Windsurf：直接用 MCP。否则先用 JSON skill 模式接入，再根据需要升级到 HTTP 模式。**
+
+## API 版本控制
+
+v0.6.0 起，所有 API 请求和响应都包含 `apiVersion` 字段：
+
+- 当前 API 版本: `"1.0"`
+- 请求 JSON 中包含 `"apiVersion": "1.0"`（可选；服务器默认使用当前版本）
+- 所有响应 JSON 包含 `"apiVersion": "1.0"`
+
+此字段确保 API 可以在不破坏现有集成的情况下持续演进。

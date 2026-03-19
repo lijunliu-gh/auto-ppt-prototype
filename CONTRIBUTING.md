@@ -40,6 +40,11 @@ The test suite includes:
 - `tests/test_smart_layer.py` — unit tests for planning, revision, chart validation, source loading
 - `tests/test_mcp_server.py` — MCP server tool tests
 - `tests/test_mcp_integration.py` — MCP stdio integration tests
+- `tests/test_template_engine.py` — template parsing and PPTX rendering tests
+- `tests/test_image_handler.py` — image pipeline and security tests
+- `tests/test_coverage_boost.py` — cross-module coverage tests (LLM provider, skill API, smart layer)
+
+Total: 255 tests, 84% line coverage. CI runs pytest across Python 3.10, 3.11, 3.12 and Node.js 18, 20, 22.
 
 ## Contribution Scope
 

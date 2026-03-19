@@ -116,6 +116,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "action": "create",
+  "apiVersion": "1.0",
   "prompt": "Create an 8-slide AI agent product strategy deck for executives in a professional tone",
   "mock": true,
   "research": false,
@@ -140,6 +141,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "action": "revise",
+  "apiVersion": "1.0",
   "prompt": "Compress this deck, make it more conclusion-driven, and emphasize the execution plan",
   "mock": true,
   "research": false,
@@ -171,6 +173,7 @@ python py-agent-skill.py --request sample-agent-request.json --response output/p
 ```json
 {
   "ok": true,
+  "apiVersion": "1.0",
   "engine": "python-smart-layer",
   "action": "create",
   "prompt": "string",
@@ -401,3 +404,13 @@ v0.4.1 以降、システムはチャートスライドを自動検証します:
 今すぐ統合するなら、最も安定した道は次です。
 
 **Claude Desktop、Cursor、Windsurf を使っているなら MCP から始めてください。それ以外はまず JSON skill モードで接続し、サービス型統合が必要になった時点で HTTP モードに上げてください。**
+
+## API バージョニング
+
+v0.6.0 以降、すべての API リクエストとレスポンスに `apiVersion` フィールドが含まれます：
+
+- 現在の API バージョン: `"1.0"`
+- リクエスト JSON に `"apiVersion": "1.0"` を含めてください（任意; サーバーは現在のバージョンをデフォルトで使用）
+- すべてのレスポンス JSON に `"apiVersion": "1.0"` が含まれます
+
+このフィールドにより、既存の統合を壊すことなく API を進化させることができます。
