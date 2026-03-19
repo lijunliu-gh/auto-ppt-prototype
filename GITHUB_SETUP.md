@@ -12,7 +12,7 @@ Recommended repository name:
 
 Recommended short description:
 
-> Open-source PowerPoint backend for AI agents using a Python planning layer and a JavaScript PPTX renderer.
+> AI-agent-ready PowerPoint backend: plan, revise, and render PPTX decks from natural-language prompts. MCP + CLI + HTTP interfaces.
 
 Shorter variant:
 
@@ -22,7 +22,7 @@ Shorter variant:
 
 Use this directly in the GitHub repository About field:
 
-`Open-source PowerPoint backend for AI agents using a Python planning layer and a JavaScript PPTX renderer.`
+`AI-agent-ready PowerPoint backend: plan, revise, and render PPTX decks from natural-language prompts. MCP + CLI + HTTP interfaces.`
 
 Use this if you want a shorter About field:
 
@@ -32,7 +32,7 @@ Use this if you want a shorter About field:
 
 Use this in the top of the repository description, project page, or announcement post:
 
-> Auto PPT Prototype is an experimental open-source backend for AI-agent-driven PowerPoint generation. It uses a Python planning layer for deck creation and revision, then a JavaScript renderer for final `.pptx` output through CLI, JSON skill, and HTTP integration modes.
+> Auto PPT Prototype is an experimental open-source backend for AI-agent-driven PowerPoint generation. It uses a Python planning layer for deck creation and revision, then a JavaScript renderer for final `.pptx` output through MCP, CLI, JSON skill, and HTTP integration modes.
 
 ## Suggested Topics
 
@@ -41,6 +41,7 @@ Recommended GitHub topics:
 - `powerpoint`
 - `pptx`
 - `ai-agent`
+- `mcp`
 - `agent-workflow`
 - `presentation-generation`
 - `presentation-automation`
@@ -87,22 +88,24 @@ Avoid screenshots that imply fully autonomous or fact-guaranteed research.
 Use these in the repo body or release notes:
 
 - Python planning layer for deck creation and revision
+- MCP Server for Claude Desktop, Cursor, and Windsurf integration
+- Chart data reliability with fallback validation
 - JavaScript PPTX renderer retained as a stable output engine
 - source-aware planning from files and URLs
 - presenter-note source export with clean slides
-- JSON skill and HTTP integration modes
+- MCP, CLI, JSON skill, and HTTP integration modes
 
 ## Copy-Paste Release Summary
 
-Use this short release summary when creating the first GitHub release:
+Use this short release summary when creating the latest GitHub release:
 
-> This release promotes Auto PPT Prototype to a Python-planned, JavaScript-rendered PPT backend for AI agents, with compatibility Node wrappers, source-aware planning, multilingual docs, and smoke validation.
+> v0.4.1 adds chart data reliability with automatic fallback validation, removes deprecated legacy JS modules, and builds on MCP Server integration (v0.4.0) for Claude Desktop, Cursor, and Windsurf.
 
 ## Suggested Repository Announcement Copy
 
 Use this for a short social or team announcement:
 
-> Published Auto PPT Prototype v0.3.0: an experimental open-source backend for AI-agent-powered PowerPoint workflows. It now uses a Python planning layer for deck generation and revision with a JavaScript renderer for final PPTX output.
+> Auto PPT Prototype v0.4.1: AI-agent-ready PowerPoint backend with MCP Server integration, chart data reliability, and Python planning layer. Supports Claude Desktop, Cursor, and Windsurf out of the box.
 
 ## Suggested Repository Positioning
 
@@ -122,16 +125,16 @@ Avoid positioning it as:
 
 Recommended next tag:
 
-- `v0.3.0`
+- `v0.5.0`
 
 Reason:
 
-- the repo has now shifted to a Python-first public architecture
-- Node entrypoints are compatibility wrappers rather than the primary smart layer
-- multilingual docs and integration guidance were updated to match the new surface
+- Phase 3 (Brand Template Engine) is the next planned milestone
+- Phase 1 (MCP Server) and Phase 2 (Chart Reliability) are complete
+- See ROADMAP.md for the full phased plan
 
 ## Suggested GitHub Release Title
 
 Recommended title:
 
-- `v0.3.0 - Python planning layer with JavaScript PPTX renderer`
+- `v0.4.1 — Chart data reliability + legacy JS removal`

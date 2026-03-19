@@ -257,10 +257,10 @@ auto-ppt-prototype/
 |-- INTEGRATION_GUIDE.*.md
 |-- CHANGELOG.md
 |-- ROADMAP.md                # phased evolution plan
-|-- RELEASE_DRAFT_v0.3.0.md
 |-- tests/
-|   |-- test_smart_layer.py   # pytest unit tests (39 tests)
-|   `-- test_mcp_server.py    # MCP server tests (9 tests)
+|   |-- test_smart_layer.py   # pytest unit tests (51 tests)
+|   |-- test_mcp_server.py    # MCP server tests (9 tests)
+|   `-- test_mcp_integration.py  # MCP stdio integration tests (4 tests)
 |-- output/                   # generated deck JSON and PPTX artifacts
 |   |-- py-generated-deck.json
 |   |-- py-generated-deck.pptx
@@ -445,7 +445,6 @@ Those responsibilities should remain with the upstream agent or surrounding work
 - `INTEGRATION_GUIDE.*.md`: agent and system integration guidance
 - `CHANGELOG.md`: version history and release tracking
 - `ROADMAP.md`: planned evolution and feature priorities
-- `RELEASE_DRAFT_v0.3.0.md`: editable source for the current public release notes
 
 ## Read Next
 
