@@ -240,7 +240,6 @@ Current weak points include:
 - it is not a complete research agent
 - OCR and multimodal understanding are not fully implemented
 - slide-level source binding is still coarse
-- brand templates and visual control are still basic
 - quality still depends on the upstream model and agent
 
 ## One-Line Summary

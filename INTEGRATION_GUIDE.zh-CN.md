@@ -352,9 +352,15 @@ curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --d
 - 哪一个 bullet 对应哪一个 source fragment
 - 哪个 chart 点位来自哪段数据
 
-## 4. 版式和品牌控制仍然是原型级
+## 4. 品牌模板支持 (v0.5.0)
 
-如果你要企业级模板控制，还要继续做。
+v0.5.0 起，你可以传入 `.pptx` 品牌模板来生成品牌匹配的输出：
+
+- 在请求中添加 `"template": "path/to/brand.pptx"`
+- 系统会从模板中提取版式、占位符、主题色和字体
+- 使用 `python-pptx` 按模板版式渲染 slides
+- 不传模板时，自动使用现有 JS 渲染器 (pptxgenjs)
+- API 响应包含 `"renderer"` 字段（`"python-pptx"` 或 `"pptxgenjs"`）
 
 ## 5. 图表数据验证与降级
 
@@ -375,7 +381,9 @@ v0.4.1 起，系统会自动验证图表 slide：
 - `py-revise-deck.py`: revise CLI
 - `python_backend/source_loader.py`: 资料加载层
 - `python_backend/smart_layer.py`: 核心规划引擎
-- `generate-ppt.js`: PPT 渲染器
+- `python_backend/template_engine.py`: .pptx 模板解析器
+- `python_backend/pptx_renderer.py`: python-pptx 渲染器（品牌模板模式）
+- `generate-ppt.js`: PPT 渲染器（无模板模式）
 - `deck-schema.json`: deck 结构约束
 
 ## 一句话接入建议

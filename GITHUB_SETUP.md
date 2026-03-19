@@ -99,13 +99,13 @@ Use these in the repo body or release notes:
 
 Use this short release summary when creating the latest GitHub release:
 
-> v0.4.1 adds chart data reliability with automatic fallback validation, removes deprecated legacy JS modules, and builds on MCP Server integration (v0.4.0) for Claude Desktop, Cursor, and Windsurf.
+> v0.5.0 adds brand template engine with python-pptx dual render path, builds on chart data reliability (v0.4.1) and MCP Server integration (v0.4.0) for Claude Desktop, Cursor, and Windsurf.
 
 ## Suggested Repository Announcement Copy
 
 Use this for a short social or team announcement:
 
-> Auto PPT Prototype v0.4.1: AI-agent-ready PowerPoint backend with MCP Server integration, chart data reliability, and Python planning layer. Supports Claude Desktop, Cursor, and Windsurf out of the box.
+> Auto PPT Prototype v0.5.0: AI-agent-ready PowerPoint backend with brand template engine, MCP Server, chart reliability, and multi-model LLM support. Pass your .pptx template for brand-matched output.
 
 ## Suggested Repository Positioning
 
@@ -125,16 +125,16 @@ Avoid positioning it as:
 
 Recommended next tag:
 
-- `v0.5.0`
+- `v0.5.1`
 
 Reason:
 
-- Phase 3 (Brand Template Engine) is the next planned milestone
-- Phase 1 (MCP Server) and Phase 2 (Chart Reliability) are complete
+- Phase 4 (Image Pipeline) is the next planned milestone
+- Phase 1 (MCP Server), Phase 2 (Chart Reliability), and Phase 3 (Brand Templates) are complete
 - See ROADMAP.md for the full phased plan
 
 ## Suggested GitHub Release Title
 
 Recommended title:
 
-- `v0.4.1 — Chart data reliability + legacy JS removal`
+- `v0.5.0 — Brand Template Engine + Dual Render Path`

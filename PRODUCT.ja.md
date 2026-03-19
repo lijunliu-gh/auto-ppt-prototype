@@ -45,12 +45,14 @@ Auto PPT Prototype は、AI エージェント向けのオープンソース Pow
 - ソース資料から数値データを抽出しチャートヒントとして注入
 - deck JSON の validation
 - Node renderer による PPTX 出力
+- ブランドテンプレートエンジン: .pptx テンプレートを渡してブランドに合った出力を生成（python-pptx ベース）
+- デュアルレンダーパス: python-pptx（テンプレートあり）または pptxgenjs（テンプレートなし）
 - MCP Server（Claude Desktop、Cursor、Windsurf 対応、`create_deck`・`revise_deck`）
 - エージェントから呼び出せる JSON request / response フロー
 - ローカル HTTP skill エンドポイント
-- LLM プロバイダー抽象（デフォルト OpenAI、交換可能）
+- LLM プロバイダー抽象（OpenAI、Claude、Gemini、Qwen、DeepSeek、GLM、MiniMax）
 - セキュリティ: パストラバーサル防止、SSRF ブロック、ファイルサイズ制限、サブプロセスタイムアウト
-- 64 件の自動テスト（ユニット、MCP サーバー、MCP 統合）
+- 95 件の自動テスト（ユニット、MCP サーバー、MCP 統合、テンプレートエンジン）
 
 ## 現在の公開エントリーポイント
 
@@ -88,7 +90,6 @@ Auto PPT Prototype は、AI エージェント向けのオープンソース Pow
 - 表計算や複雑な構造化資料へのより強い ingestion
 - 画像とスクリーンショットの理解
 - より細かな provenance tracking
-- より強いテーマとテンプレート対応
 - より良いレイアウト品質とタイポグラフィ制御
 - ホスティング運用向けのハードニング
 

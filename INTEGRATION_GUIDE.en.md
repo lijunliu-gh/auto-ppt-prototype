@@ -448,9 +448,15 @@ But it does not yet map:
 - a specific bullet to a specific source fragment
 - a specific chart point to a specific data fragment
 
-## 4. Layout and brand control are still prototype-level
+## 4. Brand template support (v0.5.0)
 
-If you need enterprise-grade template control, more work is still required.
+As of v0.5.0, you can pass a `.pptx` brand template to produce brand-matched output:
+
+- Add `"template": "path/to/brand.pptx"` to your request
+- The system will extract layouts, placeholders, theme colors, and fonts from the template
+- Slides are rendered via `python-pptx` using the template's slide layouts
+- Without a template, the existing JS renderer (pptxgenjs) is used automatically
+- The API response includes a `"renderer"` field (`"python-pptx"` or `"pptxgenjs"`)
 
 ## 5. Chart data validation and fallback
 
@@ -471,7 +477,9 @@ As of v0.4.1, the system automatically validates chart slides:
 - `py-revise-deck.py`: primary revise CLI
 - `python_backend/source_loader.py`: primary source loading layer
 - `python_backend/smart_layer.py`: primary planning core
-- `generate-ppt.js`: PPT renderer
+- `python_backend/template_engine.py`: .pptx template parser
+- `python_backend/pptx_renderer.py`: python-pptx renderer (brand template mode)
+- `generate-ppt.js`: PPT renderer (no-template mode)
 - `deck-schema.json`: deck schema contract
 
 ## Compatibility Note

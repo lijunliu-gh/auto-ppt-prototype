@@ -49,12 +49,14 @@ For serious use cases, the system should rely on:
 - numerical data extraction from sources for chart hints
 - deck JSON validation
 - PPTX rendering through the Node renderer
+- Brand template engine: pass a .pptx template for brand-matched output via python-pptx
+- Dual render path: python-pptx (with template) or pptxgenjs (without template)
 - MCP Server for Claude Desktop, Cursor, and Windsurf (`create_deck`, `revise_deck`)
 - agent-callable JSON request and response flow
 - local HTTP skill endpoint
-- LLM provider abstraction (OpenAI as default, swappable)
+- LLM provider abstraction (OpenAI, Claude, Gemini, Qwen, DeepSeek, GLM, MiniMax)
 - security: path traversal prevention, SSRF blocking, file size limits, subprocess timeout
-- 64 automated tests (unit, MCP server, MCP integration)
+- 95 automated tests (unit, MCP server, MCP integration, template engine)
 
 ## Public Entry Points
 
@@ -92,7 +94,6 @@ JavaScript remains in the project because the renderer already works and should 
 - richer spreadsheet and tabular source handling
 - true image and screenshot understanding
 - finer-grained provenance tracking
-- stronger theme and template support
 - better layout quality and typography control
 - hosted deployment hardening
 

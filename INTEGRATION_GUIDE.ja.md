@@ -333,9 +333,15 @@ deck 出力にはすでに次が含まれます。
 - 特定の bullet がどの source fragment に対応するか
 - 特定の chart 点がどのデータ断片に対応するか
 
-## 4. レイアウトとブランド制御はまだプロトタイプ段階
+## 4. ブランドテンプレート対応 (v0.5.0)
 
-企業向けの高度なテンプレート制御が必要なら、まだ追加実装が必要です。
+v0.5.0 以降、`.pptx` ブランドテンプレートを渡してブランドに合った出力を生成できます：
+
+- リクエストに `"template": "path/to/brand.pptx"` を追加
+- システムはテンプレートからレイアウト、プレースホルダー、テーマカラー、フォントを抽出
+- `python-pptx` を使用してテンプレートのスライドレイアウトでレンダリング
+- テンプレートなしの場合は既存の JS レンダラー (pptxgenjs) を自動使用
+- API レスポンスに `"renderer"` フィールド（`"python-pptx"` または `"pptxgenjs"`）を含む
 
 ## 5. チャートデータの検証とフォールバック
 
@@ -356,7 +362,9 @@ v0.4.1 以降、システムはチャートスライドを自動検証します:
 - `py-revise-deck.py`: revise CLI
 - `python_backend/source_loader.py`: ソースローディングレイヤー
 - `python_backend/smart_layer.py`: コアプランニングエンジン
-- `generate-ppt.js`: PPT レンダラー
+- `python_backend/template_engine.py`: .pptx テンプレートパーサー
+- `python_backend/pptx_renderer.py`: python-pptx レンダラー（ブランドテンプレートモード）
+- `generate-ppt.js`: PPT レンダラー（テンプレートなしモード）
 - `deck-schema.json`: deck schema 契約
 
 ## 一行アドバイス

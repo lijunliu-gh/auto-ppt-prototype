@@ -223,7 +223,6 @@ npm run revise:mock
 - 不是完整 research agent
 - 图片 OCR 和多模态理解还没有真正做完
 - slide 级来源绑定还不够精细
-- 品牌模板和视觉控制还比较基础
 - 真正复杂场景下仍然依赖上游模型和 agent 质量
 
 ## 一句话总结
@@ -243,4 +242,3 @@ npm run revise:mock
 - 来源追踪
 - revise 质量
 - 模型接入
-- 模板化能力
