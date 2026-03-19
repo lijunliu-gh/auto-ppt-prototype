@@ -256,6 +256,7 @@ auto-ppt-prototype/
 |-- USER_GUIDE.*.md
 |-- INTEGRATION_GUIDE.*.md
 |-- CHANGELOG.md
+|-- ROADMAP.md                # phased evolution plan
 |-- RELEASE_DRAFT_v0.3.0.md
 |-- tests/
 |   |-- test_smart_layer.py   # pytest unit tests (39 tests)
@@ -269,6 +270,7 @@ auto-ppt-prototype/
 |   `-- workflows/
 |       `-- smoke.yml
 `-- scripts/
+    |-- python-bridge.js      # Node-to-Python bridge helper
     `-- run-smoke.js
 ```
 
@@ -276,6 +278,7 @@ The practical split is:
 
 - `python_backend/` owns planning, revision, source understanding, and agent-facing orchestration
 - `python_backend/llm_provider.py` abstracts the LLM layer so providers can be swapped without touching planning code
+- `mcp_server.py` is the MCP integration point for Claude Desktop, Cursor, and Windsurf
 - root-level `py-*.py` files are the primary public entrypoints
 - `generate-ppt.js` is the stable PPTX renderer
 - root-level Node CLIs remain compatibility wrappers for older integrations
@@ -303,6 +306,8 @@ npm run smoke
 flowchart TD
         A[Deck brief or prompt] --> C[Python entrypoint]
         B[Trusted sources] --> D[Source loader]
+        M[MCP Client] -->|create_deck / revise_deck| K[MCP Server]
+        K --> C
         C --> D
         D --> E[Smart layer]
         E --> F[Validated deck JSON]
@@ -315,9 +320,11 @@ flowchart TD
         subgraph Inputs
             A
             B
+            M
         end
 
         subgraph Python
+            K
             C
             D
             E
@@ -337,7 +344,8 @@ flowchart TD
 
 The operational flow is:
 
-- an upstream agent or caller provides the deck goal and any presentation constraints
+- an upstream agent, MCP client, or caller provides the deck goal and any presentation constraints
+- MCP-compatible clients (Claude Desktop, Cursor, Windsurf) connect through the MCP Server, which routes to the same Python entrypoint
 - trusted source material is loaded and normalized before planning
 - the Python layer produces or revises validated deck JSON
 - the JavaScript renderer turns that deck JSON into the final PPTX
