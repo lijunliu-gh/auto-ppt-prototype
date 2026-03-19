@@ -242,6 +242,40 @@ class TestExtractJson:
             extract_json("no json here")
 
 
+# ── LLM Provider ─────────────────────────────────────────────────────────────
+
+class TestLLMProvider:
+    def test_reasoning_model_detection(self):
+        from python_backend.llm_provider import OpenAIProvider
+        # Patch __init__ to skip OpenAI client creation
+        provider = object.__new__(OpenAIProvider)
+        for model, expected in [
+            ("o3", True),
+            ("o3-mini", True),
+            ("o4-mini", True),
+            ("o1", True),
+            ("o1-pro", True),
+            ("codex-mini-latest", True),
+            ("gpt-4.1-mini", False),
+            ("gpt-4o", False),
+            ("gpt-4.1", False),
+        ]:
+            provider._model = model
+            assert provider._is_reasoning_model() == expected, f"{model} should be reasoning={expected}"
+
+    def test_standard_model_uses_system_role(self):
+        from python_backend.llm_provider import OpenAIProvider
+        provider = object.__new__(OpenAIProvider)
+        provider._model = "gpt-4.1-mini"
+        assert not provider._is_reasoning_model()
+
+    def test_reasoning_model_uses_developer_role(self):
+        from python_backend.llm_provider import OpenAIProvider
+        provider = object.__new__(OpenAIProvider)
+        provider._model = "o3"
+        assert provider._is_reasoning_model()
+
+
 # ── Source Loader ─────────────────────────────────────────────────────────────
 
 class TestSourceLoader:

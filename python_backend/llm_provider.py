@@ -23,7 +23,15 @@ class LLMProvider(Protocol):
 
 
 class OpenAIProvider:
-    """Provider backed by any OpenAI-compatible endpoint."""
+    """Provider backed by any OpenAI-compatible endpoint.
+
+    Automatically adapts API parameters for reasoning models (o1, o3, o4-mini,
+    codex-mini-latest, etc.) which require ``developer`` role instead of
+    ``system`` and do not accept ``temperature``.
+    """
+
+    # Prefixes that identify reasoning / codex models.
+    _REASONING_PREFIXES = ("o1", "o3", "o4", "codex")
 
     def __init__(
         self,
@@ -44,17 +52,34 @@ class OpenAIProvider:
         )
         self._model = model or os.getenv("OPENAI_MODEL") or "gpt-4.1-mini"
 
+    def _is_reasoning_model(self) -> bool:
+        return self._model.startswith(self._REASONING_PREFIXES)
+
     def chat(self, system_prompt: str, user_prompt: str) -> str:
         logger.info("Requesting deck JSON from model=%s", self._model)
-        response = self._client.chat.completions.create(
-            model=self._model,
-            temperature=0.3,
-            response_format={"type": "json_object"},
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-        )
+        reasoning = self._is_reasoning_model()
+
+        # Reasoning models use "developer" role; standard models use "system".
+        instruction_role = "developer" if reasoning else "system"
+        messages = [
+            {"role": instruction_role, "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+
+        params: dict[str, Any] = {
+            "model": self._model,
+            "response_format": {"type": "json_object"},
+            "messages": messages,
+        }
+
+        if reasoning:
+            # Reasoning models ignore temperature; optionally set effort.
+            effort = os.getenv("OPENAI_REASONING_EFFORT", "medium")
+            params["reasoning_effort"] = effort
+        else:
+            params["temperature"] = 0.3
+
+        response = self._client.chat.completions.create(**params)
         content = response.choices[0].message.content if response.choices else None
         if not content:
             raise RuntimeError("Model returned no content.")

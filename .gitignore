@@ -10,3 +10,4 @@ __pycache__/
 venv/
 .tmp-release-*.md
 .tmp-commit-msg.txt
+.tmp-commit-msg*.txt
