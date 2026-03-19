@@ -27,6 +27,16 @@ Examples include:
 - accidental credential exposure
 - unsafe HTTP service behavior
 
+## Implemented Mitigations
+
+As of v0.4.1, the following security controls are in place:
+
+- **Path traversal prevention**: file paths are resolved and validated to stay within the project directory
+- **SSRF blocking**: URL targets are validated to reject private/internal network addresses
+- **File size limits**: source files are capped at 50 MB before processing
+- **Subprocess timeout**: the Node.js renderer subprocess has a configurable timeout to prevent hangs
+- **LLM credential isolation**: API keys are read from environment variables and never logged
+
 ## Prototype Warning
 
 Do not deploy this repository as a public internet-facing service without additional hardening such as:

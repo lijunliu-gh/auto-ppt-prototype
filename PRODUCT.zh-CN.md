@@ -46,19 +46,26 @@ Auto PPT Prototype 是一个面向 AI Agent 的开源 PowerPoint 后端。
 - 基于 prompt 的 deck planning
 - 基于自然语言指令的 deck revise
 - 本地文件与 URL 的可信来源 ingestion
+- 图表数据验证，无效图表自动降级为 bullet 布局
+- 从资料来源中提取数值数据作为图表提示
 - 基于 JSON Schema 的结构校验
 - 通过 Node renderer 输出 `.pptx`
+- MCP Server，支持 Claude Desktop、Cursor、Windsurf（`create_deck`、`revise_deck`）
 - 可被 agent 调用的 JSON request/response 流程
 - 本地 HTTP skill 接口
+- LLM 提供者抽象（默认 OpenAI，可替换）
+- 安全防护：路径穿越防护、SSRF 拦截、文件大小限制、子进程超时
+- 64 条自动化测试（单元测试、MCP 服务测试、MCP 集成测试）
 
 ## 当前对外入口
 
 推荐使用的主入口：
 
-- `py-generate-from-prompt.py`
-- `py-revise-deck.py`
-- `py-agent-skill.py`
-- `py-skill-server.py`
+- `mcp_server.py`（MCP — 推荐用于 Claude Desktop、Cursor、Windsurf）
+- `py-generate-from-prompt.py`（CLI）
+- `py-revise-deck.py`（CLI）
+- `py-agent-skill.py`（JSON skill）
+- `py-skill-server.py`（HTTP 服务）
 
 仍然保留的兼容入口：
 
@@ -88,11 +95,10 @@ JavaScript 继续保留，是因为现有 PPTX renderer 已经可用，而且应
 - 更精细的 provenance tracking
 - 更强的主题和模板支持
 - 更好的版式质量和字体控制
-- 自动化测试
 - 面向托管部署的工程化加固
 
 ## 建议的开源定位描述
 
 建议 GitHub 简介使用：
 
-> Open-source PowerPoint backend for AI agents using a Python smart layer for planning and a JavaScript renderer for PPTX output.
+> AI-agent-ready PowerPoint backend: plan, revise, and render PPTX decks from natural-language prompts. MCP + CLI + HTTP interfaces.

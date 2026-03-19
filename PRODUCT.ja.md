@@ -41,19 +41,26 @@ Auto PPT Prototype は、AI エージェント向けのオープンソース Pow
 - プロンプトからの deck planning
 - 自然言語指示による deck revise
 - ローカルファイルと URL からの trusted source ingestion
+- チャートデータ検証、無効なチャートは自動的に bullet レイアウトにフォールバック
+- ソース資料から数値データを抽出しチャートヒントとして注入
 - deck JSON の validation
 - Node renderer による PPTX 出力
+- MCP Server（Claude Desktop、Cursor、Windsurf 対応、`create_deck`・`revise_deck`）
 - エージェントから呼び出せる JSON request / response フロー
 - ローカル HTTP skill エンドポイント
+- LLM プロバイダー抽象（デフォルト OpenAI、交換可能）
+- セキュリティ: パストラバーサル防止、SSRF ブロック、ファイルサイズ制限、サブプロセスタイムアウト
+- 64 件の自動テスト（ユニット、MCP サーバー、MCP 統合）
 
 ## 現在の公開エントリーポイント
 
 推奨される主要エントリーポイント:
 
-- `py-generate-from-prompt.py`
-- `py-revise-deck.py`
-- `py-agent-skill.py`
-- `py-skill-server.py`
+- `mcp_server.py`（MCP — Claude Desktop、Cursor、Windsurf に推奨）
+- `py-generate-from-prompt.py`（CLI）
+- `py-revise-deck.py`（CLI）
+- `py-agent-skill.py`（JSON skill）
+- `py-skill-server.py`（HTTP サービス）
 
 後方互換のために残しているエントリーポイント:
 
@@ -83,11 +90,10 @@ Auto PPT Prototype は、AI エージェント向けのオープンソース Pow
 - より細かな provenance tracking
 - より強いテーマとテンプレート対応
 - より良いレイアウト品質とタイポグラフィ制御
-- 自動テスト
 - ホスティング運用向けのハードニング
 
 ## 推奨されるオープンソースの説明
 
 推奨 GitHub description:
 
-> Open-source PowerPoint backend for AI agents using a Python smart layer for planning and a JavaScript renderer for PPTX output.
+> AI-agent-ready PowerPoint backend: plan, revise, and render PPTX decks from natural-language prompts. MCP + CLI + HTTP interfaces.

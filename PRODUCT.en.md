@@ -45,19 +45,26 @@ For serious use cases, the system should rely on:
 - deck planning from prompts
 - deck revision from natural-language instructions
 - trusted source ingestion from files and URLs
+- chart data validation with automatic fallback to bullet layout
+- numerical data extraction from sources for chart hints
 - deck JSON validation
 - PPTX rendering through the Node renderer
+- MCP Server for Claude Desktop, Cursor, and Windsurf (`create_deck`, `revise_deck`)
 - agent-callable JSON request and response flow
 - local HTTP skill endpoint
+- LLM provider abstraction (OpenAI as default, swappable)
+- security: path traversal prevention, SSRF blocking, file size limits, subprocess timeout
+- 64 automated tests (unit, MCP server, MCP integration)
 
 ## Public Entry Points
 
 Preferred entry points:
 
-- `py-generate-from-prompt.py`
-- `py-revise-deck.py`
-- `py-agent-skill.py`
-- `py-skill-server.py`
+- `mcp_server.py` (MCP — recommended for Claude Desktop, Cursor, Windsurf)
+- `py-generate-from-prompt.py` (CLI)
+- `py-revise-deck.py` (CLI)
+- `py-agent-skill.py` (JSON skill)
+- `py-skill-server.py` (HTTP service)
 
 Compatibility entry points retained for older integrations:
 
@@ -87,11 +94,10 @@ JavaScript remains in the project because the renderer already works and should 
 - finer-grained provenance tracking
 - stronger theme and template support
 - better layout quality and typography control
-- broader automated testing
 - hosted deployment hardening
 
 ## Recommended Open-Source Framing
 
 Recommended GitHub description:
 
-> Open-source PowerPoint backend for AI agents using a Python smart layer for planning and a JavaScript renderer for PPTX output.
+> AI-agent-ready PowerPoint backend: plan, revise, and render PPTX decks from natural-language prompts. MCP + CLI + HTTP interfaces.
