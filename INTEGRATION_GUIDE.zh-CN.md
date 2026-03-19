@@ -363,8 +363,6 @@ curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --d
 - `skill-manifest.json`: skill 契约说明
 - `generate-from-prompt.js`: create CLI
 - `revise-deck.js`: revise CLI
-- `source-loader.js`: 来源读取层
-- `deck-agent-core.js`: planning 核心
 - `generate-ppt.js`: PPT 渲染器
 - `deck-schema.json`: deck 结构约束
 

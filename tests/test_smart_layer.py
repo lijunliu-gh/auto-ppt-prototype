@@ -21,6 +21,7 @@ from python_backend.smart_layer import (
     create_validator,
     empty_slide,
     extract_json,
+    extract_numerical_hints,
     format_validation_errors,
     infer_audience,
     infer_deck_title,
@@ -30,6 +31,8 @@ from python_backend.smart_layer import (
     normalize_closing_slide,
     normalize_deck_source_metadata,
     renumber_slides,
+    validate_chart_slides,
+    _is_valid_chart,
     apply_heuristic_revision,
     execute_planning_flow,
 )
@@ -303,6 +306,99 @@ class TestPathTraversal:
         (base / "file.txt").write_text("ok")
         result = _resolve_local_path("file.txt", base)
         assert result == (base / "file.txt").resolve()
+
+
+# ── Chart Validation & Fallback ──────────────────────────────────────────────
+
+class TestChartValidation:
+    def test_valid_chart(self):
+        chart = {
+            "type": "bar",
+            "title": "Revenue",
+            "categories": ["Q1", "Q2", "Q3"],
+            "series": [{"name": "2025", "data": [100, 200, 300]}],
+        }
+        assert _is_valid_chart(chart) is True
+
+    def test_empty_categories_invalid(self):
+        chart = {"type": "bar", "title": "X", "categories": [], "series": [{"name": "A", "data": [1]}]}
+        assert _is_valid_chart(chart) is False
+
+    def test_empty_series_invalid(self):
+        chart = {"type": "bar", "title": "X", "categories": ["Q1"], "series": []}
+        assert _is_valid_chart(chart) is False
+
+    def test_non_numeric_data_invalid(self):
+        chart = {
+            "type": "bar", "title": "X",
+            "categories": ["A"], "series": [{"name": "S", "data": ["not-a-number"]}],
+        }
+        assert _is_valid_chart(chart) is False
+
+    def test_empty_data_array_invalid(self):
+        chart = {"type": "bar", "title": "X", "categories": ["A"], "series": [{"name": "S", "data": []}]}
+        assert _is_valid_chart(chart) is False
+
+    def test_fallback_converts_to_bullet(self):
+        deck = {
+            "slides": [
+                {
+                    "page": 1, "layout": "chart", "title": "Bad chart",
+                    "chart": {"type": "bar", "title": "Empty", "categories": [], "series": []},
+                    "bullets": [], "objective": "",
+                },
+            ],
+        }
+        notes = validate_chart_slides(deck)
+        assert len(notes) == 1
+        assert deck["slides"][0]["layout"] == "bullet"
+        assert "converted to bullet" in notes[0].lower()
+
+    def test_valid_chart_not_degraded(self):
+        deck = {
+            "slides": [
+                {
+                    "page": 1, "layout": "chart", "title": "Good chart",
+                    "chart": {
+                        "type": "bar", "title": "Revenue",
+                        "categories": ["Q1", "Q2"], "series": [{"name": "A", "data": [10, 20]}],
+                    },
+                    "bullets": [], "objective": "",
+                },
+            ],
+        }
+        notes = validate_chart_slides(deck)
+        assert len(notes) == 0
+        assert deck["slides"][0]["layout"] == "chart"
+
+    def test_mock_deck_includes_chart_slide(self):
+        deck = build_mock_deck("Test chart deck", [], [], [])
+        chart_slides = [s for s in deck["slides"] if s["layout"] == "chart"]
+        assert len(chart_slides) >= 1
+        chart = chart_slides[0]["chart"]
+        assert _is_valid_chart(chart)
+
+
+class TestNumericalExtraction:
+    def test_extracts_percentages(self):
+        text = "Revenue grew 25% in Q1, 30% in Q2, and 45% in Q3"
+        result = extract_numerical_hints([text])
+        assert "NUMERICAL DATA DETECTED" in result
+
+    def test_extracts_dollar_amounts(self):
+        text = "Total revenue: $1,200,000 in 2024, $1,500,000 in 2025, projected $2,000,000 in 2026"
+        result = extract_numerical_hints([text])
+        assert "NUMERICAL DATA DETECTED" in result
+
+    def test_no_numbers_returns_empty(self):
+        text = "This is a purely qualitative description without any numbers"
+        result = extract_numerical_hints([text])
+        assert result == ""
+
+    def test_few_numbers_not_triggered(self):
+        text = "Only 5% of users"
+        result = extract_numerical_hints([text])
+        assert result == ""
 
 
 if __name__ == "__main__":

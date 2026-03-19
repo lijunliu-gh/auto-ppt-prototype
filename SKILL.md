@@ -115,6 +115,18 @@ Choose layouts intentionally:
 
 Do not use charts or tables unless the content justifies them.
 
+### Chart Data Requirements
+
+When using chart layout, always populate concrete data:
+
+- `chart.type`: one of `bar`, `line`, `pie`, `area`
+- `chart.title`: clear descriptive title
+- `chart.categories`: array of label strings (e.g. quarters, product names)
+- `chart.series`: array of `{name, data}` objects where data lengths match categories
+- If source material contains numbers, extract and use real data
+- If no real data is available, use realistic placeholders and note it in assumptions
+- Never leave categories or series as empty arrays
+
 ## Narrative Guidance
 
 Prefer a narrative structure such as:

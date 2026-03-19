@@ -8,3 +8,4 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+.tmp-release-*.md

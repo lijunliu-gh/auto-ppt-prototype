@@ -263,7 +263,20 @@ def build_mock_deck(prompt: str, research_notes: List[str], context_texts: List[
         "Render deck",
     ]
 
-    summary_slide = empty_slide(7, "summary", "Key recommendations")
+    chart_slide = empty_slide(7, "chart", "Adoption metrics")
+    chart_slide["objective"] = "Visualize key adoption data"
+    chart_slide["chart"] = {
+        "type": "bar",
+        "title": "Quarterly adoption",
+        "categories": ["Q1", "Q2", "Q3", "Q4"],
+        "series": [
+            {"name": "Users", "data": [120, 250, 410, 580]},
+            {"name": "Decks created", "data": [45, 110, 230, 390]},
+        ],
+    }
+    chart_slide["bullets"] = ["Steady growth across all quarters", "Deck creation closely tracks user adoption"]
+
+    summary_slide = empty_slide(8, "summary", "Key recommendations")
     summary_slide["objective"] = "Recommend the best next moves for this prototype"
     summary_slide["bullets"] = [
         "Keep the JS layer focused on rendering only",
@@ -273,7 +286,7 @@ def build_mock_deck(prompt: str, research_notes: List[str], context_texts: List[
     if context_texts:
         summary_slide["bullets"][1] = f"Use {len(context_texts)} trusted context item(s) to improve the storyline before adding broader search"
 
-    closing_slide = empty_slide(8, "closing", "Next steps")
+    closing_slide = empty_slide(9, "closing", "Next steps")
     closing_slide["subtitle"] = "Use Python for intelligence and JS for output generation"
     closing_slide["bullets"] = [
         "Harden Python model integration",
@@ -288,6 +301,7 @@ def build_mock_deck(prompt: str, research_notes: List[str], context_texts: List[
         two_column,
         process_slide,
         timeline_slide,
+        chart_slide,
         summary_slide,
         closing_slide,
     ][:slide_count]
@@ -328,6 +342,15 @@ def build_system_prompt(skill_instructions: str, schema: Dict[str, Any]) -> str:
             "Do not fabricate hard business metrics unless they are clearly marked as placeholders or directly provided.",
             "When the request lacks information, make explicit assumptions in the assumptions array.",
             "Keep the deck presentation-friendly rather than document-like.",
+            # Chart-specific instructions
+            "CHART DATA RULES:",
+            "When using the 'chart' layout, you MUST populate chart.type, chart.title, chart.categories, and chart.series with concrete data.",
+            "Supported chart types: bar, line, pie, area.",
+            "Each series needs a 'name' (string) and 'data' (array of numbers). The data array length MUST equal categories length.",
+            "If the source material contains numerical data (revenue, percentages, counts, metrics), extract it into chart data.",
+            "If no numerical data is available, use realistic placeholder values and note this in assumptions.",
+            "Do NOT leave chart.categories or chart.series as empty arrays — this renders as a blank placeholder.",
+            'Example chart slide fragment: {"layout": "chart", "chart": {"type": "bar", "title": "Q1-Q4 Revenue", "categories": ["Q1", "Q2", "Q3", "Q4"], "series": [{"name": "2025", "data": [120, 145, 160, 180]}, {"name": "2024", "data": [100, 110, 130, 150]}]}}',
             "SKILL INSTRUCTIONS START",
             skill_instructions,
             "SKILL INSTRUCTIONS END",
@@ -344,6 +367,10 @@ def build_create_prompt(user_prompt: str, context_texts: List[str], research_not
         blocks.append("Additional context files:")
         for index, text in enumerate(context_texts, start=1):
             blocks.append(f"Context {index}:\n{text}")
+    # Inject numerical data hints to encourage chart usage
+    num_hints = extract_numerical_hints(context_texts)
+    if num_hints:
+        blocks.append(num_hints)
     if research_notes:
         blocks.append("Research notes:")
         blocks.append("\n".join(research_notes))
@@ -407,6 +434,79 @@ def normalize_closing_slide(deck: Dict[str, Any]) -> None:
     closing_slide = slides[-1]
     closing_slide["layout"] = "closing"
     closing_slide["title"] = closing_slide.get("title") or "Next steps"
+
+
+def _is_valid_chart(chart: Dict[str, Any]) -> bool:
+    """Check whether a chart object has usable data for rendering."""
+    categories = chart.get("categories", [])
+    series = chart.get("series", [])
+    if not isinstance(categories, list) or len(categories) == 0:
+        return False
+    if not isinstance(series, list) or len(series) == 0:
+        return False
+    for entry in series:
+        data = entry.get("data", [])
+        if not isinstance(data, list) or len(data) == 0:
+            return False
+        if not all(isinstance(v, (int, float)) for v in data):
+            return False
+    return True
+
+
+def validate_chart_slides(deck: Dict[str, Any]) -> List[str]:
+    """Validate chart slides and degrade invalid ones to bullet layout.
+
+    Returns a list of assumption strings describing any fallbacks applied.
+    """
+    fallback_notes: List[str] = []
+    for slide in deck.get("slides", []):
+        if slide.get("layout") != "chart":
+            continue
+        chart = slide.get("chart", {})
+        if _is_valid_chart(chart):
+            continue
+        # Degrade to bullet layout
+        logger.warning("Chart fallback: slide %d '%s' has invalid chart data, converting to bullet",
+                        slide.get("page", 0), slide.get("title", ""))
+        original_title = slide.get("title", "Chart")
+        chart_title = chart.get("title", "")
+        slide["layout"] = "bullet"
+        slide["objective"] = f"Converted from chart: {chart_title or original_title}"
+        # Preserve any existing bullets; add chart context as bullets if missing
+        if not slide.get("bullets") or len(slide["bullets"]) == 0:
+            slide["bullets"] = [
+                f"Data visualization: {chart_title}" if chart_title else "Data visualization planned",
+                "Chart data was insufficient for rendering — presenting key points instead",
+            ]
+            if isinstance(chart.get("categories"), list) and chart["categories"]:
+                slide["bullets"].append(f"Categories: {', '.join(str(c) for c in chart['categories'][:6])}")
+        fallback_notes.append(
+            f"Slide {slide.get('page', '?')} ('{original_title}'): chart data was invalid, converted to bullet layout"
+        )
+    return fallback_notes
+
+
+def extract_numerical_hints(context_texts: List[str]) -> str:
+    """Scan source context for numerical data patterns and return chart hints.
+
+    Looks for percentages, currency values, and tabular number patterns that
+    could inform chart generation.
+    """
+    number_pattern = re.compile(
+        r'(?:'
+        r'\d+(?:\.\d+)?%'               # percentages
+        r'|\$\d[\d,]*(?:\.\d+)?'         # dollar amounts
+        r'|\d[\d,]*(?:\.\d+)?\s*(?:million|billion|M|B|K|k)'  # scaled numbers
+        r')',
+    )
+    hits: List[str] = []
+    for text in context_texts:
+        matches = number_pattern.findall(text[:5000])  # scan first 5k chars
+        if len(matches) >= 3:  # only signal if there's meaningful numerical density
+            hits.append(f"Source contains numerical data ({len(matches)} values found): {', '.join(matches[:8])}")
+    if not hits:
+        return ""
+    return "NUMERICAL DATA DETECTED IN SOURCES — consider using chart layouts to visualize this data:\n" + "\n".join(hits)
 
 
 def requested_slide_count(prompt: str) -> int | None:
@@ -652,6 +752,10 @@ def execute_planning_flow(
             if existing_deck is None:
                 fail("existingDeck is required for revise mode.")
             deck = normalize_deck_source_metadata(apply_heuristic_revision(existing_deck, prompt, contexts), sources)
+        # Validate chart data and apply fallbacks
+        chart_fallbacks = validate_chart_slides(deck)
+        if chart_fallbacks:
+            deck.setdefault("assumptions", []).extend(chart_fallbacks)
         errors = sorted(validator.iter_errors(deck), key=lambda error: list(error.path))
         if errors:
             fail(f"Generated deck failed schema validation: {format_validation_errors(errors)}")
@@ -677,6 +781,10 @@ def execute_planning_flow(
             continue
 
         normalized = normalize_deck_source_metadata(parsed, sources)
+        # Validate chart data and apply fallbacks before schema check
+        chart_fallbacks = validate_chart_slides(normalized)
+        if chart_fallbacks:
+            normalized.setdefault("assumptions", []).extend(chart_fallbacks)
         errors = sorted(validator.iter_errors(normalized), key=lambda item: list(item.path))
         if not errors:
             return normalized

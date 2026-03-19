@@ -344,8 +344,6 @@ deck 出力にはすでに次が含まれます。
 - `skill-manifest.json`: skill 契約
 - `generate-from-prompt.js`: create CLI
 - `revise-deck.js`: revise CLI
-- `source-loader.js`: ソース読み込み層
-- `deck-agent-core.js`: planning 中核
 - `generate-ppt.js`: PPT レンダラー
 - `deck-schema.json`: deck schema 契約
 

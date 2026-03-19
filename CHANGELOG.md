@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project follows Semantic Versioning while it remains a prototype.
 
+## [0.4.1] - 2026-03-19
+
+### Added
+
+- Chart-specific instructions in LLM system prompt with few-shot example and data format rules
+- Chart data requirements section in SKILL.md
+- `validate_chart_slides()`: validates chart data in planning output, degrades invalid chart slides to bullet layout with assumption notes
+- `extract_numerical_hints()`: scans source material for numerical patterns (percentages, currency, scaled numbers) and injects chart usage hints into LLM prompt
+- `_is_valid_chart()`: validates chart object structure (non-empty categories, numeric series data)
+- Mock deck now includes a chart slide with sample bar chart data for testing
+- 12 new unit tests: chart validation (8), numerical extraction (4) — 64 total tests
+
+### Changed
+
+- System prompt now includes explicit chart data rules: required fields, supported types, few-shot example, no empty arrays
+- `build_create_prompt()` appends numerical data hints when source material contains extractable numbers
+- Chart fallback runs in both mock and LLM planning paths before schema validation
+
+### Removed
+
+- `deck-agent-core.js`: legacy planning file deleted (functionality fully replaced by `python_backend/smart_layer.py` since v0.3.0)
+- `source-loader.js`: legacy source loading file deleted (functionality fully replaced by `python_backend/source_loader.py` since v0.3.0)
+- References to deleted files removed from ZH-CN and JA integration guides
+
 ## [0.4.0] - 2026-03-19
 
 ### Added
