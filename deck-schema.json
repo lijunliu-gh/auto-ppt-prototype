@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/auto-ppt-prototype/deck-schema.json",
+  "title": "Auto PPT Deck",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deckTitle",
+    "language",
+    "audience",
+    "scenario",
+    "tone",
+    "theme",
+    "sourceDisplayMode",
+    "slideCount",
+    "needsSpeakerNotes",
+    "assumptions",
+    "slides"
+  ],
+  "properties": {
+    "deckTitle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "type": "string",
+      "minLength": 2
+    },
+    "audience": {
+      "type": "string"
+    },
+    "scenario": {
+      "type": "string"
+    },
+    "tone": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string"
+    },
+    "sourceDisplayMode": {
+      "type": "string",
+      "enum": [
+        "hidden",
+        "notes",
+        "footnote",
+        "appendix"
+      ]
+    },
+    "slideCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30
+    },
+    "needsSpeakerNotes": {
+      "type": "boolean"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": {
+        "$ref": "#/$defs/slide"
+      }
+    }
+  },
+  "$defs": {
+    "chartSeries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "data"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "chart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "title",
+        "categories",
+        "series"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "series": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chartSeries"
+          }
+        }
+      }
+    },
+    "table": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "columns",
+        "rows"
+      ],
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "slideSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "type",
+        "location",
+        "trustLevel",
+        "priority",
+        "usedFor"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trustLevel": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "citation": {
+          "type": "string"
+        },
+        "usedFor": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "slide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page",
+        "layout",
+        "title",
+        "subtitle",
+        "objective",
+        "bullets",
+        "left",
+        "right",
+        "table",
+        "chart",
+        "visuals",
+        "sources",
+        "speakerNotes"
+      ],
+      "properties": {
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "layout": {
+          "type": "string",
+          "enum": [
+            "title",
+            "agenda",
+            "section",
+            "bullet",
+            "two-column",
+            "comparison",
+            "timeline",
+            "process",
+            "table",
+            "chart",
+            "quote",
+            "summary",
+            "closing"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "left": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "right": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "table": {
+          "$ref": "#/$defs/table"
+        },
+        "chart": {
+          "$ref": "#/$defs/chart"
+        },
+        "visuals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slideSource"
+          }
+        },
+        "speakerNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

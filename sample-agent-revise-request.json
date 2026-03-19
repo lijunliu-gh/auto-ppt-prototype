@@ -1,0 +1,20 @@
+{
+  "action": "revise",
+  "prompt": "Compress this deck, make it more conclusion-driven, and emphasize the execution plan",
+  "mock": true,
+  "research": false,
+  "deckPath": "output/generated-deck.json",
+  "contextFiles": [],
+  "sources": [
+    {
+      "path": "sample-source-brief.md",
+      "type": "text",
+      "label": "Sample product brief",
+      "trustLevel": "user-provided",
+      "priority": "high",
+      "notes": "Use this as the factual basis when tightening the revised deck."
+    }
+  ],
+  "outputJson": "output/agent-revised-deck.json",
+  "outputPptx": "output/agent-revised-deck.pptx"
+}

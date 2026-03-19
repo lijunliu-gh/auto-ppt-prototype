@@ -1,0 +1,33 @@
+{
+  "name": "auto-ppt-prototype",
+  "version": "0.2.0",
+  "description": "Open-source AI-agent-ready PowerPoint workflow for planning, revising, validating, and rendering PPTX decks.",
+  "license": "MIT",
+  "main": "generate-ppt.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "generate": "node generate-ppt.js sample-input.json output/sample-deck.pptx",
+    "generate:prompt": "node generate-from-prompt.js --prompt \"Create an 8-slide AI product strategy deck for executives in a professional tone\"",
+    "generate:mock": "node generate-from-prompt.js --mock --prompt \"Create an 8-slide AI product strategy deck for executives in a professional tone\"",
+    "generate:source": "node generate-from-prompt.js --mock --prompt \"Create an 8-slide AI workspace strategy deck for executives\" --source sample-source-brief.md",
+    "revise:mock": "node revise-deck.js --mock --deck output/generated-deck.json --prompt \"Compress this deck, make it more conclusion-driven, and emphasize the execution plan\"",
+    "skill:create": "node agent-skill.js --request sample-agent-request.json",
+    "skill:revise": "node agent-skill.js --request sample-agent-revise-request.json",
+    "skill:server": "node skill-server.js",
+    "smoke:generate": "npm run generate",
+    "smoke:source": "npm run generate:source",
+    "smoke:revise": "npm run revise:mock",
+    "smoke:skill": "npm run skill:create",
+    "ci:smoke": "node scripts/run-smoke.js"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "dotenv": "^16.4.7",
+    "mammoth": "^1.12.0",
+    "openai": "^4.86.2",
+    "pdf-parse": "^1.1.1",
+    "pptxgenjs": "^3.12.0"
+  }
+}

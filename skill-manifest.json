@@ -1,0 +1,54 @@
+{
+  "name": "auto-ppt-prototype",
+  "version": "0.2.0",
+  "description": "Agent-callable workflow for planning, revising, validating, and rendering PowerPoint decks from natural-language requests.",
+  "entrypoint": "node agent-skill.js --request <request-json>",
+  "service": {
+    "command": "node skill-server.js",
+    "health": "GET /health",
+    "invoke": "POST /skill"
+  },
+  "actions": [
+    {
+      "name": "create",
+      "description": "Create a new deck from a natural-language prompt",
+      "requiredFields": ["action", "prompt"],
+      "optionalFields": ["mock", "research", "contextFiles", "sources", "outputJson", "outputPptx"]
+    },
+    {
+      "name": "revise",
+      "description": "Revise an existing deck JSON based on a natural-language instruction",
+      "requiredFields": ["action", "prompt", "deckPath"],
+      "optionalFields": ["mock", "research", "contextFiles", "sources", "outputJson", "outputPptx"]
+    }
+  ],
+  "sources": {
+    "description": "Optional trusted source materials that are converted into planning context before create or revise flows.",
+    "supportedTypes": ["text", "json", "html", "pdf", "docx", "image", "url"],
+    "itemShape": {
+      "path": "relative or absolute file path",
+      "url": "https URL",
+      "type": "optional explicit type",
+      "label": "human-readable source label",
+      "trustLevel": "user-provided|official|external",
+      "priority": "high|normal|low",
+      "notes": "optional source-specific note"
+    }
+  },
+  "deckMetadata": {
+    "sourceDisplayMode": "Deck output defaults to notes so sources remain off-slide while still being visible to the presenter in PowerPoint notes.",
+    "slideSources": "Each slide may include structured sources for traceability and later audit/export workflows."
+  },
+  "outputs": {
+    "responseJson": {
+      "ok": true,
+      "action": "create|revise",
+      "prompt": "string",
+      "deckJsonPath": "absolute path",
+      "pptxPath": "absolute path",
+      "slideCount": 0,
+      "assumptions": [],
+      "sourcesUsed": []
+    }
+  }
+}
