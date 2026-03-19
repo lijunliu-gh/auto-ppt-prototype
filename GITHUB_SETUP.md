@@ -12,27 +12,27 @@ Recommended repository name:
 
 Recommended short description:
 
-> Open-source PowerPoint backend for AI agents using a Python smart layer for planning and a JavaScript renderer for PPTX output.
+> Open-source PowerPoint backend for AI agents using a Python planning layer and a JavaScript PPTX renderer.
 
 Shorter variant:
 
-> Python-first AI-agent-ready PowerPoint backend with source-aware deck generation.
+> AI-agent-ready PowerPoint backend with source-aware deck generation.
 
 ## Copy-Paste GitHub About Text
 
 Use this directly in the GitHub repository About field:
 
-`Open-source PowerPoint backend for AI agents using a Python smart layer for planning and a JavaScript renderer for PPTX output.`
+`Open-source PowerPoint backend for AI agents using a Python planning layer and a JavaScript PPTX renderer.`
 
 Use this if you want a shorter About field:
 
-`Python-first AI-agent-ready PowerPoint backend with source-aware deck generation.`
+`AI-agent-ready PowerPoint backend with source-aware deck generation.`
 
 ## Copy-Paste Repository Intro
 
 Use this in the top of the repository description, project page, or announcement post:
 
-> Auto PPT Prototype is an experimental open-source backend for AI-agent-driven PowerPoint generation. It uses a Python smart layer for planning and revision, then a JavaScript renderer for final `.pptx` output through CLI, JSON skill, and HTTP integration modes.
+> Auto PPT Prototype is an experimental open-source backend for AI-agent-driven PowerPoint generation. It uses a Python planning layer for deck creation and revision, then a JavaScript renderer for final `.pptx` output through CLI, JSON skill, and HTTP integration modes.
 
 ## Suggested Topics
 
@@ -43,10 +43,9 @@ Recommended GitHub topics:
 - `ai-agent`
 - `agent-workflow`
 - `presentation-generation`
+- `presentation-automation`
 - `python`
 - `nodejs`
-- `openai`
-- `prompt-engineering`
 - `document-processing`
 - `automation`
 
@@ -75,6 +74,11 @@ Use a simple preview image that communicates:
 - trusted source material
 - deck JSON planning
 - PPTX output
+
+Suggested overlay copy:
+
+- title: `Auto PPT Prototype`
+- subtitle: `Python planning layer + JavaScript PPTX renderer`
 
 Avoid screenshots that imply fully autonomous or fact-guaranteed research.
 

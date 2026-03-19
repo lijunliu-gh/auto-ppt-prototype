@@ -98,43 +98,36 @@ npm run skill:server
 
 ## Repository Map
 
-```mermaid
-flowchart TD
-	A[repo root] --> B[python_backend/]
-	A --> C[CLI entrypoints]
-	A --> D[Node renderer and wrappers]
-	A --> E[contracts and samples]
-	A --> F[docs and governance]
-	A --> G[CI and automation]
-
-	B --> B1[smart_layer.py<br/>planning and revision]
-	B --> B2[source_loader.py<br/>trusted material ingestion]
-	B --> B3[skill_api.py<br/>skill request handling]
-	B --> B4[js_renderer.py<br/>bridge into Node renderer]
-
-	C --> C1[py-generate-from-prompt.py]
-	C --> C2[py-revise-deck.py]
-	C --> C3[py-agent-skill.py]
-	C --> C4[py-skill-server.py]
-
-	D --> D1[generate-ppt.js]
-	D --> D2[generate-from-prompt.js]
-	D --> D3[revise-deck.js]
-	D --> D4[agent-skill.js]
-	D --> D5[skill-server.js]
-
-	E --> E1[deck-schema.json]
-	E --> E2[skill-manifest.json]
-	E --> E3[sample-*.json]
-
-	F --> F1[README.md]
-	F --> F2[PRODUCT.*.md]
-	F --> F3[USER_GUIDE.*.md]
-	F --> F4[INTEGRATION_GUIDE.*.md]
-	F --> F5[CHANGELOG.md and release drafts]
-
-	G --> G1[.github/workflows/smoke.yml]
-	G --> G2[scripts/run-smoke.js]
+```text
+auto-ppt-prototype/
+|-- python_backend/
+|   |-- smart_layer.py        # planning, revision, validation
+|   |-- source_loader.py      # trusted material ingestion
+|   |-- skill_api.py          # skill request orchestration
+|   `-- js_renderer.py        # bridge into the Node PPTX renderer
+|-- py-generate-from-prompt.py
+|-- py-revise-deck.py
+|-- py-agent-skill.py
+|-- py-skill-server.py
+|-- generate-ppt.js           # stable PPTX renderer
+|-- generate-from-prompt.js   # compatibility wrapper
+|-- revise-deck.js            # compatibility wrapper
+|-- agent-skill.js            # compatibility wrapper
+|-- skill-server.js           # compatibility wrapper
+|-- deck-schema.json          # deck JSON contract
+|-- skill-manifest.json       # skill integration contract
+|-- sample-*.json             # sample requests and payloads
+|-- README.md
+|-- PRODUCT.*.md
+|-- USER_GUIDE.*.md
+|-- INTEGRATION_GUIDE.*.md
+|-- CHANGELOG.md
+|-- RELEASE_DRAFT_v0.3.0.md
+|-- .github/
+|   `-- workflows/
+|       `-- smoke.yml
+`-- scripts/
+    `-- run-smoke.js
 ```
 
 The practical split is:
