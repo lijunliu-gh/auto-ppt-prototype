@@ -44,6 +44,8 @@ npm run skill:server
 
 These npm commands now use the Python smart layer by default.
 
+If you want the shortest copy-paste onboarding path, read `EXAMPLES.en.md` first.
+
 ## What It Can Do Today
 
 ### 1. Render PPT from existing JSON
@@ -156,12 +158,35 @@ The better workflow is:
 ### User-facing files
 
 - `README.md`
+- `EXAMPLES.en.md`
 - `PRODUCT.en.md`
+- `sample-deck-brief.md`
+- `sample-deck-brief.json`
 - `sample-input.json`
 - `sample-source-brief.md`
 - `sample-agent-request.json`
 - `sample-agent-revise-request.json`
 - `sample-http-request.json`
+
+## What A Deck Brief Looks Like
+
+A deck brief is the task definition for the presentation you want the system to produce.
+
+It can be either:
+
+- a natural-language brief document such as `sample-deck-brief.md`
+- a structured JSON brief such as `sample-deck-brief.json`
+
+Useful brief fields include:
+
+- topic
+- goal
+- audience
+- slide count
+- tone
+- must-include sections
+- constraints
+- supporting materials
 
 ### Main execution files
 

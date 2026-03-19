@@ -1,0 +1,86 @@
+# Examples
+
+This file is for people who want to run the project quickly without reading the full documentation first.
+
+## Fastest Successful Run
+
+Install dependencies:
+
+```bash
+npm install
+python -m pip install -r requirements.txt
+```
+
+Generate a deck from the built-in source brief:
+
+```bash
+python py-generate-from-prompt.py --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+```
+
+Expected outputs:
+
+- `output/py-generated-deck.json`
+- `output/py-generated-deck.pptx`
+
+## Use A Deck Brief File
+
+Natural-language brief example:
+
+- `sample-deck-brief.md`
+
+Structured brief example:
+
+- `sample-deck-brief.json`
+
+Example prompt using the deck brief as source material:
+
+```bash
+python py-generate-from-prompt.py --mock --prompt "Turn this brief into an 8-slide product deck" --source sample-deck-brief.md
+```
+
+## Revise The Generated Deck
+
+After the first deck is created:
+
+```bash
+python py-revise-deck.py --mock --deck output/py-generated-deck.json --prompt "Compress this deck to 6 slides and make it more conclusion-driven"
+```
+
+Expected outputs:
+
+- `output/py-revised-deck.json`
+- `output/py-revised-deck.pptx`
+
+## JSON Skill Example
+
+Use the JSON skill request contract when another agent or script wants file-based integration:
+
+```bash
+python py-agent-skill.py --request sample-agent-request.json --response output/py-agent-response.json
+```
+
+Files to inspect:
+
+- `sample-agent-request.json`
+- `output/py-agent-response.json`
+
+## HTTP Example
+
+Start the local service:
+
+```bash
+python py-skill-server.py
+```
+
+Call the skill:
+
+```bash
+curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --data @sample-http-request.json
+```
+
+## Which Example To Start With
+
+- Start with `sample-source-brief.md` if you want the shortest successful demo.
+- Start with `sample-deck-brief.md` if you want to understand what a deck brief looks like.
+- Start with `sample-agent-request.json` if you are integrating this project into another workflow.
+- Start with `sample-http-request.json` if your system prefers local service calls.

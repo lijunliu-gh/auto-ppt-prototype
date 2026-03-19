@@ -1,0 +1,35 @@
+{
+  "topic": "AI agent-ready PowerPoint backend for source-aware deck generation",
+  "goal": "Create a product introduction deck that can also support an early investor conversation.",
+  "audience": [
+    "Investors",
+    "Product leaders"
+  ],
+  "slideCount": 8,
+  "tone": "Professional, concise, product-oriented",
+  "mustInclude": [
+    "Problem definition",
+    "Product positioning",
+    "End-to-end workflow",
+    "Python planning layer plus JavaScript renderer architecture",
+    "Trusted source handling",
+    "Revision workflow",
+    "Why this is useful for AI agent systems",
+    "Current boundaries and next steps"
+  ],
+  "constraints": [
+    "Do not present this as a finished SaaS product",
+    "Do not invent traction, customers, or revenue",
+    "Keep the story accessible to non-engineers",
+    "Make the distinction between planning and rendering explicit"
+  ],
+  "materials": [
+    "README.md",
+    "PRODUCT.en.md",
+    "USER_GUIDE.en.md",
+    "INTEGRATION_GUIDE.en.md",
+    "sample-source-brief.md"
+  ],
+  "sourceDisplayMode": "notes",
+  "language": "English"
+}

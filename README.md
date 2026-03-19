@@ -14,6 +14,7 @@ Quick links:
 
 - [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.3.0)
 - [Changelog](CHANGELOG.md)
+- [Examples](EXAMPLES.en.md)
 - [Product overview](PRODUCT.en.md)
 - [User guide](USER_GUIDE.en.md)
 - [Integration guide](INTEGRATION_GUIDE.en.md)
@@ -95,6 +96,22 @@ npm run revise:mock
 npm run skill:create
 npm run skill:server
 ```
+
+First successful run for a new user:
+
+```bash
+python py-generate-from-prompt.py --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+```
+
+Useful starter files:
+
+- `sample-source-brief.md`: shortest source-grounded example
+- `sample-deck-brief.md`: natural-language deck brief example
+- `sample-deck-brief.json`: structured deck brief example
+- `sample-agent-request.json`: JSON skill request example
+- `sample-http-request.json`: HTTP request example
+
+If you want copy-paste usage flows, start with `EXAMPLES.en.md`.
 
 ## Repository Map
 
@@ -237,6 +254,7 @@ Those responsibilities should remain with the upstream agent or surrounding work
 ## Documentation
 
 - `README.md`: repository entry and quick navigation
+- `EXAMPLES.en.md`: copy-paste usage flows for first-time users
 - `PRODUCT.*.md`: product framing and open-source positioning
 - `USER_GUIDE.*.md`: end-user usage guidance
 - `INTEGRATION_GUIDE.*.md`: agent and system integration guidance
@@ -246,6 +264,7 @@ Those responsibilities should remain with the upstream agent or surrounding work
 ## Read Next
 
 - `PRODUCT.en.md` for product framing
+- `EXAMPLES.en.md` for first-run examples
 - `USER_GUIDE.en.md` for user-oriented instructions
 - `INTEGRATION_GUIDE.en.md` for integration details
 - `GITHUB_SETUP.md` for repository metadata and release copy
