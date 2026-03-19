@@ -48,6 +48,18 @@ When planning deck content, use sources in this order of trust whenever possible
 6. Reputable third-party sources
 7. Generic web search results only as a fallback
 
+## Visual Rules
+
+The `visuals` array on each slide supports three kinds of items:
+
+1. Plain strings — text descriptions or visual suggestions
+2. Image objects — `{"type": "image", "path": "..."}` or `{"type": "image", "url": "..."}` for actual images to insert
+3. Placeholder objects — `{"type": "placeholder", "prompt": "..."}` for images to be generated later
+
+Supported position values: `right` (default), `left`, `center`, `full`.
+
+When source materials reference specific images or diagrams, emit image objects with the file path. When no actual image is available but a visual would help, use a placeholder with a descriptive prompt. Otherwise, use plain string descriptions.
+
 Do not rely on generic web search when the user has already provided source files or official links.
 
 ## Required Inputs

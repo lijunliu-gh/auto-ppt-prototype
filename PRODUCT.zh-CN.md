@@ -56,8 +56,9 @@ Auto PPT Prototype 是一个面向 AI Agent 的开源 PowerPoint 后端。
 - 可被 agent 调用的 JSON request/response 流程
 - 本地 HTTP skill 接口
 - LLM 提供者抽象（OpenAI、Claude、Gemini、Qwen、DeepSeek、GLM、MiniMax）
-- 安全防护：路径穿越防护、SSRF 拦截、文件大小限制、子进程超时
-- 95 条自动化测试（单元测试、MCP 服务测试、MCP 集成测试、模板引擎测试）
+- 图片资产管线：本地图片插入、URL 图片、多 Agent 协作占位符协议
+- 安全防护：路径穿越防护、SSRF 拦截、文件大小限制、子进程超时、图片扩展名白名单
+- 143 条自动化测试（单元测试、MCP 服务测试、MCP 集成测试、模板引擎测试、图片处理测试）
 
 ## 当前对外入口
 

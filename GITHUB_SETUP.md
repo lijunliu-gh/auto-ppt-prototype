@@ -99,13 +99,13 @@ Use these in the repo body or release notes:
 
 Use this short release summary when creating the latest GitHub release:
 
-> v0.5.0 adds brand template engine with python-pptx dual render path, builds on chart data reliability (v0.4.1) and MCP Server integration (v0.4.0) for Claude Desktop, Cursor, and Windsurf.
+> v0.5.1 adds image asset pipeline (local image insertion, URL images, placeholder protocol) with full security, building on brand template engine (v0.5.0), chart reliability (v0.4.1), and MCP Server (v0.4.0).
 
 ## Suggested Repository Announcement Copy
 
 Use this for a short social or team announcement:
 
-> Auto PPT Prototype v0.5.0: AI-agent-ready PowerPoint backend with brand template engine, MCP Server, chart reliability, and multi-model LLM support. Pass your .pptx template for brand-matched output.
+> Auto PPT Prototype v0.5.1: AI-agent-ready PowerPoint backend with image pipeline, brand template engine, MCP Server, chart reliability, and multi-model LLM support. Insert images, use placeholders, or pass your .pptx template for brand-matched output.
 
 ## Suggested Repository Positioning
 
@@ -137,4 +137,4 @@ Reason:
 
 Recommended title:
 
-- `v0.5.0 — Brand Template Engine + Dual Render Path`
+- `v0.5.1 — Image Asset Pipeline`

@@ -229,6 +229,7 @@ auto-ppt-prototype/
 |   |-- js_renderer.py        # bridge into the Node PPTX renderer
 |   |-- pptx_renderer.py      # python-pptx renderer (brand template mode)
 |   |-- template_engine.py    # .pptx template parser (layouts, placeholders, theme)
+|   |-- image_handler.py      # image asset pipeline (classify, resolve, security)
 |   `-- llm_provider.py       # LLM provider abstraction (OpenAI/Claude/Gemini)
 |-- mcp_server.py              # MCP server (Claude Desktop, Cursor, Windsurf)
 |-- py-generate-from-prompt.py
@@ -263,7 +264,8 @@ auto-ppt-prototype/
 |   |-- test_smart_layer.py   # pytest unit tests (57 tests)
 |   |-- test_mcp_server.py    # MCP server tests (9 tests)
 |   |-- test_mcp_integration.py  # MCP stdio integration tests (4 tests)
-|   `-- test_template_engine.py  # template + renderer tests (25 tests)
+|   |-- test_template_engine.py  # template + renderer tests (25 tests)
+|   `-- test_image_handler.py # image handler tests (48 tests)
 |-- output/                   # generated deck JSON and PPTX artifacts
 |   |-- py-generated-deck.json
 |   |-- py-generated-deck.pptx
@@ -282,6 +284,7 @@ The practical split is:
 - `python_backend/` owns planning, revision, source understanding, and agent-facing orchestration
 - `python_backend/llm_provider.py` abstracts the LLM layer so providers can be swapped without touching planning code
 - `python_backend/template_engine.py` + `pptx_renderer.py` enable brand-template rendering via python-pptx
+- `python_backend/image_handler.py` handles image resolution, security validation, and insertion
 - `mcp_server.py` is the MCP integration point for Claude Desktop, Cursor, and Windsurf
 - root-level `py-*.py` files are the primary public entrypoints
 - `generate-ppt.js` is the stable PPTX renderer (used when no template is provided)

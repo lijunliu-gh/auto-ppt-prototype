@@ -231,6 +231,23 @@ When slides use the `chart` layout, the system validates chart data automaticall
 - If chart data is invalid, the slide automatically falls back to a bullet layout
 - Source material is scanned for numerical data (percentages, currency, metrics) and injected as chart hints to the LLM
 
+## Image and Visual Support
+
+As of v0.5.1, the `visuals` array on each slide supports three types of items:
+
+- **Plain strings**: text descriptions or suggestions (e.g. `"Add a market context chart"`)
+- **Image objects**: `{"type": "image", "path": "assets/logo.png"}` or `{"type": "image", "url": "https://..."}` — the renderer inserts the actual image
+- **Placeholder objects**: `{"type": "placeholder", "prompt": "A workflow diagram"}` — renders as a labeled box for later image generation
+
+Each visual item supports a `position` field: `right` (default), `left`, `center`, or `full`.
+
+Security controls for images:
+
+- Local paths are validated to stay within the project directory (path traversal prevention)
+- URL images are validated to reject private/internal networks (SSRF protection)
+- Maximum image size: 10 MB
+- Only common image formats accepted: PNG, JPG, GIF, BMP, TIFF, SVG, WebP
+
 ## Where It Is Still Weak
 
 The project is still a prototype, not a production-grade product.

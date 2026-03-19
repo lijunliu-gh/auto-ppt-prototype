@@ -433,9 +433,9 @@ Do not expect it to perform all of the following by itself:
 
 Those responsibilities belong to the upstream agent.
 
-## 2. Images are currently references, not true visual understanding
+## 2. Images can be inserted, but no built-in visual understanding
 
-Images can enter the source pipeline, but this repository itself does not perform full OCR or image reasoning.
+As of v0.5.1, the renderer can insert local images and URL images into slides. However, this repository itself does not perform OCR or image reasoning — those belong to the upstream agent.
 
 ## 3. Slide-level sources exist, but attribution is still coarse
 
@@ -458,7 +458,35 @@ As of v0.5.0, you can pass a `.pptx` brand template to produce brand-matched out
 - Without a template, the existing JS renderer (pptxgenjs) is used automatically
 - The API response includes a `"renderer"` field (`"python-pptx"` or `"pptxgenjs"`)
 
-## 5. Chart data validation and fallback
+## 5. Image and visual support (v0.5.1)
+
+As of v0.5.1, the `visuals` array on each slide accepts three types of items:
+
+**Plain string** (text description):
+```json
+"visuals": ["Add a market context chart"]
+```
+
+**Image object** (local path or URL):
+```json
+"visuals": [
+  {"type": "image", "path": "assets/logo.png", "alt": "Company logo", "position": "right"},
+  {"type": "image", "url": "https://example.com/chart.png", "position": "center"}
+]
+```
+
+**Placeholder object** (for later image generation):
+```json
+"visuals": [
+  {"type": "placeholder", "prompt": "A workflow diagram showing the 4-step process", "position": "right"}
+]
+```
+
+Supported `position` values: `right` (default), `left`, `center`, `full`.
+
+Security: local paths are constrained to the project directory, URL images reject private networks (SSRF), maximum 10 MB, only common image formats accepted.
+
+## 6. Chart data validation and fallback
 
 As of v0.4.1, the system automatically validates chart slides:
 
@@ -479,6 +507,7 @@ As of v0.4.1, the system automatically validates chart slides:
 - `python_backend/smart_layer.py`: primary planning core
 - `python_backend/template_engine.py`: .pptx template parser
 - `python_backend/pptx_renderer.py`: python-pptx renderer (brand template mode)
+- `python_backend/image_handler.py`: image resolution, validation, and insertion
 - `generate-ppt.js`: PPT renderer (no-template mode)
 - `deck-schema.json`: deck schema contract
 
