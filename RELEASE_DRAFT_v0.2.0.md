@@ -1,5 +1,7 @@
 # Release Draft: v0.2.0
 
+Archived note: this file is kept as the historical draft for the first public open-source baseline release. The current active release draft is `RELEASE_DRAFT_v0.3.0.md`.
+
 ## Title
 
 `v0.2.0 - Open-source release preparation and agent-ready PPT workflow`

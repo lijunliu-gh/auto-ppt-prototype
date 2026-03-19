@@ -130,4 +130,4 @@ Reason:
 
 Recommended title:
 
-- `v0.3.0 - Python-first smart layer and compatibility release`
+- `v0.3.0 - Python planning layer with JavaScript PPTX renderer`

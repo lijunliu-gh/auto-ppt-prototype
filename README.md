@@ -4,6 +4,12 @@ Open-source PowerPoint backend for AI agents working from trusted sources, uploa
 
 Status: experimental prototype for early open-source integration.
 
+Latest release: `v0.3.0`
+
+- Release notes: https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.3.0
+- Changelog: `CHANGELOG.md`
+- Current architecture: Python plans and revises decks, JavaScript renders `.pptx`
+
 ## Core Positioning
 
 This repository is now intentionally split into two layers:

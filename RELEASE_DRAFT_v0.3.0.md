@@ -2,11 +2,11 @@
 
 ## Title
 
-`v0.3.0 - Python-first smart layer and compatibility release`
+`v0.3.0 - Python planning layer with JavaScript PPTX renderer`
 
 ## Suggested Release Notes
 
-This release moves Auto PPT Prototype to a Python-first public architecture while keeping the existing JavaScript renderer as the stable PPTX output engine.
+This release moves Auto PPT Prototype to a Python-first public architecture while keeping the JavaScript renderer as the stable PPTX output engine.
 
 ### Highlights
 
