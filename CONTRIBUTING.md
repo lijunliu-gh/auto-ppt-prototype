@@ -5,8 +5,8 @@ Thanks for contributing to Auto PPT Prototype.
 ## Before You Start
 
 - Read `README.md` for project scope and usage modes.
-- Read `PRODUCT.en.md` for positioning and boundaries.
-- Read `INTEGRATION_GUIDE.en.md` if your change affects agent or service integration.
+- Read `docs/PRODUCT.en.md` for positioning and boundaries.
+- Read `docs/INTEGRATION_GUIDE.en.md` if your change affects agent or service integration.
 
 ## Development Setup
 

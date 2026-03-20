@@ -41,7 +41,7 @@ class TestMCPCreateDeck:
         assert Path(data["pptxPath"]).exists()
 
     def test_create_mock_with_source(self):
-        src = str(ROOT / "sample-source-brief.md")
+        src = str(ROOT / "examples" / "inputs" / "sample-source-brief.md")
         result = create_deck(
             prompt="Deck based on brief",
             mock=True,

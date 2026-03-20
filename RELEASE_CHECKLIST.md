@@ -30,7 +30,7 @@ Files and folders that should normally be committed:
 - `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`
 - `Dockerfile`, `docker-compose.yml`, `.dockerignore`
 - `package.json` and `package-lock.json`
-- sample input files such as `sample-input.json`, `sample-agent-request.json`, and `sample-source-brief.md`
+- sample input files under `examples/inputs/` such as `sample-input.json`, `sample-agent-request.json`, and `sample-source-brief.md`
 
 Files and folders that should normally not be committed:
 

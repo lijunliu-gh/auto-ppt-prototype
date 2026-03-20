@@ -196,6 +196,6 @@ If the task requires high rigor, the agent using this skill should:
 For repository usage and integration details, see:
 
 - `README.md`
-- `PRODUCT.en.md`
-- `USER_GUIDE.en.md`
-- `INTEGRATION_GUIDE.en.md`
+- `docs/PRODUCT.en.md`
+- `docs/USER_GUIDE.en.md`
+- `docs/INTEGRATION_GUIDE.en.md`

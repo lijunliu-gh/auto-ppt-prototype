@@ -781,7 +781,7 @@ async function buildDeck(deck, outputPath) {
 }
 
 async function buildFromFile(inputArg, outputArg) {
-  const inputPath = path.resolve(inputArg || 'sample-input.json');
+  const inputPath = path.resolve(inputArg || 'examples/inputs/sample-input.json');
   const outputPath = path.resolve(outputArg || 'output/sample-deck.pptx');
   const deck = readDeck(inputPath);
 

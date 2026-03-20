@@ -16,7 +16,7 @@ from .template_engine import parse_template
 
 API_VERSION = "1.0"
 
-DEFAULT_REQUEST_PATH = ROOT_DIR / "sample-agent-request.json"
+DEFAULT_REQUEST_PATH = ROOT_DIR / "examples" / "inputs" / "sample-agent-request.json"
 DEFAULT_RESPONSE_PATH = ROOT_DIR / "output" / "py-agent-response.json"
 
 

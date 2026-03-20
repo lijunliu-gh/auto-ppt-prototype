@@ -86,7 +86,7 @@ class TestMCPIntegrationCreate:
         result = _run(_mcp_call_tool("create_deck", {
             "prompt": "Deck from source brief",
             "mock": True,
-            "sources": [str(ROOT / "sample-source-brief.md")],
+            "sources": [str(ROOT / "examples" / "inputs" / "sample-source-brief.md")],
             "output_dir": str(tmp_path),
         }))
         assert result["ok"] is True

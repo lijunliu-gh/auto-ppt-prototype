@@ -12,21 +12,23 @@ Latest release: [v0.7.0](https://github.com/lijunliu-gh/auto-ppt-prototype/relea
 
 Quick links:
 
+- [Documentation index](docs/README.md)
 - [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.7.0)
 - [Changelog](CHANGELOG.md)
 - [Roadmap](ROADMAP.md)
-- [Examples (EN)](EXAMPLES.en.md)
-- [Examples (ZH)](EXAMPLES.zh-CN.md)
-- [Examples (JA)](EXAMPLES.ja.md)
-- [Product overview](PRODUCT.en.md)
-- [User guide](USER_GUIDE.en.md)
-- [Integration guide](INTEGRATION_GUIDE.en.md)
+- [Examples (EN)](docs/EXAMPLES.en.md)
+- [Examples (ZH)](docs/EXAMPLES.zh-CN.md)
+- [Examples (JA)](docs/EXAMPLES.ja.md)
+- [Product overview](docs/PRODUCT.en.md)
+- [User guide](docs/USER_GUIDE.en.md)
+- [Integration guide](docs/INTEGRATION_GUIDE.en.md)
+- [Repository map](docs/REPOSITORY_MAP.md)
 
 ## Start Here
 
 - New here and want a PPT in a few minutes: start with the 3-minute Quick Start below.
-- Want to understand the input format: inspect `sample-deck-brief.md` and `sample-deck-brief.json`.
-- Want integration instead of manual CLI usage: start with `sample-agent-request.json` or `sample-http-request.json`.
+- Want to understand the input format: inspect `examples/inputs/sample-deck-brief.md` and `examples/inputs/sample-deck-brief.json`.
+- Want integration instead of manual CLI usage: start with `examples/inputs/sample-agent-request.json` or `examples/inputs/sample-http-request.json`.
 
 Architecture summary:
 
@@ -121,13 +123,13 @@ If you only want to prove the pipeline works before configuring a real model, yo
 Mock mode, fastest proof that the repo works:
 
 ```bash
-./auto-ppt generate --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+./auto-ppt generate --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source examples/inputs/sample-source-brief.md
 ```
 
 Real model, after `init`:
 
 ```bash
-./auto-ppt generate --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+./auto-ppt generate --prompt "Create an 8-slide AI workspace strategy deck for executives" --source examples/inputs/sample-source-brief.md
 ```
 
 ### 4. Revise the generated deck
@@ -186,13 +188,13 @@ This writes a local `.env` file with your provider key, default model, and defau
 Then generate your first deck:
 
 ```bash
-./auto-ppt generate --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+./auto-ppt generate --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source examples/inputs/sample-source-brief.md
 ```
 
 If you want predictable filenames for repeated runs, add `--output-name`:
 
 ```bash
-./auto-ppt generate --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md --output-name workspace-strategy-v1
+./auto-ppt generate --prompt "Create an 8-slide AI workspace strategy deck for executives" --source examples/inputs/sample-source-brief.md --output-name workspace-strategy-v1
 ```
 
 ### 2. Revise the generated deck
@@ -212,14 +214,14 @@ The legacy scripts (`py-generate-from-prompt.py`, `py-revise-deck.py`) remain av
 ### 3. File-based agent integration
 
 ```bash
-python py-agent-skill.py --request sample-agent-request.json --response output/py-agent-response.json
+python py-agent-skill.py --request examples/inputs/sample-agent-request.json --response output/py-agent-response.json
 ```
 
 ### 4. Local HTTP service
 
 ```bash
 python py-skill-server.py
-curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --data @sample-http-request.json
+curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --data @examples/inputs/sample-http-request.json
 ```
 
 ### 5. MCP Server (Claude Desktop / Cursor / Windsurf)
@@ -248,13 +250,14 @@ npm run skill:server
 
 Useful starter files:
 
-- `sample-source-brief.md`: shortest source-grounded example
-- `sample-deck-brief.md`: natural-language deck brief example
-- `sample-deck-brief.json`: structured deck brief example
-- `sample-agent-request.json`: JSON skill request example
-- `sample-http-request.json`: HTTP request example
+- `examples/inputs/sample-source-brief.md`: shortest source-grounded example
+- `examples/inputs/sample-deck-brief.md`: natural-language deck brief example
+- `examples/inputs/sample-deck-brief.json`: structured deck brief example
+- `examples/inputs/sample-agent-request.json`: JSON skill request example
+- `examples/inputs/sample-http-request.json`: HTTP request example
+- `quality_samples/`: fixed Phase 7 quality-evaluation corpus for regression work
 
-If you want copy-paste usage flows, start with `EXAMPLES.en.md`, `EXAMPLES.zh-CN.md`, or `EXAMPLES.ja.md`.
+If you want copy-paste usage flows, start with `docs/EXAMPLES.en.md`, `docs/EXAMPLES.zh-CN.md`, or `docs/EXAMPLES.ja.md`.
 
 ## MCP Server
 
@@ -301,83 +304,15 @@ Both tools accept `sources` (file paths or URLs), `mock` mode for offline testin
 
 ## Repository Map
 
-```text
-auto-ppt-prototype/
-|-- python_backend/
-|   |-- __init__.py            # package init + version metadata
-|   |-- smart_layer.py        # planning, revision, validation
-|   |-- source_loader.py      # trusted material ingestion
-|   |-- skill_api.py          # skill request orchestration + dual render dispatch
-|   |-- js_renderer.py        # bridge into the Node PPTX renderer
-|   |-- pptx_renderer.py      # python-pptx renderer (brand template mode)
-|   |-- template_engine.py    # .pptx template parser (layouts, placeholders, theme)
-|   |-- image_handler.py      # image asset pipeline (classify, resolve, security)
-|   `-- llm_provider.py       # LLM provider abstraction (OpenAI/OpenRouter/Claude/Gemini)
-|-- mcp_server.py              # MCP server (Claude Desktop, Cursor, Windsurf)
-|-- py-generate-from-prompt.py
-|-- py-revise-deck.py
-|-- py-agent-skill.py
-|-- py-skill-server.py
-|-- generate-ppt.js           # stable PPTX renderer (no-template path)
-|-- generate-from-prompt.js   # compatibility wrapper
-|-- revise-deck.js            # compatibility wrapper
-|-- agent-skill.js            # compatibility wrapper
-|-- skill-server.js           # compatibility wrapper
-|-- assets/
-|   `-- social-preview.png    # GitHub social preview asset
-|-- deck-schema.json          # deck JSON contract
-|-- skill-manifest.json       # skill integration contract
-|-- sample-source-brief.md    # shortest source-grounded demo input
-|-- sample-deck-brief.md      # natural-language deck brief example
-|-- sample-deck-brief.json    # structured deck brief example
-|-- sample-agent-request.json # JSON skill create example
-|-- sample-agent-revise-request.json  # JSON skill revise example
-|-- sample-http-request.json  # HTTP request example
-|-- EXAMPLES.en.md            # quick-start examples in English
-|-- EXAMPLES.zh-CN.md         # quick-start examples in Chinese
-|-- EXAMPLES.ja.md            # quick-start examples in Japanese
-|-- README.md
-|-- PRODUCT.*.md
-|-- USER_GUIDE.*.md
-|-- INTEGRATION_GUIDE.*.md
-|-- CHANGELOG.md
-|-- ROADMAP.md                # phased evolution plan
-|-- tests/
-|   |-- test_smart_layer.py      # planning, revision, validation tests
-|   |-- test_mcp_server.py        # MCP server tests
-|   |-- test_mcp_integration.py   # MCP stdio integration tests
-|   |-- test_template_engine.py   # template + renderer tests
-|   |-- test_image_handler.py     # image handler tests
-|   `-- test_coverage_boost.py    # cross-module coverage tests
-|-- output/                   # generated deck JSON and PPTX artifacts
-|   |-- py-agent-generated-deck.json
-|   |-- py-agent-generated-deck.pptx
-|   |-- py-agent-revised-deck.json
-|   `-- py-agent-revised-deck.pptx
-|-- .github/
-|   |-- CODEOWNERS
-|   |-- ISSUE_TEMPLATE/
-|   |-- pull_request_template.md
-|   `-- workflows/
-|       `-- smoke.yml          # CI: pytest matrix + Node.js smoke matrix
-`-- scripts/
-    |-- python-bridge.js      # Node-to-Python bridge helper
-    `-- run-smoke.js
-```
+For the full file-by-file map, see [docs/REPOSITORY_MAP.md](docs/REPOSITORY_MAP.md).
 
-The practical split is:
+High-level split:
 
-- `python_backend/` owns planning, revision, source understanding, and agent-facing orchestration
-- `python_backend/llm_provider.py` abstracts the LLM layer so providers can be swapped without touching planning code
-- `python_backend/template_engine.py` + `pptx_renderer.py` enable brand-template rendering via python-pptx
-- `python_backend/image_handler.py` handles image resolution, security validation, and insertion
-- `mcp_server.py` is the MCP integration point for Claude Desktop, Cursor, and Windsurf
-- root-level `py-*.py` files are the primary public entrypoints
-- `generate-ppt.js` is the stable PPTX renderer (used when no template is provided)
-- root-level Node CLIs remain compatibility wrappers for older integrations
-- `EXAMPLES.*.md` and `sample-*` files are the fastest way for a new user to understand how to run the repo
-- `output/` is where generated deck JSON and PPTX files appear after successful runs
-- `tests/` contains pytest unit tests for the Python backend
+- `python_backend/` owns planning, revision, source understanding, and orchestration
+- `docs/` holds multilingual user and integration documentation
+- `examples/inputs/` holds quickstart payloads and source briefs
+- `quality_samples/` holds the fixed Phase 7 quality-regression corpus
+- `tests/` holds pytest coverage for backend and integrations
 
 ## Testing
 
@@ -501,15 +436,15 @@ python py-revise-deck.py --mock --deck output/py-generated-deck.json --prompt "C
 
 These files still exist for backward compatibility, but they now forward into the Python smart layer:
 
-- `generate-from-prompt.js`
-- `revise-deck.js`
-- `agent-skill.js`
-- `skill-server.js`
+- `compat/generate-from-prompt.js`
+- `compat/revise-deck.js`
+- `compat/agent-skill.js`
+- `compat/skill-server.js`
 
 ### JSON Skill
 
 ```bash
-python py-agent-skill.py --request sample-agent-request.json --response output/py-agent-response.json
+python py-agent-skill.py --request examples/inputs/sample-agent-request.json --response output/py-agent-response.json
 ```
 
 ### HTTP
@@ -523,7 +458,7 @@ npm run skill:server
 Call the endpoint:
 
 ```bash
-curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --data @sample-http-request.json
+curl -X POST http://localhost:3010/skill -H "Content-Type: application/json" --data @examples/inputs/sample-http-request.json
 ```
 
 ## Source Handling
@@ -568,7 +503,7 @@ Those responsibilities should remain with the upstream agent or surrounding work
 
 ## Documentation
 
-- `README.md`: repository entry and quick navigation
+- `docs/README.md`: documentation index and reading order
 - `EXAMPLES.*.md`: copy-paste usage flows for first-time users
 - `PRODUCT.*.md`: product framing and open-source positioning
 - `USER_GUIDE.*.md`: end-user usage guidance
@@ -578,12 +513,11 @@ Those responsibilities should remain with the upstream agent or surrounding work
 
 ## Read Next
 
-- `PRODUCT.en.md` for product framing
-- `EXAMPLES.en.md` for first-run examples
-- `EXAMPLES.zh-CN.md` for Chinese examples
-- `EXAMPLES.ja.md` for Japanese examples
-- `USER_GUIDE.en.md` for user-oriented instructions
-- `INTEGRATION_GUIDE.en.md` for integration details
+- `docs/README.md` for the organized documentation index
+- `docs/PRODUCT.en.md` for product framing
+- `docs/EXAMPLES.en.md` for first-run examples
+- `docs/USER_GUIDE.en.md` for user-oriented instructions
+- `docs/INTEGRATION_GUIDE.en.md` for integration details
 - `RELEASE_CHECKLIST.md` for the release checklist
 
 ## License
