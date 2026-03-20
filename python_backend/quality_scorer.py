@@ -265,3 +265,65 @@ def score_deck_file(path: str | Path) -> Dict[str, Any]:
     """Load a deck JSON file and score it."""
     deck = json.loads(Path(path).read_text(encoding="utf-8"))
     return score_deck(deck)
+
+
+# ---------------------------------------------------------------------------
+# Revision quality comparison
+# ---------------------------------------------------------------------------
+
+def check_revision_quality(original: Dict[str, Any], revised: Dict[str, Any]) -> Dict[str, Any]:
+    """Compare an original deck to its revision and flag regressions.
+
+    Returns:
+        {
+            "warnings": [...],       # list of regression warnings
+            "title_preserved": bool,
+            "slide_count_delta": int,
+            "layouts_changed": int,
+        }
+    """
+    warnings: List[str] = []
+
+    orig_slides = original.get("slides", [])
+    rev_slides = revised.get("slides", [])
+    delta = len(rev_slides) - len(orig_slides)
+
+    # Title preservation
+    title_preserved = revised.get("deckTitle", "") == original.get("deckTitle", "")
+    if not title_preserved:
+        warnings.append(
+            f"Deck title changed from '{original.get('deckTitle', '')}' to '{revised.get('deckTitle', '')}'"
+        )
+
+    # Slide count sanity
+    if abs(delta) > len(orig_slides) // 2 and len(orig_slides) > 2:
+        warnings.append(
+            f"Slide count changed by {delta} (from {len(orig_slides)} to {len(rev_slides)}) — large structural change"
+        )
+
+    # Content preservation — check if too many slides lost all bullets
+    orig_content_count = sum(
+        1 for s in orig_slides
+        if s.get("bullets") or s.get("left") or s.get("right") or s.get("table", {}).get("rows")
+    )
+    rev_content_count = sum(
+        1 for s in rev_slides
+        if s.get("bullets") or s.get("left") or s.get("right") or s.get("table", {}).get("rows")
+    )
+    if orig_content_count > 0 and rev_content_count < orig_content_count // 2:
+        warnings.append(
+            f"Content slides dropped from {orig_content_count} to {rev_content_count} — possible content loss"
+        )
+
+    # Layout changes
+    orig_layouts = [s.get("layout") for s in orig_slides]
+    rev_layouts = [s.get("layout") for s in rev_slides]
+    min_len = min(len(orig_layouts), len(rev_layouts))
+    layouts_changed = sum(1 for i in range(min_len) if orig_layouts[i] != rev_layouts[i])
+
+    return {
+        "warnings": warnings,
+        "title_preserved": title_preserved,
+        "slide_count_delta": delta,
+        "layouts_changed": layouts_changed,
+    }

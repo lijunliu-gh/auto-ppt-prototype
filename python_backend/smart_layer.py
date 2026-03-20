@@ -419,13 +419,17 @@ def build_revise_prompt(existing_deck: Dict[str, Any], revision_prompt: str, con
         revision_prompt.strip(),
         "Modify the deck to satisfy the revision request while keeping unaffected slides and the overall structure coherent.",
         "Preserve strong existing slide titles and narrative flow unless the revision explicitly requires structural changes.",
-        "When asked to compress, merge overlapping slides instead of simply deleting content.",
-        "When asked to emphasize a topic, strengthen the relevant slide objective, title, bullets, and speaker notes.",
-        "If a slide count change is requested, renumber slides consecutively and keep title or closing slides coherent.",
-        "Update slideCount if the slide count changes.",
         # Revise guardrails
         f"Preserve the existing audience ('{existing_deck.get('audience', '')}') and tone ('{existing_deck.get('tone', '')}') unless the revision explicitly asks to change them.",
         "Do not increase slide density beyond 8 bullets per slide during revision.",
+    ]
+    # Add intent-specific guidance
+    intent_guidance = _revise_intent_guidance(revision_prompt)
+    if intent_guidance:
+        blocks.append(intent_guidance)
+    blocks += [
+        "If a slide count change is requested, renumber slides consecutively and keep title or closing slides coherent.",
+        "Update slideCount if the slide count changes.",
         "Return full corrected deck JSON only.",
     ]
     if context_texts:
@@ -649,8 +653,48 @@ def extract_numerical_hints(context_texts: List[str]) -> str:
 
 
 def requested_slide_count(prompt: str) -> int | None:
-    match = re.search(r"(?:compress to|reduce to|limit to|change to)\s*(\d{1,2})\s*slides?", prompt, re.IGNORECASE)
+    match = re.search(r"(?:compress to|reduce to|limit to|change to|shorten to)\s*(\d{1,2})\s*slides?", prompt, re.IGNORECASE)
     return clamp_slide_count(match.group(1)) if match else None
+
+
+REVISE_INTENTS = {
+    "shorten": re.compile(r"compress|shorten|reduce|fewer|cut|trim|condense", re.IGNORECASE),
+    "expand": re.compile(r"expand|elaborate|more detail|add.*slide|longer|deeper", re.IGNORECASE),
+    "restructure": re.compile(r"restructure|reorder|reorganize|rearrange|move.*slide", re.IGNORECASE),
+    "reframe_audience": re.compile(r"for\s+(executive|investor|board|technical|client|customer)", re.IGNORECASE),
+    "clarify": re.compile(r"clarify|simplif|clearer|concise|tighten", re.IGNORECASE),
+    "emphasize": re.compile(r"emphasize|highlight|focus on|strengthen|execution plan|implementation", re.IGNORECASE),
+    "conclusion": re.compile(r"conclusion|takeaway|bottom.line|key.point", re.IGNORECASE),
+}
+
+
+def detect_revise_intent(prompt: str) -> List[str]:
+    """Detect the primary revision intents from a free-text prompt."""
+    return [name for name, pattern in REVISE_INTENTS.items() if pattern.search(prompt)]
+
+
+def _revise_intent_guidance(prompt: str) -> str:
+    """Return intent-specific guidance for the LLM based on the revision prompt."""
+    intents = detect_revise_intent(prompt)
+    if not intents:
+        return ""
+    lines = ["Revision guidance based on detected intent:"]
+    for intent in intents:
+        if intent == "shorten":
+            lines.append("- SHORTENING: Merge overlapping slides rather than deleting. Preserve key conclusions and data.")
+        elif intent == "expand":
+            lines.append("- EXPANDING: Add depth to existing slides or insert new content slides. Keep structural bookends (title/closing) intact.")
+        elif intent == "restructure":
+            lines.append("- RESTRUCTURING: Reorder slides for better narrative flow. Preserve all content but change sequence.")
+        elif intent == "reframe_audience":
+            lines.append("- AUDIENCE REFRAME: Adjust vocabulary, detail level, and framing for the new audience. Update the 'audience' field.")
+        elif intent == "clarify":
+            lines.append("- CLARIFYING: Simplify language, reduce jargon, tighten bullet points. Fewer words per bullet, not fewer slides.")
+        elif intent == "emphasize":
+            lines.append("- EMPHASIZING: Strengthen the relevant slide(s) — bolder title, more specific bullets, clearer objective.")
+        elif intent == "conclusion":
+            lines.append("- CONCLUSION FOCUS: Move key takeaways earlier in the deck or strengthen the summary/closing slides.")
+    return "\n".join(lines)
 
 
 def requested_page_index(prompt: str) -> int | None:
@@ -783,6 +827,52 @@ def make_more_conclusion_driven(deck: Dict[str, Any]) -> None:
     slides.insert(1, summary_slide)
 
 
+def reframe_audience(deck: Dict[str, Any], prompt: str) -> None:
+    """Update deck metadata and slide language for a new audience."""
+    match = re.search(r"for\s+(executive|investor|board|technical|client|customer)s?", prompt, re.IGNORECASE)
+    if not match:
+        return
+    new_audience = match.group(1).lower()
+    audience_map = {
+        "executive": ("Executives and decision makers", "Professional, concise, decision-oriented"),
+        "investor": ("Investors and key stakeholders", "Investor-grade, metrics-focused"),
+        "board": ("Board members", "Strategic, high-level, outcome-focused"),
+        "technical": ("Technical team leads", "Technical, detailed, data-driven"),
+        "client": ("Customers and partners", "Engaging, benefit-focused"),
+        "customer": ("Customers and partners", "Engaging, benefit-focused"),
+    }
+    audience_label, tone = audience_map.get(new_audience, ("General audience", "Professional and concise"))
+    deck["audience"] = audience_label
+    deck["tone"] = tone
+    deck.setdefault("assumptions", []).append(f"Audience reframed to: {audience_label}")
+
+
+def expand_deck(deck: Dict[str, Any], prompt: str) -> None:
+    """Add a content slide to expand the deck."""
+    slides = deck.get("slides", [])
+    if len(slides) >= 12:
+        return
+    insert_index = max(1, len(slides) - 1)
+    new_slide = empty_slide(insert_index + 1, "bullet", "Additional detail")
+    new_slide["objective"] = "Expand coverage based on revision request"
+    new_slide["bullets"] = [
+        "Extended analysis of key themes",
+        "Supporting data and evidence",
+        "Implications for next steps",
+    ]
+    new_slide["speakerNotes"] = [f"Added to address expansion request: {prompt[:100]}"]
+    slides.insert(insert_index, new_slide)
+
+
+def clarify_deck(deck: Dict[str, Any]) -> None:
+    """Simplify and tighten bullet text across all slides."""
+    for slide in deck.get("slides", []):
+        for field in ("bullets", "left", "right"):
+            items = slide.get(field, [])
+            if items:
+                slide[field] = [b[:80] for b in items[:6]]
+
+
 def apply_heuristic_revision(existing_deck: Dict[str, Any], prompt: str, context_texts: List[str]) -> Dict[str, Any]:
     cloned = json.loads(json.dumps(existing_deck))
     if not isinstance(cloned.get("slides"), list):
@@ -793,9 +883,24 @@ def apply_heuristic_revision(existing_deck: Dict[str, Any], prompt: str, context
     if context_texts:
         cloned["assumptions"].append(f"Revision used {len(context_texts)} additional context item(s).")
 
+    intents = detect_revise_intent(prompt)
+
     apply_requested_theme(cloned, prompt)
     handled_specific_page = apply_page_specific_revision(cloned, prompt)
-    if not handled_specific_page and cloned["slides"]:
+
+    # Intent-driven heuristic handlers
+    if "reframe_audience" in intents:
+        reframe_audience(cloned, prompt)
+    if "conclusion" in intents:
+        make_more_conclusion_driven(cloned)
+    if "emphasize" in intents:
+        emphasize_execution_plan(cloned)
+    if "expand" in intents:
+        expand_deck(cloned, prompt)
+    if "clarify" in intents:
+        clarify_deck(cloned)
+
+    if not handled_specific_page and not intents and cloned["slides"]:
         target_index = min(2, len(cloned["slides"]) - 1)
         target_slide = cloned["slides"][target_index]
         target_slide["objective"] = "Reflect the latest revision request"
@@ -803,11 +908,6 @@ def apply_heuristic_revision(existing_deck: Dict[str, Any], prompt: str, context
         if context_texts:
             target_slide["bullets"] = (target_slide.get("bullets") or []) + [f"Additional context sources considered: {len(context_texts)}"]
             target_slide["bullets"] = target_slide["bullets"][:5]
-
-    if re.search(r"conclusion", prompt, re.IGNORECASE):
-        make_more_conclusion_driven(cloned)
-    if re.search(r"execution plan|implementation", prompt, re.IGNORECASE):
-        emphasize_execution_plan(cloned)
 
     target_count = requested_slide_count(prompt)
     if target_count:

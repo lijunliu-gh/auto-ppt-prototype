@@ -17,6 +17,7 @@ from python_backend.quality_scorer import (
     check_layout_variety,
     check_metadata_fields,
     check_page_budget,
+    check_revision_quality,
     check_schema_compliance,
     check_slide_density,
     check_slide_numbering,
@@ -25,7 +26,13 @@ from python_backend.quality_scorer import (
     check_title_quality,
     score_deck,
 )
-from python_backend.smart_layer import build_mock_deck, _extract_guardrail_hints, build_create_prompt
+from python_backend.smart_layer import (
+    build_mock_deck,
+    _extract_guardrail_hints,
+    build_create_prompt,
+    apply_heuristic_revision,
+    detect_revise_intent,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -398,3 +405,118 @@ class TestGuardrailHints:
         prompt = build_create_prompt("Create an 8-slide board update", [], [])
         assert "Planning constraints" in prompt
         assert "8" in prompt
+
+
+# ===========================================================================
+# Revise loop hardening tests (#28)
+# ===========================================================================
+
+
+class TestDetectReviseIntent:
+    def test_shorten_detected(self):
+        assert "shorten" in detect_revise_intent("Compress this deck to 6 slides")
+
+    def test_expand_detected(self):
+        assert "expand" in detect_revise_intent("Expand the analysis with more detail")
+
+    def test_reframe_audience_detected(self):
+        assert "reframe_audience" in detect_revise_intent("Rewrite for investor audience")
+
+    def test_clarify_detected(self):
+        assert "clarify" in detect_revise_intent("Simplify and tighten the language")
+
+    def test_emphasize_detected(self):
+        assert "emphasize" in detect_revise_intent("Emphasize the execution plan")
+
+    def test_conclusion_detected(self):
+        assert "conclusion" in detect_revise_intent("Make this more conclusion-driven")
+
+    def test_multiple_intents(self):
+        intents = detect_revise_intent("Compress and clarify for executives")
+        assert "shorten" in intents
+        assert "clarify" in intents
+
+    def test_no_intent(self):
+        assert detect_revise_intent("Change the title color") == []
+
+
+class TestHeuristicRevision:
+    def _make_mock_deck(self):
+        return build_mock_deck("Create an 8-slide strategy deck", [], [], [])
+
+    def test_compress_reduces_slides(self):
+        deck = self._make_mock_deck()
+        original_count = len(deck["slides"])
+        revised = apply_heuristic_revision(deck, "Compress to 6 slides", [])
+        assert len(revised["slides"]) <= original_count
+        assert revised["slideCount"] == len(revised["slides"])
+
+    def test_expand_adds_slide(self):
+        deck = self._make_mock_deck()
+        original_count = len(deck["slides"])
+        revised = apply_heuristic_revision(deck, "Expand with more detail", [])
+        assert len(revised["slides"]) >= original_count
+
+    def test_reframe_audience_updates_metadata(self):
+        deck = self._make_mock_deck()
+        revised = apply_heuristic_revision(deck, "Rewrite for investor audience", [])
+        assert "Investor" in revised["audience"]
+
+    def test_clarify_trims_bullets(self):
+        deck = self._make_mock_deck()
+        # Add an overly long bullet
+        deck["slides"][2]["bullets"] = ["A" * 200, "B" * 200, "C" * 200, "D" * 200, "E" * 200, "F" * 200, "G" * 200]
+        revised = apply_heuristic_revision(deck, "Simplify the language", [])
+        for s in revised["slides"]:
+            for b in s.get("bullets", []):
+                assert len(b) <= 80
+
+    def test_conclusion_driven_moves_summary(self):
+        deck = self._make_mock_deck()
+        revised = apply_heuristic_revision(deck, "Make it more conclusion-driven", [])
+        # Summary/conclusion should now be near the front
+        layouts = [s["layout"] for s in revised["slides"]]
+        assert "summary" in layouts[:3]
+
+    def test_revise_preserves_schema(self):
+        deck = self._make_mock_deck()
+        revised = apply_heuristic_revision(deck, "Compress to 6 slides and clarify", [])
+        result = score_deck(revised)
+        assert result["pass"] is True
+
+    def test_revise_preserves_consecutive_pages(self):
+        deck = self._make_mock_deck()
+        revised = apply_heuristic_revision(deck, "Compress to 5 slides", [])
+        for i, s in enumerate(revised["slides"]):
+            assert s["page"] == i + 1
+
+
+class TestRevisionQuality:
+    def _make_mock_deck(self):
+        return build_mock_deck("Create an 8-slide strategy deck", [], [], [])
+
+    def test_stable_revision_no_warnings(self):
+        original = self._make_mock_deck()
+        revised = apply_heuristic_revision(original, "Emphasize the execution plan", [])
+        result = check_revision_quality(original, revised)
+        # Stable revision should not have large structural change warnings
+        assert result["title_preserved"] is True
+
+    def test_large_slide_loss_warns(self):
+        original = self._make_mock_deck()
+        # Simulate drastic slide removal
+        revised = json.loads(json.dumps(original))
+        revised["slides"] = revised["slides"][:2]
+        result = check_revision_quality(original, revised)
+        assert any("large structural change" in w for w in result["warnings"])
+
+    def test_content_loss_warns(self):
+        original = self._make_mock_deck()
+        revised = json.loads(json.dumps(original))
+        # Strip all bullets from revised
+        for s in revised["slides"]:
+            s["bullets"] = []
+            s["left"] = []
+            s["right"] = []
+        result = check_revision_quality(original, revised)
+        assert any("content loss" in w for w in result["warnings"])
