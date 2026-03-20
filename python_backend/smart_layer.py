@@ -117,7 +117,7 @@ def infer_theme(prompt: str) -> str:
 
 
 def infer_slide_count(prompt: str) -> int:
-    match = re.search(r"(\d{1,2})\s*slides?", prompt, re.IGNORECASE)
+    match = re.search(r"(\d{1,2})[\s\-]*slides?", prompt, re.IGNORECASE)
     return clamp_slide_count(match.group(1) if match else 8)
 
 
@@ -343,6 +343,13 @@ def build_system_prompt(skill_instructions: str, schema: Dict[str, Any]) -> str:
             "Do not fabricate hard business metrics unless they are clearly marked as placeholders or directly provided.",
             "When the request lacks information, make explicit assumptions in the assumptions array.",
             "Keep the deck presentation-friendly rather than document-like.",
+            # Planning guardrails
+            "PLANNING GUARDRAILS:",
+            "1. PAGE BUDGET: If the user specifies a slide count, match it exactly. If not, default to 8 slides. Never exceed 12 slides unless explicitly requested.",
+            "2. AUDIENCE FIT: Set the 'audience' field based on the request. Adjust vocabulary, detail depth, and framing to match. Executive audiences get strategic summaries, not operational details. Technical audiences get architecture and specifics.",
+            "3. TONE CONSISTENCY: Set the 'tone' field from the request. Every slide title, bullet, and speaker note must match this tone. Do not mix casual phrasing into a formal deck or vice versa.",
+            "4. SLIDE DENSITY: Each content slide should have 3-6 bullets. Never exceed 8 bullets on a single slide. If you have more content, split across slides.",
+            "5. STRUCTURAL BALANCE: A well-structured deck has an opening (title/agenda), a body (content slides with varied layouts), and a closing. Do not front-load or back-load all content.",
             # Chart-specific instructions
             "CHART DATA RULES:",
             "When using the 'chart' layout, you MUST populate chart.type, chart.title, chart.categories, and chart.series with concrete data.",
@@ -372,8 +379,23 @@ def build_system_prompt(skill_instructions: str, schema: Dict[str, Any]) -> str:
     )
 
 
+def _extract_guardrail_hints(prompt: str) -> str:
+    """Build a structured guardrail block from the user prompt."""
+    hints: List[str] = []
+    slide_count = infer_slide_count(prompt)
+    hints.append(f"Target slide count: {slide_count}")
+    hints.append(f"Inferred audience: {infer_audience(prompt)}")
+    hints.append(f"Inferred tone: {infer_tone(prompt)}")
+    hints.append(f"Inferred scenario: {infer_scenario(prompt)}")
+    return "Planning constraints (honor these):\n" + "\n".join(f"- {h}" for h in hints)
+
+
 def build_create_prompt(user_prompt: str, context_texts: List[str], research_notes: List[str]) -> str:
     blocks = ["User request:", user_prompt.strip()]
+    # Inject planning guardrail hints derived from the prompt
+    guardrails = _extract_guardrail_hints(user_prompt)
+    if guardrails:
+        blocks.append(guardrails)
     if context_texts:
         blocks.append("Additional context files:")
         for index, text in enumerate(context_texts, start=1):
@@ -401,6 +423,9 @@ def build_revise_prompt(existing_deck: Dict[str, Any], revision_prompt: str, con
         "When asked to emphasize a topic, strengthen the relevant slide objective, title, bullets, and speaker notes.",
         "If a slide count change is requested, renumber slides consecutively and keep title or closing slides coherent.",
         "Update slideCount if the slide count changes.",
+        # Revise guardrails
+        f"Preserve the existing audience ('{existing_deck.get('audience', '')}') and tone ('{existing_deck.get('tone', '')}') unless the revision explicitly asks to change them.",
+        "Do not increase slide density beyond 8 bullets per slide during revision.",
         "Return full corrected deck JSON only.",
     ]
     if context_texts:

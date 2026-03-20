@@ -15,6 +15,8 @@ from python_backend.quality_scorer import (
     check_empty_content_slides,
     check_layout_validity,
     check_layout_variety,
+    check_metadata_fields,
+    check_page_budget,
     check_schema_compliance,
     check_slide_density,
     check_slide_numbering,
@@ -23,7 +25,7 @@ from python_backend.quality_scorer import (
     check_title_quality,
     score_deck,
 )
-from python_backend.smart_layer import build_mock_deck
+from python_backend.smart_layer import build_mock_deck, _extract_guardrail_hints, build_create_prompt
 
 
 # ---------------------------------------------------------------------------
@@ -342,3 +344,57 @@ class TestScoreDeck:
         assert result["pass"] is True
         assert result["soft_score"] < 1.0
         assert "warnings" in result["summary"]
+
+
+# ===========================================================================
+# Planning guardrail tests (#27)
+# ===========================================================================
+
+
+class TestPageBudget:
+    def test_within_budget_clean(self):
+        slides = [_minimal_slide(i, "bullet", f"S{i}", bullets=["x"]) for i in range(1, 11)]
+        deck = _minimal_deck(slides=slides)
+        assert check_page_budget(deck) == []
+
+    def test_over_budget_warns(self):
+        slides = [_minimal_slide(i, "bullet", f"S{i}", bullets=["x"]) for i in range(1, 16)]
+        deck = _minimal_deck(slides=slides)
+        warnings = check_page_budget(deck)
+        assert len(warnings) == 1
+        assert "15" in warnings[0]
+
+
+class TestMetadataFields:
+    def test_filled_fields_clean(self):
+        deck = _minimal_deck()
+        assert check_metadata_fields(deck) == []
+
+    def test_empty_audience_warns(self):
+        deck = _minimal_deck(audience="")
+        warnings = check_metadata_fields(deck)
+        assert any("audience" in w for w in warnings)
+
+    def test_empty_tone_warns(self):
+        deck = _minimal_deck(tone="")
+        warnings = check_metadata_fields(deck)
+        assert any("tone" in w for w in warnings)
+
+
+class TestGuardrailHints:
+    def test_hints_include_slide_count(self):
+        hints = _extract_guardrail_hints("Create a 10-slide deck")
+        assert "10" in hints
+
+    def test_hints_include_audience(self):
+        hints = _extract_guardrail_hints("Create an executive strategy deck")
+        assert "Executive" in hints or "executive" in hints.lower()
+
+    def test_hints_include_tone(self):
+        hints = _extract_guardrail_hints("Create a professional tech overview")
+        assert "tone" in hints.lower()
+
+    def test_create_prompt_includes_guardrails(self):
+        prompt = build_create_prompt("Create an 8-slide board update", [], [])
+        assert "Planning constraints" in prompt
+        assert "8" in prompt

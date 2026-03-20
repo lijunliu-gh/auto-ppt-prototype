@@ -168,6 +168,27 @@ def check_source_attribution(deck: Dict[str, Any]) -> List[str]:
     return []
 
 
+def check_page_budget(deck: Dict[str, Any]) -> List[str]:
+    """Flag decks that exceed 12 slides without explicit large-deck indicators."""
+    count = len(deck.get("slides", []))
+    if count > 12:
+        return [f"Deck has {count} slides — exceeds the 12-slide default ceiling"]
+    return []
+
+
+def check_metadata_fields(deck: Dict[str, Any]) -> List[str]:
+    """Flag decks with empty audience, tone, or scenario fields."""
+    warnings: List[str] = []
+    for field in ("audience", "tone", "scenario"):
+        val = (deck.get(field) or "").strip()
+        if not val:
+            warnings.append(f"'{field}' field is empty — planning guardrails cannot be enforced")
+    return warnings
+    if not has_any:
+        return [f"sourceDisplayMode='{mode}' but no slide has source references"]
+    return []
+
+
 # ---------------------------------------------------------------------------
 # Composite scorer
 # ---------------------------------------------------------------------------
@@ -186,6 +207,8 @@ SOFT_CHECKS = [
     ("speaker_notes", check_speaker_notes),
     ("layout_variety", check_layout_variety),
     ("source_attribution", check_source_attribution),
+    ("page_budget", check_page_budget),
+    ("metadata_fields", check_metadata_fields),
 ]
 
 
