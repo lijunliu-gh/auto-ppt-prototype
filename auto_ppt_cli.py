@@ -97,6 +97,7 @@ def _add_common_generation_args(parser: argparse.ArgumentParser) -> None:
         help="Extra context material to include in planning",
     )
     parser.add_argument("--template", help="Optional .pptx template path")
+    parser.add_argument("--theme", help="Built-in theme name (business-clean, corporate-blue, dark-executive, warm-modern, minimal, tech)")
     parser.add_argument("--research", action="store_true", help="Enable optional web research")
     parser.add_argument("--mock", action="store_true", help="Use the local mock planner instead of an LLM")
     parser.add_argument("--output-dir", help="Directory for output files")
@@ -181,6 +182,8 @@ def build_request(args: argparse.Namespace) -> dict:
         request["contextFiles"] = list(args.context_file)
     if args.template:
         request["template"] = args.template
+    if getattr(args, 'theme', None):
+        request["theme"] = args.theme
     if args.command == "revise":
         request["deckPath"] = resolve_input_deck_path(args)
 

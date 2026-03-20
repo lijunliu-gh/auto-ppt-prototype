@@ -692,16 +692,16 @@ class TestSmartLayerInference:
         assert "rofessional" in result
 
     def test_infer_theme_tech(self):
-        assert infer_theme("tech review") == "tech-modern"
+        assert infer_theme("tech review") == "tech"
 
     def test_infer_theme_pitch(self):
-        assert infer_theme("investor pitch") == "pitch-bold"
+        assert infer_theme("investor pitch") == "dark-executive"
 
     def test_infer_theme_training(self):
-        assert infer_theme("training session") == "education-bright"
+        assert infer_theme("training session") == "warm-modern"
 
     def test_infer_theme_internal(self):
-        assert infer_theme("internal review") == "internal-minimal"
+        assert infer_theme("internal review") == "minimal"
 
     def test_infer_theme_default(self):
         assert infer_theme("general") == "business-clean"

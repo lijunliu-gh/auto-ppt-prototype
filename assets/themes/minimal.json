@@ -1,0 +1,22 @@
+{
+  "name": "minimal",
+  "colors": {
+    "primary":    "18181B",
+    "secondary":  "3F3F46",
+    "accent":     "DC2626",
+    "background": "FAFAFA",
+    "slideBg":    "FFFFFF",
+    "text":       "18181B",
+    "textLight":  "FAFAFA",
+    "textMuted":  "71717A",
+    "headerBg":   "F4F4F5",
+    "border":     "E4E4E7",
+    "closingBg":  "09090B",
+    "titleBg":    "FAFAFA"
+  },
+  "fonts": {
+    "heading": "Helvetica Neue, Arial, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC",
+    "body":    "Helvetica Neue, Arial, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC"
+  },
+  "chartColors": ["18181B", "71717A", "DC2626", "2563EB", "059669", "D97706"]
+}

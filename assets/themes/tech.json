@@ -1,0 +1,22 @@
+{
+  "name": "tech",
+  "colors": {
+    "primary":    "06B6D4",
+    "secondary":  "8B5CF6",
+    "accent":     "22D3EE",
+    "background": "0F172A",
+    "slideBg":    "0F172A",
+    "text":       "E2E8F0",
+    "textLight":  "F0F9FF",
+    "textMuted":  "94A3B8",
+    "headerBg":   "1E293B",
+    "border":     "334155",
+    "closingBg":  "020617",
+    "titleBg":    "0C4A6E"
+  },
+  "fonts": {
+    "heading": "Cascadia Code, Consolas, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC",
+    "body":    "Aptos, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC"
+  },
+  "chartColors": ["06B6D4", "8B5CF6", "22D3EE", "F472B6", "4ADE80", "FB923C"]
+}

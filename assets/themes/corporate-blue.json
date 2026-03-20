@@ -1,0 +1,22 @@
+{
+  "name": "corporate-blue",
+  "colors": {
+    "primary":    "1E40AF",
+    "secondary":  "1D4ED8",
+    "accent":     "F97316",
+    "background": "F1F5F9",
+    "slideBg":    "FFFFFF",
+    "text":       "1E293B",
+    "textLight":  "F1F5F9",
+    "textMuted":  "64748B",
+    "headerBg":   "DBEAFE",
+    "border":     "93C5FD",
+    "closingBg":  "1E3A5F",
+    "titleBg":    "EFF6FF"
+  },
+  "fonts": {
+    "heading": "Calibri, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC",
+    "body":    "Calibri, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC"
+  },
+  "chartColors": ["1E40AF", "3B82F6", "F97316", "10B981", "8B5CF6", "EC4899"]
+}

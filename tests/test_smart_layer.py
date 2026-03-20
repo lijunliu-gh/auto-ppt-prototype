@@ -79,10 +79,10 @@ class TestSchemaValidation:
 
 class TestInferenceFunctions:
     def test_infer_theme_tech(self):
-        assert infer_theme("A tech startup pitch") == "tech-modern"
+        assert infer_theme("A tech startup pitch") == "tech"
 
     def test_infer_theme_pitch(self):
-        assert infer_theme("investor pitch deck") == "pitch-bold"
+        assert infer_theme("investor pitch deck") == "dark-executive"
 
     def test_infer_theme_default(self):
         assert infer_theme("quarterly review") == "business-clean"

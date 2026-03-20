@@ -95,9 +95,11 @@ def handle_skill_request(request: Dict[str, Any], response_path: str | Path | No
         renderer_used = "python-pptx"
     else:
         # Resolve theme and inject into deck JSON for the JS renderer
+        # CLI --theme flag overrides the LLM-inferred theme
+        theme_name = request.get('theme') or deck.get('theme')
         deck['_theme'] = resolve_theme(
             template_path=None,
-            theme_name=deck.get('theme'),
+            theme_name=theme_name,
         )
         render_deck_via_node(deck, output_json, output_pptx, ROOT_DIR)
         renderer_used = "pptxgenjs"

@@ -14,6 +14,9 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 - Theme schema (`assets/themes/theme-schema.json`) defining colors, fonts, and chartColors
 - Default theme file (`assets/themes/business-clean.json`)
 - `_theme` and `_nativeCharts` added to deck-schema.json as optional properties
+- **5 Built-in Themes** (`assets/themes/`): `business-clean` (default), `corporate-blue`, `dark-executive`, `warm-modern`, `minimal`, `tech` — each with distinct color palette, fonts, and chart colors
+- **`--theme` CLI flag** (`auto_ppt_cli.py`): Override theme via command line (e.g., `--theme dark-executive`)
+- **Smart theme inference** (`smart_layer.py`): `infer_theme()` now maps to actual built-in themes based on prompt keywords (tech → `tech`, investor/board → `dark-executive`, training → `warm-modern`, internal → `minimal`, corporate → `corporate-blue`)
 
 ### Changed
 

@@ -191,9 +191,9 @@ The first five roadmap phases are complete. Phase 7 quality control is complete.
 
 ## Phase 10 — Built-in Professional Themes → v0.8.1
 
-**Status**: Planned (GitHub Issue #32)
+**Status**: Done (v0.7.2, GitHub Issue #32 closed)
 
-**Goal**: Ship 3-5 built-in themes for users without a brand template.
+**Goal**: Ship 5 built-in themes for users without a brand template.
 
 | Task | Description | Complexity |
 |------|-------------|------------|

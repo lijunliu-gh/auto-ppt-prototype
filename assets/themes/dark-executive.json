@@ -1,0 +1,22 @@
+{
+  "name": "dark-executive",
+  "colors": {
+    "primary":    "60A5FA",
+    "secondary":  "A78BFA",
+    "accent":     "FBBF24",
+    "background": "1E293B",
+    "slideBg":    "0F172A",
+    "text":       "E2E8F0",
+    "textLight":  "F8FAFC",
+    "textMuted":  "94A3B8",
+    "headerBg":   "334155",
+    "border":     "475569",
+    "closingBg":  "020617",
+    "titleBg":    "1E293B"
+  },
+  "fonts": {
+    "heading": "Aptos Display, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC",
+    "body":    "Aptos, Microsoft YaHei, PingFang SC, Meiryo, Noto Sans CJK SC"
+  },
+  "chartColors": ["60A5FA", "A78BFA", "FBBF24", "F87171", "34D399", "FB923C"]
+}

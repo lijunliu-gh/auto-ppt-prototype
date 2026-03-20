@@ -105,14 +105,16 @@ def infer_language(_: str) -> str:
 
 def infer_theme(prompt: str) -> str:
     lower = prompt.lower()
-    if "tech" in lower:
-        return "tech-modern"
-    if "investor" in lower or "pitch" in lower:
-        return "pitch-bold"
-    if "training" in lower:
-        return "education-bright"
-    if "internal" in lower:
-        return "internal-minimal"
+    if "tech" in lower or "engineering" in lower or "developer" in lower:
+        return "tech"
+    if "investor" in lower or "pitch" in lower or "board" in lower or "executive" in lower:
+        return "dark-executive"
+    if "training" in lower or "workshop" in lower or "onboarding" in lower:
+        return "warm-modern"
+    if "internal" in lower or "minimal" in lower or "simple" in lower:
+        return "minimal"
+    if "corporate" in lower or "formal" in lower or "enterprise" in lower:
+        return "corporate-blue"
     return "business-clean"
 
 
