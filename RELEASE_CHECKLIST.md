@@ -27,7 +27,7 @@ Files and folders that should normally be committed:
 - source files such as `*.py`, `*.js`, and `*.json`
 - repository docs such as `README.md`, `PRODUCT.*.md`, `USER_GUIDE.*.md`, and `INTEGRATION_GUIDE.*.md`
 - GitHub workflow and template files under `.github/`
-- `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `GITHUB_SETUP.md`
+- `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`
 - `Dockerfile`, `docker-compose.yml`, `.dockerignore`
 - `package.json` and `package-lock.json`
 - sample input files such as `sample-input.json`, `sample-agent-request.json`, and `sample-source-brief.md`

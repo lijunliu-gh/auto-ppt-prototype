@@ -8,11 +8,11 @@ Open-source PowerPoint backend for AI agents working from trusted sources, uploa
 
 Status: experimental prototype for early open-source integration.
 
-Latest release: [v0.6.1](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.1)
+Latest release: [v0.7.0](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.7.0)
 
 Quick links:
 
-- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.1)
+- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.7.0)
 - [Changelog](CHANGELOG.md)
 - [Roadmap](ROADMAP.md)
 - [Examples (EN)](EXAMPLES.en.md)
@@ -507,7 +507,6 @@ Those responsibilities should remain with the upstream agent or surrounding work
 - `EXAMPLES.ja.md` for Japanese examples
 - `USER_GUIDE.en.md` for user-oriented instructions
 - `INTEGRATION_GUIDE.en.md` for integration details
-- `GITHUB_SETUP.md` for repository metadata and release copy
 - `RELEASE_CHECKLIST.md` for the release checklist
 
 ## License

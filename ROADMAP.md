@@ -20,7 +20,7 @@ All four planned phases are complete. All 14 GitHub issues are closed. Phase 5 (
 | Pluggable LLM provider abstraction | ✅ Added in v0.3.1 |
 | Structured logging | ✅ Added in v0.3.1 |
 | Schema versioning | ✅ Added in v0.3.1 |
-| Unit tests (39 pytest cases) | ✅ Added in v0.3.1 (now 263 tests, 84% coverage as of v0.6.1) |
+| Unit tests (39 pytest cases) | ✅ Added in v0.3.1 (now 263 tests, 84% coverage as of v0.7.0) |
 | CLI / JSON Skill / HTTP Server | ✅ |
 
 ---
