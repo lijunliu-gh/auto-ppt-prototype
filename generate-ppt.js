@@ -174,7 +174,7 @@ function addBulletList(slide, bullets, area) {
   }
 
   slide.addText(
-    items.map((item) => ({ text: item, options: { bullet: { indent: 14 } } })),
+    items.map((item) => ({ text: item, options: { bullet: { indent: 14 }, ...(area.color ? { color: area.color } : {}) } })),
     {
       x: area.x,
       y: area.y,
@@ -182,7 +182,7 @@ function addBulletList(slide, bullets, area) {
       h: area.h,
       fontFace: 'Aptos',
       fontSize: area.fontSize || 18,
-      color: '1F2937',
+      color: area.color || '1F2937',
       valign: 'top',
       paraSpaceAfterPt: 10,
       breakLine: true
@@ -686,7 +686,7 @@ function renderClosingSlide(slide, deck, current) {
     color: 'CBD5E1'
   });
   if (Array.isArray(current.bullets) && current.bullets.length > 0) {
-    addBulletList(slide, current.bullets, { x: 1.0, y: 4.1, w: 5.8, h: 1.8, fontSize: 15 });
+    addBulletList(slide, current.bullets, { x: 1.0, y: 4.1, w: 5.8, h: 1.8, fontSize: 15, color: 'E2E8F0' });
   }
 }
 
