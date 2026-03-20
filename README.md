@@ -24,7 +24,7 @@ Quick links:
 
 ## Start Here
 
-- Want the fastest successful run: open `EXAMPLES.en.md` and run the first source-based example.
+- Want the fastest successful run: use the official `auto-ppt` CLI in the Quick Start section below.
 - Want to understand the input format: inspect `sample-deck-brief.md` and `sample-deck-brief.json`.
 - Want integration instead of manual CLI usage: start with `sample-agent-request.json` or `sample-http-request.json`.
 
@@ -120,17 +120,19 @@ npm install
 python -m pip install -r requirements.txt
 ```
 
-### 1. Local first run
+### 1. Official CLI first run
 
 ```bash
-python py-generate-from-prompt.py --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+./auto-ppt generate --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
 ```
 
 ### 2. Revise the generated deck
 
 ```bash
-python py-revise-deck.py --mock --deck output/py-generated-deck.json --prompt "Compress this deck to 6 slides and make it more conclusion-driven"
+./auto-ppt revise --mock --deck output/py-generated-deck.json --prompt "Compress this deck to 6 slides and make it more conclusion-driven"
 ```
+
+The legacy scripts (`py-generate-from-prompt.py`, `py-revise-deck.py`) remain available, but `auto-ppt` is now the official user-facing CLI entrypoint.
 
 ### 3. File-based agent integration
 

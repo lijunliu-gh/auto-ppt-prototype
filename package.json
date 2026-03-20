@@ -4,11 +4,16 @@
   "description": "Python-first AI-agent-ready PowerPoint workflow for planning, revising, validating, and rendering PPTX decks.",
   "license": "MIT",
   "main": "generate-ppt.js",
+  "bin": {
+    "auto-ppt": "./auto-ppt"
+  },
   "engines": {
     "node": ">=18"
   },
   "scripts": {
     "generate": "node generate-ppt.js sample-input.json output/sample-deck.pptx",
+    "cli:generate:mock": "./auto-ppt generate --mock --prompt \"Create an 8-slide AI product strategy deck for executives in a professional tone\"",
+    "cli:revise:mock": "./auto-ppt revise --mock --deck output/py-generated-deck.json --prompt \"Compress this deck, make it more conclusion-driven, and emphasize the execution plan\"",
     "generate:prompt": "python py-generate-from-prompt.py --prompt \"Create an 8-slide AI product strategy deck for executives in a professional tone\"",
     "generate:mock": "python py-generate-from-prompt.py --mock --prompt \"Create an 8-slide AI product strategy deck for executives in a professional tone\"",
     "generate:source": "python py-generate-from-prompt.py --mock --prompt \"Create an 8-slide AI workspace strategy deck for executives\" --source sample-source-brief.md",
