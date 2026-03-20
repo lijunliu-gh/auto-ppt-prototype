@@ -20,6 +20,7 @@ from python_backend.llm_provider import (
     OpenAIProvider,
     AnthropicProvider,
     GeminiProvider,
+    OpenRouterProvider,
     _detect_provider_class,
     get_default_provider,
 )
@@ -198,6 +199,64 @@ class TestGeminiProvider:
             provider.chat("s", "u")
 
 
+class TestOpenRouterProvider:
+    @patch("importlib.import_module")
+    def test_init_requires_api_key(self, mock_import):
+        mock_import.return_value = MagicMock()
+        with patch.dict(os.environ, {}, clear=True):
+            os.environ.pop("OPENROUTER_API_KEY", None)
+            with pytest.raises(RuntimeError, match="OPENROUTER_API_KEY"):
+                OpenRouterProvider()
+
+    @patch("importlib.import_module")
+    def test_init_with_key(self, mock_import):
+        mock_openai = MagicMock()
+        mock_import.return_value = mock_openai
+        provider = OpenRouterProvider(api_key="test-key", model="openai/gpt-4.1-mini")
+        assert provider._model == "openai/gpt-4.1-mini"
+        mock_openai.OpenAI.assert_called_once_with(
+            api_key="test-key",
+            base_url="https://openrouter.ai/api/v1",
+        )
+
+    @patch("importlib.import_module")
+    def test_init_default_model(self, mock_import):
+        mock_import.return_value = MagicMock()
+        with patch.dict(os.environ, {}, clear=True):
+            os.environ.pop("OPENAI_MODEL", None)
+            provider = OpenRouterProvider(api_key="k")
+            assert provider._model == "openai/gpt-4.1-mini"
+
+    @patch("importlib.import_module")
+    def test_chat_success(self, mock_import):
+        mock_openai = MagicMock()
+        mock_import.return_value = mock_openai
+        mock_client = mock_openai.OpenAI.return_value
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock(message=MagicMock(content='{"deckTitle":"Test"}'))]
+        mock_client.chat.completions.create.return_value = mock_response
+
+        provider = OpenRouterProvider(api_key="k", model="openai/gpt-4.1-mini")
+        result = provider.chat("system", "user")
+        assert result == '{"deckTitle":"Test"}'
+        call_kwargs = mock_client.chat.completions.create.call_args[1]
+        assert call_kwargs["messages"][0]["role"] == "system"
+        assert call_kwargs["temperature"] == 0.3
+
+    @patch("importlib.import_module")
+    def test_chat_no_content_raises(self, mock_import):
+        mock_openai = MagicMock()
+        mock_import.return_value = mock_openai
+        mock_client = mock_openai.OpenAI.return_value
+        mock_response = MagicMock()
+        mock_response.choices = []
+        mock_client.chat.completions.create.return_value = mock_response
+
+        provider = OpenRouterProvider(api_key="k")
+        with pytest.raises(RuntimeError, match="no content"):
+            provider.chat("s", "u")
+
+
 class TestProviderFactory:
     def test_detect_anthropic(self):
         assert _detect_provider_class("claude-sonnet-4-20250514") is AnthropicProvider
@@ -226,6 +285,25 @@ class TestProviderFactory:
         mock_import.return_value = mock_genai
         provider = get_default_provider()
         assert isinstance(provider, GeminiProvider)
+
+    @patch.dict(os.environ, {"OPENROUTER_API_KEY": "or-test", "OPENAI_MODEL": "anthropic/claude-sonnet-4-20250514"})
+    @patch("importlib.import_module")
+    def test_get_default_provider_openrouter(self, mock_import):
+        mock_openai = MagicMock()
+        mock_import.return_value = mock_openai
+        provider = get_default_provider()
+        assert isinstance(provider, OpenRouterProvider)
+        assert provider._model == "anthropic/claude-sonnet-4-20250514"
+
+    @patch.dict(os.environ, {"OPENROUTER_API_KEY": "or-test"}, clear=False)
+    @patch("importlib.import_module")
+    def test_openrouter_takes_priority(self, mock_import):
+        """When OPENROUTER_API_KEY is set, OpenRouter wins even if OPENAI_API_KEY is also set."""
+        mock_openai = MagicMock()
+        mock_import.return_value = mock_openai
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "also-set", "OPENROUTER_API_KEY": "or-test"}):
+            provider = get_default_provider()
+            assert isinstance(provider, OpenRouterProvider)
 
 
 # ══════════════════════════════════════════════════════════════════════

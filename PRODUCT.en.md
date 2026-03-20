@@ -54,10 +54,10 @@ For serious use cases, the system should rely on:
 - MCP Server for Claude Desktop, Cursor, and Windsurf (`create_deck`, `revise_deck`)
 - agent-callable JSON request and response flow
 - local HTTP skill endpoint
-- LLM provider abstraction (OpenAI, Claude, Gemini, Qwen, DeepSeek, GLM, MiniMax)
+- LLM provider abstraction (OpenAI, OpenRouter, Claude, Gemini, Qwen, DeepSeek, GLM, MiniMax)
 - image asset pipeline: local image insertion, URL images, placeholder protocol for multi-agent collaboration
 - security: path traversal prevention, SSRF blocking, file size limits, subprocess timeout, image extension whitelist
-- 255 automated tests (84% coverage: unit, MCP server, MCP integration, template engine, image handler, cross-module)
+- 263 automated tests (84% coverage: unit, MCP server, MCP integration, template engine, image handler, cross-module)
 - API versioning (`apiVersion: "1.0"`) in all requests and responses
 - CI matrix: pytest on Python 3.10/3.11/3.12 + Node.js 18/20/22 smoke tests
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-Current version: **v0.6.0**
+Current version: **v0.6.1**
 
 This roadmap reflects the project's current capabilities, known gaps, and planned evolution from experimental prototype to a production-grade AI-agent PowerPoint backend.
 
@@ -20,7 +20,7 @@ All four planned phases are complete. All 14 GitHub issues are closed.
 | Pluggable LLM provider abstraction | ✅ Added in v0.3.1 |
 | Structured logging | ✅ Added in v0.3.1 |
 | Schema versioning | ✅ Added in v0.3.1 |
-| Unit tests (39 pytest cases) | ✅ Added in v0.3.1 (now 255 tests, 84% coverage as of v0.6.0) |
+| Unit tests (39 pytest cases) | ✅ Added in v0.3.1 (now 263 tests, 84% coverage as of v0.6.1) |
 | CLI / JSON Skill / HTTP Server | ✅ |
 
 ---

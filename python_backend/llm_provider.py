@@ -16,6 +16,10 @@ Quick setup by model family::
     export GOOGLE_API_KEY="..."
     export OPENAI_MODEL="gemini-2.5-pro"
 
+    # OpenRouter (unified gateway — access 200+ models with one key)
+    export OPENROUTER_API_KEY="sk-or-..."
+    export OPENAI_MODEL="openai/gpt-4.1-mini"   # or anthropic/claude-sonnet-4-20250514, etc.
+
     # Qwen (通义千问)
     export OPENAI_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
     export OPENAI_API_KEY="sk-..." && export OPENAI_MODEL="qwen-plus"
@@ -213,6 +217,61 @@ class GeminiProvider:
 
 
 # ---------------------------------------------------------------------------
+# OpenRouter (unified LLM gateway — 200+ models with one API key)
+# ---------------------------------------------------------------------------
+
+
+class OpenRouterProvider:
+    """Provider backed by OpenRouter's OpenAI-compatible API.
+
+    OpenRouter is a unified gateway that routes to 200+ models (OpenAI,
+    Anthropic, Google, Meta, Mistral, etc.) using a single API key.
+
+    Set ``OPENROUTER_API_KEY`` to enable.  Model names use the
+    ``provider/model`` format, e.g. ``openai/gpt-4.1-mini``.
+    """
+
+    _OPENROUTER_BASE = "https://openrouter.ai/api/v1"
+
+    def __init__(
+        self,
+        api_key: str | None = None,
+        model: str | None = None,
+    ) -> None:
+        OpenAI = importlib.import_module("openai").OpenAI
+
+        resolved_key = api_key or os.getenv("OPENROUTER_API_KEY")
+        if not resolved_key:
+            raise RuntimeError(
+                "OPENROUTER_API_KEY is not set. "
+                "Use mock mode for offline testing or configure the API key."
+            )
+        self._client: Any = OpenAI(
+            api_key=resolved_key,
+            base_url=self._OPENROUTER_BASE,
+        )
+        self._model = model or os.getenv("OPENAI_MODEL") or "openai/gpt-4.1-mini"
+
+    def chat(self, system_prompt: str, user_prompt: str) -> str:
+        logger.info("Requesting deck JSON from OpenRouter model=%s", self._model)
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+        params: dict[str, Any] = {
+            "model": self._model,
+            "response_format": {"type": "json_object"},
+            "messages": messages,
+            "temperature": 0.3,
+        }
+        response = self._client.chat.completions.create(**params)
+        content = response.choices[0].message.content if response.choices else None
+        if not content:
+            raise RuntimeError("Model returned no content.")
+        return str(content)
+
+
+# ---------------------------------------------------------------------------
 # Provider factory
 # ---------------------------------------------------------------------------
 
@@ -233,11 +292,17 @@ def get_default_provider() -> LLMProvider:
     """Return the best provider based on environment variables.
 
     Detection order:
-    1. Read ``OPENAI_MODEL`` (or default ``gpt-4.1-mini``)
-    2. If model starts with ``claude`` -> AnthropicProvider
-    3. If model starts with ``gemini`` -> GeminiProvider
-    4. Otherwise -> OpenAIProvider (works for OpenAI, Qwen, DeepSeek, GLM, MiniMax, etc.)
+    1. If ``OPENROUTER_API_KEY`` is set -> OpenRouterProvider
+    2. Read ``OPENAI_MODEL`` (or default ``gpt-4.1-mini``)
+    3. If model starts with ``claude`` -> AnthropicProvider
+    4. If model starts with ``gemini`` -> GeminiProvider
+    5. Otherwise -> OpenAIProvider (works for OpenAI, Qwen, DeepSeek, GLM, MiniMax, etc.)
     """
+    if os.getenv("OPENROUTER_API_KEY"):
+        model = os.getenv("OPENAI_MODEL") or "openai/gpt-4.1-mini"
+        logger.info("Auto-detected provider OpenRouterProvider for model=%s", model)
+        return OpenRouterProvider(model=model)
+
     model = os.getenv("OPENAI_MODEL") or "gpt-4.1-mini"
     cls = _detect_provider_class(model)
     logger.info("Auto-detected provider %s for model=%s", cls.__name__, model)

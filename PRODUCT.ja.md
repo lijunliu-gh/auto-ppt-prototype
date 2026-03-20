@@ -50,10 +50,10 @@ Auto PPT Prototype は、AI エージェント向けのオープンソース Pow
 - MCP Server（Claude Desktop、Cursor、Windsurf 対応、`create_deck`・`revise_deck`）
 - エージェントから呼び出せる JSON request / response フロー
 - ローカル HTTP skill エンドポイント
-- LLM プロバイダー抽象（OpenAI、Claude、Gemini、Qwen、DeepSeek、GLM、MiniMax）
+- LLM プロバイダー抽象（OpenAI、OpenRouter、Claude、Gemini、Qwen、DeepSeek、GLM、MiniMax）
 - 画像アセットパイプライン: ローカル画像挿入、URL 画像、マルチエージェント連携用プレースホルダープロトコル
 - セキュリティ: パストラバーサル防止、SSRF ブロック、ファイルサイズ制限、サブプロセスタイムアウト、画像拡張子ホワイトリスト
-- 255 件の自動テスト（84% カバレッジ: ユニット、MCP サーバー、MCP 統合、テンプレートエンジン、画像ハンドラー、クロスモジュール）
+- 263 件の自動テスト（84% カバレッジ: ユニット、MCP サーバー、MCP 統合、テンプレートエンジン、画像ハンドラー、クロスモジュール）
 - API バージョニング（`apiVersion: "1.0"`）をすべてのリクエストとレスポンスに含む
 - CI マトリックス: Python 3.10/3.11/3.12 での pytest + Node.js 18/20/22 スモークテスト
 

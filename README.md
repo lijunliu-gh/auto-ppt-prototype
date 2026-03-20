@@ -8,11 +8,11 @@ Open-source PowerPoint backend for AI agents working from trusted sources, uploa
 
 Status: experimental prototype for early open-source integration.
 
-Latest release: [v0.6.0](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.0)
+Latest release: [v0.6.1](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.1)
 
 Quick links:
 
-- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.0)
+- [Release notes](https://github.com/lijunliu-gh/auto-ppt-prototype/releases/tag/v0.6.1)
 - [Changelog](CHANGELOG.md)
 - [Roadmap](ROADMAP.md)
 - [Examples (EN)](EXAMPLES.en.md)
@@ -87,7 +87,7 @@ The current implementation supports:
 4. JSON-schema validation before rendering
 5. Agent-callable CLI, JSON skill, and local HTTP service entrypoints
 6. PPTX rendering through the Node renderer
-7. Pluggable LLM provider layer (OpenAI by default, extensible to other models)
+7. Pluggable LLM provider layer (OpenAI, OpenRouter, Claude, Gemini, and OpenAI-compatible endpoints)
 8. Security hardening: path traversal protection, SSRF blocking, file size limits, subprocess timeout
 9. Structured logging across the Python backend
 10. Schema versioning for forward-compatible deck migration
@@ -235,7 +235,7 @@ auto-ppt-prototype/
 |   |-- pptx_renderer.py      # python-pptx renderer (brand template mode)
 |   |-- template_engine.py    # .pptx template parser (layouts, placeholders, theme)
 |   |-- image_handler.py      # image asset pipeline (classify, resolve, security)
-|   `-- llm_provider.py       # LLM provider abstraction (OpenAI/Claude/Gemini)
+|   `-- llm_provider.py       # LLM provider abstraction (OpenAI/OpenRouter/Claude/Gemini)
 |-- mcp_server.py              # MCP server (Claude Desktop, Cursor, Windsurf)
 |-- py-generate-from-prompt.py
 |-- py-revise-deck.py
@@ -304,7 +304,7 @@ The practical split is:
 
 ## Testing
 
-Run the unit test suite (255 tests, 84% coverage):
+Run the unit test suite (263 tests, 84% coverage):
 
 ```bash
 python -m pytest tests/ -v

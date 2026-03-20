@@ -306,6 +306,10 @@ class TestLLMProvider:
         from python_backend.llm_provider import GeminiProvider
         assert hasattr(GeminiProvider, "chat")
 
+    def test_openrouter_provider_class_exists(self):
+        from python_backend.llm_provider import OpenRouterProvider
+        assert hasattr(OpenRouterProvider, "chat")
+
 
 # ── Source Loader ─────────────────────────────────────────────────────────────
 

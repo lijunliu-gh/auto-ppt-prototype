@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project follows Semantic Versioning while it remains a prototype.
 
+## [0.6.1] - 2026-03-20
+
+### Added
+
+- **OpenRouter Provider** (`python_backend/llm_provider.py`): New `OpenRouterProvider` class — access 200+ models (OpenAI, Anthropic, Google, Meta, Mistral, etc.) through a single API key via OpenRouter's OpenAI-compatible gateway
+- OpenRouter auto-detection: when `OPENROUTER_API_KEY` is set, it takes priority over direct provider keys
+- `.env.example` updated with `OPENROUTER_API_KEY`
+- 8 new tests for OpenRouterProvider (init, chat, error handling, factory priority) — **263 total**
+
+### Changed
+
+- Provider detection order: OpenRouter (if key set) → model-name-based detection (Claude → Anthropic, Gemini → Google, otherwise → OpenAI)
+- `llm_provider.py` docstring updated with OpenRouter setup example
+
 ## [0.6.0] - 2026-03-19
 
 ### Added
