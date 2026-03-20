@@ -2,9 +2,9 @@
 
 Current version: **v0.7.0**
 
-This roadmap reflects the project's current capabilities, known gaps, and planned evolution from experimental prototype to a production-grade AI-agent PowerPoint backend.
+This roadmap reflects the project's current capabilities, known gaps, and planned evolution from experimental prototype to a productized AI-agent PowerPoint backend.
 
-All four planned phases are complete. All 14 GitHub issues are closed. Phase 5 (v0.7.0) adds deployment packaging and chart determinism improvements.
+The first five roadmap phases are complete. All 14 original GitHub issues are closed. Phase 5 (v0.7.0) added deployment packaging and chart determinism improvements. The next roadmap focus is first-run product experience: make the project immediately usable for someone who only wants to configure an API key and generate a deck.
 
 ---
 
@@ -117,6 +117,75 @@ All four planned phases are complete. All 14 GitHub issues are closed. Phase 5 (
 
 ---
 
+## Phase 6 — CLI-First Immediate Experience → v0.8.0
+
+**Status**: Planned
+
+**Goal**: Give first-time users a single official entrypoint that can generate a PPT after minimal setup.
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| Official CLI entrypoint | Introduce a single `auto-ppt` command instead of exposing multiple top-level scripts as the primary user path | Medium |
+| `auto-ppt init` | Interactive setup for provider selection, API key wiring, default model, and output directory | Medium |
+| `auto-ppt generate` / `revise` | Unified user-facing commands for create / revise flows with predictable flags and output paths | Medium |
+| User-grade error messages | Replace raw traceback-first UX with actionable setup and retry guidance | Low |
+| 3-minute quickstart | Rewrite top-level docs around the shortest successful path for first-time use | Low |
+
+**Why next**: The biggest remaining gap is no longer backend capability; it is first-run success rate. The project already has multiple working execution paths, but they are too fragmented for someone encountering the tool for the first time.
+
+---
+
+## Phase 7 — Real-World Output Quality Control → v0.8.1
+
+**Status**: Planned
+
+**Goal**: Make generated decks consistently closer to what a real user expects, not just syntactically valid.
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| Golden prompt set | Build 10-20 representative user scenarios (strategy, product, news analysis, source-grounded summary, executive review) | Low |
+| Quality scorecard | Define pass/fail criteria for structure, audience fit, source grounding, chart usage, and revision usefulness | Medium |
+| Planning guardrails | Add explicit controls for audience, tone, page budget, and slide structure | Medium |
+| Revision loop hardening | Improve revise prompts and heuristics so users can reliably turn a first draft into a usable deck | Medium |
+
+**Why after Phase 6**: A simpler entrypoint only matters if the resulting deck quality is stable enough for repeated use. This phase converts "it works" into "it usually gives me something close to what I wanted".
+
+---
+
+## Phase 8 — Packaging and Distribution → v0.9.0
+
+**Status**: Planned
+
+**Goal**: Reduce installation friction so users can run the tool without understanding the Python + Node implementation split.
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| Installable CLI | Publish a clean install path such as `pipx` or `uvx` for the official CLI | Medium |
+| Bootstrap assets | Provide `.env.example`, provider presets, and install-time validation | Low |
+| Docker-first quickstart | Keep Docker as the zero-dependency fallback path for local or team deployment | Low |
+| Output UX polish | Improve default output location, naming, and success messages for generated artifacts | Low |
+
+**Why here**: Once the CLI path and deck quality are coherent, packaging work has a stable product surface to wrap.
+
+---
+
+## Phase 9 — Minimal End-User UI → v1.0.0
+
+**Status**: Future
+
+**Goal**: Expose the core generate/revise loop to non-command-line users through the thinnest possible interface.
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| Minimal web UI | Prompt input, source upload, optional audience/page controls, and PPTX download | Medium |
+| Job status feedback | Show progress and final artifact locations clearly | Medium |
+| Template/source affordances | Basic upload flows for templates and supporting source documents | Medium |
+| Reuse CLI core | UI must call the same stable core interfaces introduced in Phase 6 rather than fork product logic | Low |
+
+**Why later**: UI should package a stable workflow, not hide an unstable one. The CLI and quality-control phases need to define the correct product semantics first.
+
+---
+
 ## Ongoing (Across All Phases)
 
 | Task | Description |
@@ -138,6 +207,10 @@ v0.5.0   Brand template engine     ← Usability breakthrough         ✅
 v0.5.1   Image pipeline            ← Ecosystem expansion            ✅
 v0.6.0   API versioning + CI + coverage ← All issues resolved       ✅
 v0.7.0   Docker + chart repair + remote MCP ← Deployment-ready      ✅
+v0.8.0   CLI-first onboarding      ← First-run user success         Planned
+v0.8.1   Quality control           ← Real-world output reliability  Planned
+v0.9.0   Packaging / distribution  ← Easier install and setup       Planned
+v1.0.0   Minimal UI                ← Non-CLI usability              Future
 ```
 
 ---
