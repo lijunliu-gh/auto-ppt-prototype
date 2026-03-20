@@ -24,7 +24,7 @@ Quick links:
 
 ## Start Here
 
-- Want the fastest successful run: use the official `auto-ppt` CLI in the Quick Start section below.
+- New here and want a PPT in a few minutes: start with the 3-minute Quick Start below.
 - Want to understand the input format: inspect `sample-deck-brief.md` and `sample-deck-brief.json`.
 - Want integration instead of manual CLI usage: start with `sample-agent-request.json` or `sample-http-request.json`.
 
@@ -36,6 +36,7 @@ Architecture summary:
 
 ## Contents
 
+- [3-Minute Quick Start](#3-minute-quick-start)
 - [Core Positioning](#core-positioning)
 - [What It Does](#what-it-does)
 - [Quick Start](#quick-start)
@@ -94,6 +95,56 @@ The current implementation supports:
 11. MCP Server for native integration with Claude Desktop, Cursor, Windsurf, and other MCP-compatible environments
 12. API versioning (`apiVersion: "1.0"`) in all requests and responses
 
+## 3-Minute Quick Start
+
+If this is your first time using the project, do only these steps.
+
+### 1. Install dependencies
+
+```bash
+npm install
+python -m pip install -r requirements.txt
+```
+
+### 2. Initialize local config
+
+```bash
+./auto-ppt init
+```
+
+This writes a local `.env` file with your provider key, default model, and default output directory.
+
+If you only want to prove the pipeline works before configuring a real model, you can skip `init` and use `--mock` in the next step.
+
+### 3. Generate your first deck
+
+Mock mode, fastest proof that the repo works:
+
+```bash
+./auto-ppt generate --mock --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+```
+
+Real model, after `init`:
+
+```bash
+./auto-ppt generate --prompt "Create an 8-slide AI workspace strategy deck for executives" --source sample-source-brief.md
+```
+
+### 4. Revise the generated deck
+
+```bash
+./auto-ppt revise --deck output/py-generated-deck.json --prompt "Compress this deck to 6 slides and make it more conclusion-driven"
+```
+
+What you should expect after a successful run:
+
+- `output/py-generated-deck.json`
+- `output/py-generated-deck.pptx`
+- `output/py-revised-deck.json`
+- `output/py-revised-deck.pptx`
+
+After this first run, keep reading if you need MCP, HTTP service, templates, Docker, or deeper integration.
+
 ## Why The Split Exists
 
 The Python layer is the right place for future intelligence work:
@@ -112,6 +163,8 @@ That gives the project a clear boundary:
 - Node owns rendering
 
 ## Quick Start
+
+This section lists the main entrypoints after your first successful run.
 
 Install dependencies:
 
@@ -139,7 +192,7 @@ Then generate your first deck:
 ### 2. Revise the generated deck
 
 ```bash
-./auto-ppt revise --mock --deck output/py-generated-deck.json --prompt "Compress this deck to 6 slides and make it more conclusion-driven"
+./auto-ppt revise --deck output/py-generated-deck.json --prompt "Compress this deck to 6 slides and make it more conclusion-driven"
 ```
 
 The legacy scripts (`py-generate-from-prompt.py`, `py-revise-deck.py`) remain available, but `auto-ppt` is now the official user-facing CLI entrypoint.

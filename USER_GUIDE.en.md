@@ -31,9 +31,20 @@ The current version is a good fit for:
 
 ## What To Use By Default
 
-**If you use Claude Desktop, Cursor, or Windsurf**, MCP is the fastest way to get started. Add the server to your MCP config and ask it to create a deck directly from conversation.
+**If you are new to the repository**, use the official CLI first:
 
-Otherwise, use the Python entrypoints:
+```bash
+./auto-ppt init
+./auto-ppt generate --mock --prompt "Create an 8-slide strategy deck" --source sample-source-brief.md
+```
+
+This is the shortest path to proving the project works end-to-end.
+
+**If you use Claude Desktop, Cursor, or Windsurf**, MCP is the fastest integration path after that. Add the server to your MCP config and ask it to create a deck directly from conversation.
+
+The legacy Python entrypoints still exist, but `auto-ppt` is now the official user-facing CLI.
+
+If you need the older commands directly, you can still use:
 
 ```bash
 npm run generate:source
