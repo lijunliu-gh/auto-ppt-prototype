@@ -90,6 +90,22 @@ python py-generate-from-prompt.py --mock --prompt "Create an 8-slide strategy de
 npm run revise:mock
 ```
 
+### 可視 QA（qa-visual）
+
+生成後または改訂後に実行し、共有前にレイアウト上のリスクを検出します。
+
+```bash
+./auto-ppt qa-visual output/py-generated-deck.pptx --strict
+```
+
+このコマンドは次を実行します。
+
+- 構造ベースの可視ヒューリスティクス検査（端の詰まり、重なり候補、空白スライド）
+- `soffice` と `pdftoppm` が利用可能な場合はスライド画像を書き出し
+- `<deck-name>-qa/` 配下に `visual-qa-report.json` を出力
+
+CI では `--strict` を使うと、問題検出時に非 0 で終了できます。
+
 ### 5. 別のエージェントから skill として使う
 
 ```bash

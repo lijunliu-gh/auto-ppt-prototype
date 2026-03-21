@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project follows Semantic Versioning while it remains a prototype.
 
+## [Unreleased]
+
+### Added
+
+- **Visual QA CLI command** (`auto_ppt_cli.py`, `python_backend/visual_qa.py`): new `./auto-ppt qa-visual <deck.pptx>` workflow that runs structural visual heuristics (edge crowding, overlap candidates, empty slides), writes `visual-qa-report.json`, and optionally exports slide images when `soffice` + `pdftoppm` are available
+- `--strict` mode for `qa-visual` to return non-zero on detected issues (CI-friendly quality gate)
+- CLI tests for `qa-visual` command parsing and strict behavior (`tests/test_auto_ppt_cli.py`)
+
+### Changed
+
+- README quick start now includes `qa-visual` usage
+- User guides (EN / ZH-CN / JA) now document visual QA usage and expected output artifacts
+
 ## [0.7.2] - 2026-03-21
 
 ### Added

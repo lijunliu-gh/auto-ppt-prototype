@@ -117,6 +117,22 @@ Typical revision requests include:
 npm run revise:mock
 ```
 
+### Visual QA for generated PPTX
+
+Use this after generation or revision to catch common visual risks before sharing slides.
+
+```bash
+./auto-ppt qa-visual output/py-generated-deck.pptx --strict
+```
+
+What this command does:
+
+- runs structural visual heuristics (edge crowding, overlap candidates, empty slides)
+- exports slide images when `soffice` and `pdftoppm` are available
+- writes `visual-qa-report.json` under `<deck-name>-qa/`
+
+In CI, use `--strict` to fail the step when any issue is detected.
+
 ### 5. Use it as a skill from another agent
 
 Use this when another workflow needs a request and response file contract.

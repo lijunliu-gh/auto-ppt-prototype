@@ -21,6 +21,11 @@ class TestParseArgs:
         assert args.command == "generate"
         assert args.prompt == "Create a deck"
 
+    def test_qa_visual_does_not_require_prompt(self):
+        args = auto_ppt_cli.parse_args(["qa-visual", "sample.pptx"])
+        assert args.command == "qa-visual"
+        assert args.pptx == "sample.pptx"
+
     def test_prompt_file_populates_prompt(self, tmp_path):
         prompt_file = tmp_path / "prompt.md"
         prompt_file.write_text("Build a market update deck", encoding="utf-8")
@@ -196,3 +201,52 @@ class TestMain:
         assert exit_code == 1
         assert "run npm install" in error.lower()
         assert "Node.js 18+" in error
+
+    def test_main_runs_visual_qa_command(self, monkeypatch, capsys, tmp_path):
+        pptx_path = tmp_path / "deck.pptx"
+        pptx_path.write_bytes(b"fake")
+
+        def fake_run_visual_qa(pptx, output_dir=None, dpi=150, margin_in=0.3):
+            return {
+                "pptxPath": str(pptx),
+                "reportPath": str(tmp_path / "visual-qa-report.json"),
+                "imagesDir": str(tmp_path / "images"),
+                "images": [],
+                "notes": ["Skipped image export: `soffice` is not available in PATH."],
+                "summary": {
+                    "slideCount": 4,
+                    "totalIssues": 2,
+                    "highRiskSlides": [3],
+                },
+            }
+
+        monkeypatch.setattr(auto_ppt_cli, "run_visual_qa", fake_run_visual_qa)
+        exit_code = auto_ppt_cli.main(["qa-visual", str(pptx_path)])
+        out = capsys.readouterr().out
+
+        assert exit_code == 0
+        assert "Report:" in out
+        assert "Issues: 2" in out
+
+    def test_main_runs_visual_qa_command_strict_mode(self, monkeypatch, tmp_path):
+        pptx_path = tmp_path / "deck.pptx"
+        pptx_path.write_bytes(b"fake")
+
+        def fake_run_visual_qa(pptx, output_dir=None, dpi=150, margin_in=0.3):
+            return {
+                "pptxPath": str(pptx),
+                "reportPath": str(tmp_path / "visual-qa-report.json"),
+                "imagesDir": str(tmp_path / "images"),
+                "images": [],
+                "notes": [],
+                "summary": {
+                    "slideCount": 4,
+                    "totalIssues": 1,
+                    "highRiskSlides": [],
+                },
+            }
+
+        monkeypatch.setattr(auto_ppt_cli, "run_visual_qa", fake_run_visual_qa)
+        exit_code = auto_ppt_cli.main(["qa-visual", str(pptx_path), "--strict"])
+
+        assert exit_code == 1

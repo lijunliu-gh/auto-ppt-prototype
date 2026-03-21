@@ -30,9 +30,14 @@ npm install && python -m pip install -r requirements.txt
 ./auto-ppt revise \
   --deck output/py-generated-deck.json \
   --prompt "Compress to 6 slides, make it more conclusion-driven"
+
+# 6. Visual QA (heuristics + optional slide image export)
+./auto-ppt qa-visual output/py-generated-deck.pptx --strict
 ```
 
 Output: `output/py-generated-deck.json` + `.pptx`, `output/py-revised-deck.json` + `.pptx`.
+
+`qa-visual` writes a JSON report (default: alongside PPTX in `<deck-name>-qa/visual-qa-report.json`) and attempts to export slide images when `soffice` and `pdftoppm` are available.
 
 ## What It Does
 

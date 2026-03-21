@@ -7,6 +7,7 @@ from pathlib import Path
 
 from python_backend import ROOT_DIR, read_text_file, resolve_path
 from python_backend.skill_api import handle_skill_request
+from python_backend.visual_qa import run_visual_qa
 
 DEFAULT_CREATE_JSON = Path("output") / "py-generated-deck.json"
 DEFAULT_CREATE_PPTX = Path("output") / "py-generated-deck.pptx"
@@ -83,6 +84,25 @@ def create_parser() -> argparse.ArgumentParser:
     score = subparsers.add_parser("score", help="Run quality scorecard on a deck JSON file")
     score.add_argument("deck", help="Path to the deck JSON file to score")
 
+    qa_visual = subparsers.add_parser(
+        "qa-visual",
+        help="Run visual QA heuristics on a PPTX and optionally export slide images",
+    )
+    qa_visual.add_argument("pptx", help="Path to the PPTX file to inspect")
+    qa_visual.add_argument("--output-dir", help="Directory for QA artifacts and report")
+    qa_visual.add_argument("--dpi", type=int, default=150, help="Image export DPI (default: 150)")
+    qa_visual.add_argument(
+        "--margin",
+        type=float,
+        default=0.3,
+        help="Minimum margin heuristic in inches for edge checks (default: 0.3)",
+    )
+    qa_visual.add_argument(
+        "--strict",
+        action="store_true",
+        help="Return non-zero exit code when issues are detected",
+    )
+
     return parser
 
 
@@ -109,7 +129,7 @@ def _add_common_generation_args(parser: argparse.ArgumentParser) -> None:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = create_parser()
     args = parser.parse_args(argv)
-    if args.command in ("init", "score"):
+    if args.command in ("init", "score", "qa-visual"):
         return args
     if args.prompt_file:
         args.prompt = read_text_file(resolve_path(args.prompt_file))
@@ -439,6 +459,33 @@ def run_score(args: argparse.Namespace) -> int:
     return 0 if result["pass"] else 1
 
 
+def run_qa_visual(args: argparse.Namespace) -> int:
+    report = run_visual_qa(
+        args.pptx,
+        output_dir=args.output_dir,
+        dpi=int(args.dpi),
+        margin_in=float(args.margin),
+    )
+
+    summary = report["summary"]
+    print(f"PPTX: {report['pptxPath']}")
+    print(f"Report: {report['reportPath']}")
+    print(f"Slides: {summary['slideCount']}")
+    print(f"Issues: {summary['totalIssues']}")
+    if report["images"]:
+        print(f"Images: {len(report['images'])} exported to {report['imagesDir']}")
+    else:
+        print("Images: none exported")
+    if report["notes"]:
+        print("Notes:")
+        for note in report["notes"]:
+            print(f"  - {note}")
+
+    if args.strict and summary["totalIssues"] > 0:
+        return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     try:
         load_local_env()
@@ -447,6 +494,8 @@ def main(argv: list[str] | None = None) -> int:
             return run_init(args)
         if args.command == "score":
             return run_score(args)
+        if args.command == "qa-visual":
+            return run_qa_visual(args)
         validate_runtime_inputs(args)
         response = handle_skill_request(build_request(args), response_path=None)
     except Exception as error:  # noqa: BLE001
