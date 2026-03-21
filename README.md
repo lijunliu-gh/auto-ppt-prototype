@@ -7,8 +7,19 @@
 [![Node](https://img.shields.io/badge/node-18%2B-green)](package.json)
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED?logo=docker&logoColor=white)](Dockerfile)
 
-Open-source PowerPoint generation engine for AI agents.
-Give it a prompt, optional source files, and an LLM key — get back a validated `.pptx`.
+Open-source PowerPoint generation engine — built to be called by AI agents.
+
+Give your agent (Claude Desktop, Cursor, Windsurf, or any MCP-compatible host) the ability to create and revise `.pptx` decks from natural language. Also works as a standalone CLI for developers.
+
+### Who is this for?
+
+| You are… | How you use it |
+|:---|:---|
+| **AI agent builder** | Connect via MCP / HTTP / JSON skill — your agent says "make a deck", this engine does the rest |
+| **Developer / power user** | Run `./auto-ppt generate` from the terminal, pipe into your workflow |
+| **Enterprise team** | Deploy via Docker behind your VPN, let internal agents call it as a tool |
+
+> **Not a SaaS.** Not a GUI. This is an embeddable engine — the backend behind "make me a PPT".
 
 ## Quick Start
 
@@ -60,8 +71,8 @@ Output: `output/py-generated-deck.json` + `.pptx`, `output/py-revised-deck.json`
 
 | Interface | Command | Use Case |
 |----------|---------|----------|
+| **MCP** | `python mcp_server.py` | Claude Desktop, Cursor, Windsurf — **recommended for agent integration** |
 | **CLI** | `./auto-ppt generate` / `revise` | Interactive or scripted usage |
-| **MCP** | `python mcp_server.py` | Claude Desktop, Cursor, Windsurf |
 | **HTTP** | `python py-skill-server.py` | REST integration (`POST /skill`) |
 | **JSON skill** | `python py-agent-skill.py --request req.json` | File-based agent orchestration |
 | **Docker** | `docker compose up --build` | One-command deploy |
