@@ -2,7 +2,7 @@
 
 ## 現在の製品ポジション
 
-Auto PPT Prototype は、AI エージェント向けのオープンソース PowerPoint バックエンドです。
+Auto PPT Engine は、AI エージェント向けのオープンソース PowerPoint バックエンドです。
 
 現在は明確な二層構成になっています。
 

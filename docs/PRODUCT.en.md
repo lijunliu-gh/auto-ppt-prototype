@@ -2,7 +2,7 @@
 
 ## Current Product
 
-Auto PPT Prototype is an open-source PowerPoint backend for AI agents.
+Auto PPT Engine is an open-source PowerPoint backend for AI agents.
 
 Its current architecture is deliberate:
 

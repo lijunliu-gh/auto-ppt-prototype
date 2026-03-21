@@ -2,7 +2,7 @@
 
 ## 当前产品定位
 
-Auto PPT Prototype 是一个面向 AI Agent 的开源 PowerPoint 后端。
+Auto PPT Engine 是一个面向 AI Agent 的开源 PowerPoint 后端。
 
 它现在采用明确的双层架构：
 

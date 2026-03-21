@@ -1,6 +1,6 @@
 # Documentation Index
 
-This directory holds the user-facing, integration, and product documentation for Auto PPT Prototype.
+This directory holds the user-facing, integration, and product documentation for Auto PPT Engine.
 
 ## Start Here
 

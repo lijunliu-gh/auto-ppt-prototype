@@ -4,7 +4,7 @@ description: Plan, revise, validate, and render PowerPoint decks from user requi
 user-invocable: true
 ---
 
-# Auto PPT Prototype Skill
+# Auto PPT Engine Skill
 
 ## Purpose
 

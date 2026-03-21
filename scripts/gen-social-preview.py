@@ -36,7 +36,7 @@ font_flow = get_font(20, bold=True)
 font_version = get_font(14, bold=True)
 
 # --- Title ---
-draw.text((60, 50), "Auto PPT Prototype", fill="#ffffff", font=font_title)
+draw.text((60, 50), "Auto PPT Engine", fill="#ffffff", font=font_title)
 
 # --- Version badge ---
 vx = 60

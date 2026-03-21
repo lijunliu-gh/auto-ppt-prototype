@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for contributing to Auto PPT Prototype.
+Thanks for contributing to Auto PPT Engine.
 
 ## Before You Start
 
