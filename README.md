@@ -53,6 +53,30 @@ Output: `output/py-generated-deck.json` + `.pptx`, `output/py-revised-deck.json`
 
 `qa-visual` writes a JSON report (default: alongside PPTX in `<deck-name>-qa/visual-qa-report.json`) and attempts to export slide images when `soffice` and `pdftoppm` are available.
 
+### Example Output
+
+```
+$ ./auto-ppt generate --mock --prompt "Q1 AI Strategy Review for Leadership"
+
+Action: create
+Deck JSON: output/py-generated-deck.json
+PPTX:      output/py-generated-deck.pptx
+Renderer:  pptxgenjs
+Slides:    8
+Sources:   1
+
+  1. [title       ] Q1 AI Strategy Review for Leadership
+  2. [agenda      ] Agenda
+  3. [bullet      ] Background and goals
+  4. [two-column  ] Current state and challenges
+  5. [process     ] Python smart layer workflow
+  6. [timeline    ] Execution timeline
+  7. [chart       ] Adoption metrics
+  8. [closing     ] Key recommendations
+```
+
+The engine produces a validated deck JSON (schema-checked) and a ready-to-open `.pptx` file. Download a sample: [output/py-generated-deck.pptx](output/py-generated-deck.pptx).
+
 ## What It Does
 
 | Capability | Detail |
