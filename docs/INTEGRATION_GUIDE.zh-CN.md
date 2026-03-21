@@ -23,7 +23,28 @@
 1. 上游 agent 负责收集需求和资料
 2. 上游 agent 调用 Python 智能层
 3. 这个项目输出 deck JSON 和 PPTX
-4. 上游 agent 根据用户反馈再次调用 revise 流程
+4. 在交付前对生成的 PPTX 执行可视化质检门
+5. 上游 agent 根据用户反馈再次调用 revise 流程
+
+## 推荐的可视化质检门
+
+每次 `create` 或 `revise` 之后，建议执行：
+
+```bash
+./auto-ppt qa-visual output/py-generated-deck.pptx --strict
+```
+
+如果是修订产物：
+
+```bash
+./auto-ppt qa-visual output/py-revised-deck.pptx --strict
+```
+
+在接入链路里这样做的价值：
+
+- 在人工审阅前先拦截明显版面风险
+- 产出可被 CI/自动化消费的结构化报告（`visual-qa-report.json`）
+- `--strict` 模式下出现问题会返回非 0，便于作为质量卡口
 
 ## 当前支持的接入方式
 

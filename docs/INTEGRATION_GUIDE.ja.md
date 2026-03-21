@@ -23,7 +23,28 @@
 1. 上流エージェントがユーザー要求と資料を収集する
 2. 上流エージェントが Python スマートレイヤーを呼び出す
 3. このプロジェクトが deck JSON と PPTX を返す
-4. ユーザーが修正を求めたら、上流エージェントが revise フローを再度呼ぶ
+4. 納品前に生成 PPTX へ可視 QA ゲートを実行する
+5. ユーザーが修正を求めたら、上流エージェントが revise フローを再度呼ぶ
+
+## 推奨: 可視 QA ゲート
+
+各 `create` / `revise` 実行後に次を実行します。
+
+```bash
+./auto-ppt qa-visual output/py-generated-deck.pptx --strict
+```
+
+改訂後の成果物に対しては:
+
+```bash
+./auto-ppt qa-visual output/py-revised-deck.pptx --strict
+```
+
+統合パイプラインでの効果:
+
+- 人手レビュー前に明確なレイアウトリスクを検出
+- CI/自動化向けの構造化レポートを出力（`visual-qa-report.json`）
+- `--strict` で問題検出時に非 0 終了し、品質ゲートとして利用可能
 
 ## 現在サポートされている統合方式
 

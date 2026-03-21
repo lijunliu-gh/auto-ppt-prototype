@@ -23,7 +23,28 @@ The recommended model is:
 1. An upstream agent collects the user request and source material.
 2. The upstream agent calls the Python smart layer in this project.
 3. This project outputs deck JSON and PPTX.
-4. The upstream agent calls the revise flow again when the user requests changes.
+4. Run a visual QA gate on generated PPTX before delivery.
+5. The upstream agent calls the revise flow again when the user requests changes.
+
+## Recommended Visual QA Gate
+
+After each `create` or `revise` run, execute:
+
+```bash
+./auto-ppt qa-visual output/py-generated-deck.pptx --strict
+```
+
+For revised outputs:
+
+```bash
+./auto-ppt qa-visual output/py-revised-deck.pptx --strict
+```
+
+Why this matters in integration pipelines:
+
+- catches obvious layout risks before human review
+- generates a machine-readable report for CI/automation (`visual-qa-report.json`)
+- provides a deterministic non-zero exit in `--strict` mode for quality gating
 
 ## Supported Integration Modes
 
