@@ -6,6 +6,14 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 
 ## [Unreleased]
 
+## [0.7.6] - 2026-03-23
+
+### Changed
+
+- Audit and align release metadata after the 0.7.5 positioning update
+- Update current-version references and current test-count references to match the repository state
+- Sync `skill-manifest.json` version with the current release
+
 ## [0.7.5] - 2026-03-23
 
 ### Changed

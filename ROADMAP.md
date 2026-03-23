@@ -1,12 +1,12 @@
 # Roadmap
 
-Current version: **v0.7.4**
+Current version: **v0.7.5**
 
 Product positioning: **to-B PPT generation engine** — embeddable into enterprise AI workflows with private deployment, API-driven generation (MCP / CLI / HTTP), and multi-language support (CJK + English). Core differentiators are data security (no data leaves the enterprise), content intelligence (AI-driven layout and visualization selection), and cross-platform output (PowerPoint, Keynote, Google Slides).
 
 ---
 
-## Current Capabilities (v0.7.4)
+## Current Capabilities (v0.7.5)
 
 | Area | What's Included |
 |------|----------------|
@@ -19,7 +19,7 @@ Product positioning: **to-B PPT generation engine** — embeddable into enterpri
 | **Brand Templates** | Upload `.pptx` → auto-parse → themed output via python-pptx |
 | **Image Pipeline** | Local images, URL images, placeholder protocol for multi-agent collaboration |
 | **Chart Handling** | Auto-repair, type correction, string-to-number coercion, graceful fallback to bullet layout |
-| **Quality** | Visual QA heuristics, quality scorer, 409 tests (84% coverage) |
+| **Quality** | Visual QA heuristics, quality scorer, 408 tests (84% coverage) |
 | **Security** | Path traversal protection, SSRF blocking, file size limits, subprocess timeout, image extension whitelist |
 | **LLM Providers** | OpenAI, OpenRouter, Claude, Gemini, Qwen, DeepSeek, GLM, MiniMax, any OpenAI-compatible endpoint |
 | **Deployment** | Docker + docker-compose one-command deploy; CI matrix: Python 3.10–3.12 + Node.js 18/20/22 |
@@ -53,6 +53,7 @@ Product positioning: **to-B PPT generation engine** — embeddable into enterpri
 
 | Version | Milestone |
 |---------|-----------|
+| v0.7.5 | README positioning update for personal-project release |
 | v0.7.4 | Switch to Apache 2.0 license |
 | v0.7.3 | 409 tests, 84% coverage, documentation alignment |
 | v0.7.2 | Theme system, 6 built-in themes, new layouts (KPI, SWOT, funnel), brand template adaptation |
