@@ -129,16 +129,16 @@ What they show:
 
 ## Theme Gallery
 
-The 6 built-in themes below are shown using generated PPTX thumbnails from the repository. Each thumbnail is the same deck rendered with a different built-in theme, so the visual differences are easy to compare.
+The 6 built-in themes below are shown using thumbnails regenerated from the current renderer. Each thumbnail is the same deck rendered with a different built-in theme, so the visual differences are easy to compare.
 
 | business-clean | corporate-blue | dark-executive |
 |---|---|---|
-| ![business-clean](assets/readme/theme-test-business-clean.pptx.png) | ![corporate-blue](assets/readme/theme-test-corporate-blue.pptx.png) | ![dark-executive](assets/readme/theme-test-dark-executive.pptx.png) |
+| ![business-clean](assets/readme/readme-gallery-business-clean.pptx.png) | ![corporate-blue](assets/readme/readme-gallery-corporate-blue.pptx.png) | ![dark-executive](assets/readme/readme-gallery-dark-executive.pptx.png) |
 | Clean default for general business decks | More formal blue-toned presentation style | Dark boardroom-style presentation theme |
 
 | warm-modern | minimal | tech |
 |---|---|---|
-| ![warm-modern](assets/readme/theme-test-warm-modern.pptx.png) | ![minimal](assets/readme/theme-test-minimal.pptx.png) | ![tech](assets/readme/theme-test-tech.pptx.png) |
+| ![warm-modern](assets/readme/readme-gallery-warm-modern.pptx.png) | ![minimal](assets/readme/readme-gallery-minimal.pptx.png) | ![tech](assets/readme/readme-gallery-tech.pptx.png) |
 | Warmer editorial look | Monochrome and restrained | Dark technical / product style |
 
 ## Quality Pipeline
