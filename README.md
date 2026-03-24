@@ -14,60 +14,80 @@
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
 </p>
 
-Open-source PowerPoint generation engine — built to be embedded by AI agents, enterprises, and developers.
+Generate and revise editable PowerPoint decks from prompts, source files, or agent tool calls.
 
-Create and revise `.pptx` decks from natural language through MCP, CLI, or HTTP. Best suited for developers, AI workflow builders, and technical teams.
+Auto PPT Engine is a self-hostable backend for teams that want AI agents, internal tools, or automation workflows to produce `.pptx` output through MCP, CLI, HTTP, or Docker.
 
-> Status: beta-quality open-source engine.
+> Status: beta-quality open-source backend.
 > Not a SaaS. Not a polished end-user GUI.
-> This repository is an embeddable backend for agent workflows, enterprise automation, and custom integrations.
-> Current scope is considered feature-complete; future updates focus on bug fixes and community contributions.
+> Built for agent workflows, internal automation, and custom integrations.
+> Current scope is feature-complete enough to evaluate today: prompt in, validated deck JSON and `.pptx` out.
+
+### Why use it?
+
+- Turn a prompt or a source brief into an editable `.pptx` deck
+- Let an AI agent create or revise slides through MCP, HTTP, or a JSON skill entrypoint
+- Keep generation in your own environment with self-hosted deployment options
+- Add engineering guardrails: schema validation, chart fallback, visual QA, and theme-aware rendering
 
 ### Who is this for?
 
-| You are… | How you use it |
+| You are… | What this gives you |
 |:---|:---|
-| **AI agent builder** | Connect via MCP / HTTP / JSON skill and let your agent create or revise decks |
-| **Developer / power user** | Run `./auto-ppt generate` from the terminal or script it into your workflow |
-| **Technical team** | Deploy via Docker for internal automation or experimentation |
+| **AI agent builder** | A PowerPoint tool backend your agent can call through MCP, HTTP, or file-based orchestration |
+| **Developer / power user** | A CLI you can script into report generation, review loops, or internal workflows |
+| **Technical team** | A self-hostable service for deck generation with controllable prompts, sources, themes, and outputs |
 
-> **Not a SaaS.** Not a GUI. This is an embeddable engine — the backend behind "make me a PPT".
+> **This is the backend behind “generate me a PPT”.** It is designed to be embedded into your workflow, not used as a standalone SaaS product.
 
 ## Quick Start
 
-Prerequisites: Python 3.10+, Node.js 18+, and optionally an LLM API key for non-mock generation.
+Prerequisites: Python 3.10+ and Node.js 18+.
+
+### Fastest path: mock mode, no API key required
 
 ```bash
-# 1. Install
+# 1. Install dependencies
 npm install && pip install .
 
-# 2. Configure (writes .env with your LLM key)
-./auto-ppt init
-
-# 3. Generate — mock mode, no LLM key needed
+# 2. Generate a deck locally without any LLM key
 ./auto-ppt generate --mock \
   --prompt "Create an 8-slide AI strategy deck for executives" \
   --source examples/inputs/sample-source-brief.md
+```
 
-# 4. Generate — real model, after init
+Output:
+
+- `output/py-generated-deck.json`
+- `output/py-generated-deck.pptx`
+
+### Real model generation
+
+```bash
+# 1. Configure your LLM key into .env
+./auto-ppt init
+
+# 2. Generate with a real model
 ./auto-ppt generate \
   --prompt "Create an 8-slide AI strategy deck for executives" \
   --source examples/inputs/sample-source-brief.md
+```
 
-# 5. Revise
+### Revise and validate
+
+```bash
+# Revise an existing generated deck
 ./auto-ppt revise \
   --deck output/py-generated-deck.json \
   --prompt "Compress to 6 slides, make it more conclusion-driven"
 
-# 6. Visual QA (heuristics + optional slide image export)
+# Run visual QA on the rendered PPTX
 ./auto-ppt qa-visual output/py-generated-deck.pptx --strict
 ```
 
-Output: `output/py-generated-deck.json` + `.pptx`, `output/py-revised-deck.json` + `.pptx`.
-
 `qa-visual` writes a JSON report (default: alongside PPTX in `<deck-name>-qa/visual-qa-report.json`) and attempts to export slide images when `soffice` and `pdftoppm` are available.
 
-### Example Output
+## Example Run
 
 ```
 $ ./auto-ppt generate --mock --prompt "Q1 AI Strategy Review for Leadership"
@@ -89,7 +109,20 @@ Sources:   1
   8. [closing     ] Key recommendations
 ```
 
-The engine produces a validated deck JSON (schema-checked) and a ready-to-open `.pptx` file.
+The output is not just a `.pptx` file. The system also emits a validated deck JSON contract that can be revised, re-rendered, audited, or handed to another workflow step.
+
+## Quality Pipeline
+
+```
+prompt + sources -> planning -> schema validation -> PPTX render -> visual QA -> editable .pptx
+```
+
+Quality controls already in the repository include:
+
+- JSON schema validation before rendering
+- Chart repair and fallback when chart data is invalid
+- Visual QA heuristics for overlap, edge crowding, and empty-slide detection
+- Theme-aware text/background contrast handling across light and dark themes
 
 ## What It Does
 
