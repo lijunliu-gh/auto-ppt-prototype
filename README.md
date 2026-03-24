@@ -111,6 +111,27 @@ Sources:   1
 
 The output is not just a `.pptx` file. The system also emits a validated deck JSON contract that can be revised, re-rendered, audited, or handed to another workflow step.
 
+## Example Output
+
+These thumbnails were generated from real `.pptx` files already in the repository under `output/`.
+
+| Generated deck | Generated deck | Revised deck |
+|---|---|---|
+| ![Base deck](assets/readme/py-agent-generated-deck.pptx.png) | ![Audit deck](assets/readme/audit-generate.pptx.png) | ![Revised deck](assets/readme/py-agent-revised-deck.pptx.png) |
+| `output/py-agent-generated-deck.pptx` | `output/audit-generate.pptx` | `output/py-agent-revised-deck.pptx` |
+
+## Theme Gallery
+
+The 6 built-in themes below are shown using generated PPTX thumbnails from the repository.
+
+| business-clean | corporate-blue | dark-executive |
+|---|---|---|
+| ![business-clean](assets/readme/theme-test-business-clean.pptx.png) | ![corporate-blue](assets/readme/theme-test-corporate-blue.pptx.png) | ![dark-executive](assets/readme/theme-test-dark-executive.pptx.png) |
+
+| warm-modern | minimal | tech |
+|---|---|---|
+| ![warm-modern](assets/readme/theme-test-warm-modern.pptx.png) | ![minimal](assets/readme/theme-test-minimal.pptx.png) | ![tech](assets/readme/theme-test-tech.pptx.png) |
+
 ## Quality Pipeline
 
 ```
