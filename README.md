@@ -14,14 +14,14 @@
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
 </p>
 
-Personal open-source PowerPoint generation engine — built to be called by AI agents.
+Open-source PowerPoint generation engine — built to be embedded by AI agents, enterprises, and developers.
 
 Create and revise `.pptx` decks from natural language through MCP, CLI, or HTTP. Best suited for developers, AI workflow builders, and technical teams.
 
-> Status: beta-quality personal project.
+> Status: beta-quality open-source engine.
 > Not a SaaS. Not a polished end-user GUI.
-> This repository is an embeddable engine for agent workflows and internal automation.
-> Current scope is considered complete for this personal release; no additional roadmap items are currently committed.
+> This repository is an embeddable backend for agent workflows, enterprise automation, and custom integrations.
+> Current scope is considered feature-complete; future updates focus on bug fixes and community contributions.
 
 ### Who is this for?
 

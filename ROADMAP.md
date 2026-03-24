@@ -4,7 +4,7 @@ Current version: **v0.7.8**
 
 Product positioning: **to-B PPT generation engine** — embeddable into enterprise AI workflows with private deployment, API-driven generation (MCP / CLI / HTTP), and multi-language support (CJK + English). Core differentiators are data security (no data leaves the enterprise), content intelligence (AI-driven layout and visualization selection), and cross-platform output (PowerPoint, Keynote, Google Slides).
 
-Current release posture: **published in its current scope**. This repository is being released as a personal open-source project in maintenance mode. No additional roadmap items are currently committed.
+Current release posture: **published in its current scope**. This is an open-source embeddable engine designed for integration into enterprise, team, or individual AI workflows. Future updates focus on bug fixes and community contributions.
 
 ---
 
@@ -31,10 +31,10 @@ Current release posture: **published in its current scope**. This repository is 
 
 ## Maintenance Status
 
-This repository is published as a stable personal-project snapshot.
+This repository is published as a stable, self-hostable engine.
 
-- No additional feature roadmap is currently committed
-- Future updates, if any, are expected to be limited to bug fixes, small documentation corrections, or metadata cleanup
+- Current scope is feature-complete
+- Future updates focus on bug fixes, documentation improvements, and community contributions
 - The recommended way to evaluate the project is to use the current CLI, MCP, HTTP, and JSON skill entrypoints as documented
 
 ---
@@ -44,9 +44,9 @@ This repository is published as a stable personal-project snapshot.
 | Version | Milestone |
 |---------|-----------|
 | v0.7.8 | Fix text/background contrast across all themes; WCAG luminance-aware rendering |
-| v0.7.7 | Current-scope release alignment; roadmap converted to project status / maintenance posture |
+| v0.7.7 | Release posture alignment; roadmap converted to project status document |
 | v0.7.6 | Release metadata audit cleanup and public baseline verification |
-| v0.7.5 | README positioning update for personal-project release |
+| v0.7.5 | README positioning update for open-source release |
 | v0.7.4 | Switch to Apache 2.0 license |
 | v0.7.3 | 409 tests, 84% coverage, documentation alignment |
 | v0.7.2 | Theme system, 6 built-in themes, new layouts (KPI, SWOT, funnel), brand template adaptation |
