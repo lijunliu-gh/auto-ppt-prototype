@@ -1,6 +1,6 @@
 # Project Status
 
-Current version: **v0.7.7**
+Current version: **v0.7.8**
 
 Product positioning: **to-B PPT generation engine** — embeddable into enterprise AI workflows with private deployment, API-driven generation (MCP / CLI / HTTP), and multi-language support (CJK + English). Core differentiators are data security (no data leaves the enterprise), content intelligence (AI-driven layout and visualization selection), and cross-platform output (PowerPoint, Keynote, Google Slides).
 
@@ -8,7 +8,7 @@ Current release posture: **published in its current scope**. This repository is 
 
 ---
 
-## Current Capabilities (v0.7.7)
+## Current Capabilities (v0.7.8)
 
 | Area | What's Included |
 |------|----------------|
@@ -43,6 +43,7 @@ This repository is published as a stable personal-project snapshot.
 
 | Version | Milestone |
 |---------|-----------|
+| v0.7.8 | Fix text/background contrast across all themes; WCAG luminance-aware rendering |
 | v0.7.7 | Current-scope release alignment; roadmap converted to project status / maintenance posture |
 | v0.7.6 | Release metadata audit cleanup and public baseline verification |
 | v0.7.5 | README positioning update for personal-project release |

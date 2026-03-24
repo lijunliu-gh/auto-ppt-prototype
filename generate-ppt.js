@@ -73,6 +73,33 @@ function mergeTheme(partial) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Color contrast helpers (WCAG 2.1 relative luminance)
+// ---------------------------------------------------------------------------
+
+/**
+ * Relative luminance per WCAG 2.1.
+ * @param {string} hex  6-char hex color (no #)
+ */
+function luminance(hex) {
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
+  const [sr, sg, sb] = [r, g, b].map(c =>
+    c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+  );
+  return 0.2126 * sr + 0.7152 * sg + 0.0722 * sb;
+}
+
+/**
+ * Pick a readable text color for the given background.
+ * Returns theme text color (dark) for light backgrounds,
+ * theme textLight (white/light) for dark backgrounds.
+ */
+function pickTextColor(bgHex) {
+  return luminance(bgHex) > 0.4 ? _t.colors.text : _t.colors.textLight;
+}
+
 // Active theme — set at the start of buildDeck(), used by all render helpers
 let _t = DEFAULT_THEME;
 
@@ -181,7 +208,7 @@ function addSlideHeader(slide, deck, current) {
     h: 0.5,
     fontSize: 24,
     bold: true,
-    color: _t.colors.closingBg
+    color: _t.colors.text
   });
 
   if (current.objective) {
@@ -308,7 +335,7 @@ function renderTitleSlide(slide, deck, current) {
     h: 1.1,
     fontSize: 28,
     bold: true,
-    color: _t.colors.closingBg
+    color: pickTextColor(_t.colors.titleBg)
   });
 
   addTextBox(slide, current.subtitle || deck.scenario || deck.audience || '', {
@@ -519,7 +546,7 @@ function renderTimelineSlide(slide, deck, current) {
       fontSize: 10,
       align: 'center',
       bold: true,
-      color: _t.colors.closingBg
+      color: _t.colors.text
     });
 
     addTextBox(slide, item, {
@@ -547,7 +574,7 @@ function renderProcessSlide(slide, deck, current) {
       w: width,
       h: 1.6,
       rectRadius: 0.05,
-      fill: { color: index % 2 === 0 ? 'ECFDF5' : 'EFF6FF' },
+      fill: { color: index % 2 === 0 ? _t.colors.background : _t.colors.headerBg },
       line: { color: _t.colors.border, pt: 1 }
     });
 
@@ -873,11 +900,12 @@ function renderKpiSlide(slide, deck, current) {
 function renderSwotSlide(slide, deck, current) {
   addSlideHeader(slide, deck, current);
   const q = current.quadrants || {};
+  const cc = _t.chartColors;
   const sections = [
-    { label: 'Strengths', items: q.strengths || [], color: '059669' },
-    { label: 'Weaknesses', items: q.weaknesses || [], color: 'DC2626' },
-    { label: 'Opportunities', items: q.opportunities || [], color: '2563EB' },
-    { label: 'Threats', items: q.threats || [], color: 'D97706' },
+    { label: 'Strengths', items: q.strengths || [], color: cc[0] || '059669' },
+    { label: 'Weaknesses', items: q.weaknesses || [], color: cc[3] || 'DC2626' },
+    { label: 'Opportunities', items: q.opportunities || [], color: cc[1] || '2563EB' },
+    { label: 'Threats', items: q.threats || [], color: cc[2] || 'D97706' },
   ];
 
   const gridX = 0.9, gridY = 1.8;
@@ -975,7 +1003,7 @@ function renderFunnelSlide(slide, deck, current) {
     const label = stage.value ? `${stage.label}  —  ${stage.value}` : stage.label;
     addTextBox(slide, label, {
       x, y, w, h: stageH,
-      fontSize: 13, bold: true, color: 'FFFFFF', align: 'center', valign: 'mid'
+      fontSize: 13, bold: true, color: pickTextColor(color), align: 'center', valign: 'mid'
     });
   });
 }

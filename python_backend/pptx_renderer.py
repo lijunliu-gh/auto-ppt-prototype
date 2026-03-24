@@ -60,9 +60,14 @@ def _get_colors(template: Optional[TemplateConfig]) -> Dict[str, str]:
     """Get color palette, merging template theme colors if available."""
     colors = dict(_COLORS)
     if template and template.theme_colors:
-        colors["primary"] = template.theme_colors.primary
-        colors["secondary"] = template.theme_colors.secondary
-        colors["accent"] = template.theme_colors.accent
+        tc = template.theme_colors
+        colors["primary"] = tc.primary
+        colors["secondary"] = tc.secondary
+        colors["accent"] = tc.accent
+        colors["text_dark"] = tc.text_dark
+        colors["text_body"] = tc.text_dark  # body inherits from text_dark
+        colors["closing_text"] = tc.text_light
+        colors["bg_light"] = tc.background
     return colors
 
 

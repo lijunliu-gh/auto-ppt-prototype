@@ -139,7 +139,16 @@ When using chart layout, always populate concrete data:
 - If no real data is available, use realistic placeholders and note it in assumptions
 - Never leave categories or series as empty arrays
 
-The system automatically validates chart data after generation. If a chart slide has invalid data (empty categories, missing series, or non-numeric values), it falls back to a bullet layout and records the fallback in assumptions.
+The system automatically validates chart data after generation.
+
+## Color and Contrast
+
+The renderer uses WCAG 2.1 relative-luminance detection to pick readable text colors automatically. When choosing themes or creating custom ones:
+
+- **Light themes** (business-clean, corporate-blue, warm-modern, minimal): dark text on light slide backgrounds
+- **Dark themes** (dark-executive, tech): light text on dark slide backgrounds
+- Chart labels and funnel stage text auto-select light or dark based on the segment fill color
+- Custom themes should ensure all text/background pairs meet a minimum 4.5:1 contrast ratio If a chart slide has invalid data (empty categories, missing series, or non-numeric values), it falls back to a bullet layout and records the fallback in assumptions.
 
 ## Narrative Guidance
 

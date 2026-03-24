@@ -304,6 +304,17 @@ Create a JSON file following the schema in `assets/themes/theme-schema.json`:
 
 Pass a custom theme file path via `--theme /path/to/my-brand.json`.
 
+### Color and Accessibility
+
+The renderer uses WCAG 2.1 luminance detection to ensure readable text on all backgrounds. This works automatically for all 6 built-in themes, including dark themes like `dark-executive` and `tech`.
+
+When creating custom themes, ensure text/background color pairs meet WCAG AA contrast (minimum 4.5:1 for normal text, 3:1 for large text):
+
+- **Light theme example**: `text: "1A202C"` on `slideBg: "FFFFFF"` — 16.1:1 contrast ✓
+- **Dark theme example**: `text: "E2E8F0"` on `slideBg: "0F172A"` — 12.6:1 contrast ✓
+
+Chart labels and funnel stage text automatically switch between light and dark based on each segment's fill color.
+
 ## Chart Data Handling
 
 When slides use the `chart` layout, the system validates chart data automatically:

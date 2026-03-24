@@ -6,6 +6,12 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 
 ## [Unreleased]
 
+## [0.7.8] - 2026-03-24
+
+### Fixed
+
+- **Text/Background Contrast Across Themes** — Added WCAG-based luminance helpers (`luminance()`, `pickTextColor()`) to JS renderer. Fixed hardcoded text colors in `addSlideHeader()`, `renderTitleSlide()`, `renderTimelineSlide()`, `renderFunnelSlide()`, `renderProcessSlide()`, and `renderSwotSlide()` to use theme-aware colors instead of always using dark `closingBg`. Funnel stage labels now dynamically choose light or dark text based on each segment's fill color. Process step backgrounds now follow the active theme instead of hardcoded pastels. SWOT quadrant colors now derive from `chartColors`. Python renderer `_get_colors()` now merges full theme palette (text, background, closing colors) from templates. All 6 built-in themes (including dark-executive and tech) now render with correct contrast.
+
 ## [0.7.7] - 2026-03-23
 
 ### Changed
